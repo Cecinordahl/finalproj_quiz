@@ -19,7 +19,18 @@ public class QuizController {
     ObjectMapper mapper;
 
 
+    /* Henter ut quiz fra url, returnerer som array */
+    public Quiz[] getQuiz(){
 
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Quiz[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=10", Quiz[].class);
+        return quizzes.getBody();
+    }
+
+
+
+
+/* Viser spørsmål og 4 svar alternativer med et riktig alternativ
     @GetMapping("/")
     public String showOneQuestion(Model model) throws JsonProcessingException {
         Quiz[] quiz = getQuiz();
@@ -35,12 +46,8 @@ public class QuizController {
         return "play_all";
     }
 
+ */
 
-    /* Henter ut quiz fra url, returnerer som array */
-    public Quiz[] getQuiz(){
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Quiz[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=10", Quiz[].class);
-        return quizzes.getBody();
-    }
+
 }
