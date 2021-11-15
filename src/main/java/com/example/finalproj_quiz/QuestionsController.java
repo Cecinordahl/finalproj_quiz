@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -33,18 +34,23 @@ public class QuestionsController {
 
 
 
-    // Viser spørsmål og 4 svar alternativer med et riktig alternativ
-    @GetMapping("/")
-    public String showOneQuestion(Model model) throws JsonProcessingException {
-        model.addAttribute("entireQuiz", mapper.writeValueAsString(quiz));
-        return "questions_page";
+    @GetMapping("/register-quiz")
+    public String initializeQuiz(Model model) {
+        return "admin_first_page";
     }
 
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer numberOfQuestions){
-        return "redirect:/register_players";
+    public String registerQuiz(@RequestParam Integer numberOfQuestions, HttpSession session){
+        session.setAttribute("numberOfQuestions", numberOfQuestions);
+        return "redirect:/register-player";
     }
 
+    @PostMapping("/")
+    public String registerQuiz(){
+        return "hei";
+    }
+
+    // Register players get & post
     @GetMapping("/register-players")
     public String registerPlayers(){
         return "register_players";
@@ -52,7 +58,14 @@ public class QuestionsController {
 
     @PostMapping("/register-players")
     public String registeredPlayers(@RequestParam String quizCode, @RequestParam String name){
-        return "waiting_page";
+        return "start_quiz";
+    }
+
+
+    // Start quiz
+    @GetMapping("/start-quiz")
+    public String startQuiz(){
+        return "start-quiz";
     }
 
     @GetMapping("/waiting-page")
@@ -60,6 +73,10 @@ public class QuestionsController {
         return "waiting_page";
     }
 
+    @GetMapping("/question-page")
+    public String questionPage(){
+        return "question_page";
+    }
 
 
 
@@ -71,7 +88,10 @@ public class QuestionsController {
 
 
 
-            /* model.addAttribute("question", mapper.writeValueAsString(quiz[0].getQuestion()));
+
+            /*
+            model.addAttribute("entireQuiz", mapper.writeValueAsString(quiz));
+            model.addAttribute("question", mapper.writeValueAsString(quiz[0].getQuestion()));
         model.addAttribute("A", mapper.writeValueAsString(quiz[0].getCorrectAnswer()));
         model.addAttribute("B", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[0]));
         model.addAttribute("C", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[1]));
