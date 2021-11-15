@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+</head>
+<body>
+    <h1>Welcome to the XX quiz!</h1>
+    <form th:action="/register-quiz" method="post">
+        <label>How many questions do you want in your quiz? </label>
+        <input name="numberOfQuestions" type="number" min="5" max="50">
+        <button>Submit</button>
+    </form>
+</body>
+</html>
