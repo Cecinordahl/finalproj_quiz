@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -101,8 +103,20 @@ public class QuestionsController {
 
 
     @GetMapping("/play/{quizCode}/{questionNumber}")
-    public String questionPage(@PathVariable int quizCode, @PathVariable int questionNumber, Model model) throws JsonProcessingException {
+    public String questionPage(@PathVariable int quizCode, @PathVariable int questionNumber, Model model, HttpSession session) throws JsonProcessingException {
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()));
+        model.addAttribute("player", session.getAttribute("player"));
+
+        List<String> alternatives = Arrays.asList("A", "B", "C", "D");
+        Collections.shuffle(alternatives);
+
+        model.addAttribute(alternatives.get(0), mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()));
+        model.addAttribute("correctAnswer", alternatives.get(0));
+
+        model.addAttribute(alternatives.get(1), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]));
+        model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]));
+        model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]));
+
         questionNumber++;
         return "question_page";
     }
@@ -111,6 +125,12 @@ public class QuestionsController {
     public String waitingPage(){
         return "waiting_page";
     }
+
+
+
+
+
+
 
     public int generateRandomQuizCode(){
         return ThreadLocalRandom.current().nextInt(1, 1000);

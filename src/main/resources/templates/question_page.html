@@ -7,7 +7,7 @@
 <body>
 
 <!--<h2 th:text="'Question ' + ${QUESTION_NUMBER}"></h2>-->
-<div>
+<div th:if="${player.getRole() == 'admin'}">
     <p th:text="${question}"></p>
     <div class="displayAlternativesAsAdmin">
         <p th:text="${A}"></p>
@@ -17,18 +17,18 @@
     </div>
 </div>
 
-<div>
+<div th:if="${player.getRole() == 'player'}">
     <form>
-        <label><input type="radio" name="radio_button"><span th:text="${A}"></span>
+        <label><input type="radio" id="A" name="radio_button"><span th:text="${A}"></span>
         </label>
 
-        <label><input type="radio" name="radio_button"><span th:text="${B}"></span>
+        <label><input type="radio" id="B" name="radio_button"><span th:text="${B}"></span>
         </label>
 
-        <label><input type="radio" name="radio_button"><span th:text="${C}"></span>
+        <label><input type="radio" id="C" name="radio_button"><span th:text="${C}"></span>
         </label>
 
-        <label><input type="radio" name="radio_button"><span th:text="${D}"></span>
+        <label><input type="radio" id="D" name="radio_button"><span th:text="${D}"></span>
         </label>
     </form>
 </div>
