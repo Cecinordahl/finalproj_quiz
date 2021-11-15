@@ -3,6 +3,7 @@ package com.example.finalproj_quiz;
 public class Player {
     private Long id;
     private String name;
+    private String role;
 
     public Long getId() {
         return id;
@@ -22,6 +23,14 @@ public class Player {
 
     public Player(String name){
         this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
 
