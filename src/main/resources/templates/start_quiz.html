@@ -14,7 +14,7 @@
 
 <div sec:authorize="hasRole('ROLE_ADMIN')">
     <h2>Let's start the quiz!</h2>
-<!--    <a href="QUESTION">Start quiz</a>-->
+    <a href="'/play/' + ${quizCode} + '/' + ${questionNumber}">Start quiz</a>
 </div>
 
 
