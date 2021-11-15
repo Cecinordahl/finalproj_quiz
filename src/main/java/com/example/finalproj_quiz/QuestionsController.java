@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -34,24 +36,46 @@ public class QuestionsController {
     // Viser spørsmål og 4 svar alternativer med et riktig alternativ
     @GetMapping("/")
     public String showOneQuestion(Model model) throws JsonProcessingException {
-
-
         model.addAttribute("entireQuiz", mapper.writeValueAsString(quiz));
+        return "questions_page";
+    }
 
+    @PostMapping("/register-quiz")
+    public String registerQuiz(@RequestParam Integer numberOfQuestions){
+        return "redirect:/register_players";
+    }
 
-        /* model.addAttribute("question", mapper.writeValueAsString(quiz[0].getQuestion()));
-        model.addAttribute("A", mapper.writeValueAsString(quiz[0].getCorrectAnswer()));
-        model.addAttribute("B", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[0]));
-        model.addAttribute("C", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[1]));
-        model.addAttribute("D", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[2]));*/
+    @GetMapping("/register-players")
+    public String registerPlayers(){
+        return "register_players";
+    }
 
-        return "play_all";
+    @PostMapping("/register-players")
+    public String registeredPlayers(@RequestParam String quizCode, @RequestParam String name){
+        return "waiting_page";
+    }
+
+    @GetMapping("/waiting-page")
+    public String waitingPage(){
+        return "waiting_page";
     }
 
 
 
 
 
+
+
+
+
+
+
+
+            /* model.addAttribute("question", mapper.writeValueAsString(quiz[0].getQuestion()));
+        model.addAttribute("A", mapper.writeValueAsString(quiz[0].getCorrectAnswer()));
+        model.addAttribute("B", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[0]));
+        model.addAttribute("C", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[1]));
+        model.addAttribute("D", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[2]));*/
 }
 
 
