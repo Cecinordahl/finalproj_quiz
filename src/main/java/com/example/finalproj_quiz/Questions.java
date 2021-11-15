@@ -1,6 +1,6 @@
 package com.example.finalproj_quiz;
 
-public class Quiz {
+public class Questions {
     private String category;
     private String correctAnswer;
     private long id;
@@ -8,7 +8,7 @@ public class Quiz {
     private String question;
     private String type;
 
-    public Quiz(){}
+    public Questions(){}
 
 
     public String getCategory() {
