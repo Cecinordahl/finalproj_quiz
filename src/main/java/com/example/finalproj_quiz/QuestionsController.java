@@ -7,10 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @Controller
@@ -20,31 +25,41 @@ public class QuestionsController {
     @Autowired
     ObjectMapper mapper;
 
-    private final Questions[] quiz = getQuiz();
+    private Questions[] questions;
+
+
+
+    List<Player> listOfPlayers = new ArrayList<>();
 
 
     /* Henter ut quiz fra url, returnerer som array */
-    public Questions[] getQuiz(){
+    public Questions[] getQuiz(int number){
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=10", Questions[].class);
+        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=" + number, Questions[].class);
         return quizzes.getBody();
+    }
+
+    @GetMapping("/")
+    public String frontPage(){
+
+        return "front_page";
     }
 
 
 
 
-    // Viser spørsmål og 4 svar alternativer med et riktig alternativ
-    @GetMapping("/")
-    public String showOneQuestion(Model model) throws JsonProcessingException {
-        model.addAttribute("entireQuiz", mapper.writeValueAsString(quiz));
-        return "questions_page";
+    @GetMapping("/register-quiz")
+    public String initializeQuiz(Model model) {
+        return "admin_first_page";
     }
 
     @PostMapping("/register-quiz")
     public String registerQuiz(@RequestParam Integer numberOfQuestions){
-        return "redirect:/register_players";
+        questions = getQuiz(numberOfQuestions);
+        return "redirect:/play/" + generateRandomQuizCode();
     }
 
+    // Register players get & post
     @GetMapping("/register-players")
     public String registerPlayers(){
         return "register_players";
@@ -52,7 +67,17 @@ public class QuestionsController {
 
     @PostMapping("/register-players")
     public String registeredPlayers(@RequestParam String quizCode, @RequestParam String name){
-        return "waiting_page";
+        Player player = new Player(name);
+        listOfPlayers.add(player);
+        return "redirect:/play/" + quizCode;
+    }
+
+
+    // Start quiz
+    @GetMapping("/play/{quizCode}")
+    public String startQuiz(@PathVariable String quizCode, Model model){
+        model.addAttribute("listOfPlayers", listOfPlayers);
+        return "start_quiz";
     }
 
     @GetMapping("/waiting-page")
@@ -60,6 +85,14 @@ public class QuestionsController {
         return "waiting_page";
     }
 
+    @GetMapping("/question-page")
+    public String questionPage(){
+        return "question_page";
+    }
+
+    public int generateRandomQuizCode(){
+        return ThreadLocalRandom.current().nextInt(1, 1000);
+    }
 
 
 
@@ -71,7 +104,10 @@ public class QuestionsController {
 
 
 
-            /* model.addAttribute("question", mapper.writeValueAsString(quiz[0].getQuestion()));
+
+            /*
+            model.addAttribute("entireQuiz", mapper.writeValueAsString(quiz));
+            model.addAttribute("question", mapper.writeValueAsString(quiz[0].getQuestion()));
         model.addAttribute("A", mapper.writeValueAsString(quiz[0].getCorrectAnswer()));
         model.addAttribute("B", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[0]));
         model.addAttribute("C", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[1]));

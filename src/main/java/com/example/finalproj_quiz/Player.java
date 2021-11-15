@@ -5,6 +5,10 @@ public class Player {
     private String name;
     private String role;
 
+    public Player(String name){
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
@@ -21,9 +25,7 @@ public class Player {
         this.name = name;
     }
 
-    public Player(String name){
-        this.name = name;
-    }
+
 
     public String getRole() {
         return role;

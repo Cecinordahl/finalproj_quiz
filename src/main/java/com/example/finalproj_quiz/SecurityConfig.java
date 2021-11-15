@@ -8,13 +8,17 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll();
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and().csrf().disable();
     }
 
     @Bean
@@ -23,6 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         inMemoryUserDetailsManager.createUser(User.withDefaultPasswordEncoder().username("admin").password("123").roles("ADMIN").build());
         return inMemoryUserDetailsManager;
     }
+
+
 }
 
 
