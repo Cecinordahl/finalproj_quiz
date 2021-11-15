@@ -26,6 +26,7 @@ public class QuestionsController {
 
     private Questions[] questions;
     private int questionNumber;
+    private Player player = new Player();
 
     List<Player> listOfPlayers = new ArrayList<>();
 
@@ -64,7 +65,7 @@ public class QuestionsController {
 
     @PostMapping("/register-players")
     public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name){
-        Player player = new Player(name);
+        player.setName(name);
         player.setRole("player");
         listOfPlayers.add(player);
         return "redirect:/play/" + userQuizCode;
@@ -77,6 +78,7 @@ public class QuestionsController {
         model.addAttribute("listOfPlayers", listOfPlayers);
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("questionNumber", questionNumber);
+        model.addAttribute("player", player);
         return "start_quiz";
     }
 

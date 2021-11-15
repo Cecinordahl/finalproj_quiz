@@ -9,6 +9,8 @@ public class Player {
         this.name = name;
     }
 
+    public Player(){}
+
     public Long getId() {
         return id;
     }
