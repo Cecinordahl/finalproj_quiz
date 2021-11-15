@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+</head>
+<body>
+
+<h1>The players of this quiz are:</h1>
+<ul th:each="item : ${listOfPlayers}">
+    <li th:text="${item.getName()}"></li>
+</ul>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <h2>Let's start the quiz!</h2>
+<!--    <a href="QUESTION">Start quiz</a>-->
+</div>
+
+
+<script>
+</script>
+
+</body>
+</html>

@@ -20,7 +20,7 @@ public class PlayerController {
     public String registeredPlayer(@RequestParam String name){
         Player player = new Player(name);
         listOfPlayers.add(player);
-        return "play_all";
+        return "question_page";
     }
 
 
