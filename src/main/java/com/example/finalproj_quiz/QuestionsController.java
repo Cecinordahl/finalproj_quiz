@@ -7,11 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @Controller
@@ -21,14 +25,24 @@ public class QuestionsController {
     @Autowired
     ObjectMapper mapper;
 
-    private final Questions[] quiz = getQuiz();
+    private Questions[] questions;
+
+
+
+    List<Player> listOfPlayers = new ArrayList<>();
 
 
     /* Henter ut quiz fra url, returnerer som array */
-    public Questions[] getQuiz(){
+    public Questions[] getQuiz(int number){
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=10", Questions[].class);
+        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=" + number, Questions[].class);
         return quizzes.getBody();
+    }
+
+    @GetMapping("/")
+    public String frontPage(){
+
+        return "front_page";
     }
 
 
@@ -40,14 +54,9 @@ public class QuestionsController {
     }
 
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer numberOfQuestions, HttpSession session){
-        session.setAttribute("numberOfQuestions", numberOfQuestions);
-        return "redirect:/register-player";
-    }
-
-    @PostMapping("/")
-    public String registerQuiz(){
-        return "hei";
+    public String registerQuiz(@RequestParam Integer numberOfQuestions){
+        questions = getQuiz(numberOfQuestions);
+        return "redirect:/play/" + generateRandomQuizCode();
     }
 
     // Register players get & post
@@ -58,14 +67,17 @@ public class QuestionsController {
 
     @PostMapping("/register-players")
     public String registeredPlayers(@RequestParam String quizCode, @RequestParam String name){
-        return "start_quiz";
+        Player player = new Player(name);
+        listOfPlayers.add(player);
+        return "redirect:/play/" + quizCode;
     }
 
 
     // Start quiz
-    @GetMapping("/start-quiz")
-    public String startQuiz(){
-        return "start-quiz";
+    @GetMapping("/play/{quizCode}")
+    public String startQuiz(@PathVariable String quizCode, Model model){
+        model.addAttribute("listOfPlayers", listOfPlayers);
+        return "start_quiz";
     }
 
     @GetMapping("/waiting-page")
@@ -76,6 +88,10 @@ public class QuestionsController {
     @GetMapping("/question-page")
     public String questionPage(){
         return "question_page";
+    }
+
+    public int generateRandomQuizCode(){
+        return ThreadLocalRandom.current().nextInt(1, 1000);
     }
 
 
