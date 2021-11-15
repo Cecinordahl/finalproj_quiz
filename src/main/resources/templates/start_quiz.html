@@ -10,6 +10,8 @@
 <h2>The players of this quiz are:</h2>
 <ul th:each="item : ${listOfPlayers}">
     <li th:text="${item.getName()}"></li>
+
+
 </ul>
 
 <div th:if="${player.getRole() != 'player'}">
@@ -19,6 +21,7 @@
 
 
 <script>
+
 </script>
 
 </body>

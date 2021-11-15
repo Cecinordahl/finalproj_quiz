@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,7 +27,7 @@ public class QuestionsController {
 
     private Questions[] questions;
     private int questionNumber;
-    private Player player = new Player();
+    private Player player;
 
     List<Player> listOfPlayers = new ArrayList<>();
 
@@ -51,9 +52,12 @@ public class QuestionsController {
     }
 
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer numberOfQuestions){
+    public String registerQuiz(@RequestParam Integer numberOfQuestions, HttpSession session){
         questions = getQuiz(numberOfQuestions);
         questionNumber = 0;
+        player = new Player();
+        player.setRole("admin");
+        session.setAttribute("player", player);
         return "redirect:/play/" + quizCode;
     }
 
@@ -64,21 +68,23 @@ public class QuestionsController {
     }
 
     @PostMapping("/register-players")
-    public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name){
-        player.setName(name);
+    public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name, HttpSession session){
+        player = new Player(name);
         player.setRole("player");
         listOfPlayers.add(player);
+        session.setAttribute("player", player);
         return "redirect:/play/" + userQuizCode;
     }
 
 
     // Start quiz
     @GetMapping("/play/{quizCode}")
-    public String startQuiz(@PathVariable String quizCode, Model model){
+    public String startQuiz(@PathVariable String quizCode, Model model, HttpSession session){
         model.addAttribute("listOfPlayers", listOfPlayers);
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("questionNumber", questionNumber);
-        model.addAttribute("player", player);
+
+        model.addAttribute("player", session.getAttribute("player"));
         return "start_quiz";
     }
 
