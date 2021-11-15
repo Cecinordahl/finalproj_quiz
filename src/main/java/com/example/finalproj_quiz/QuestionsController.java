@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,10 +25,11 @@ public class QuestionsController {
     ObjectMapper mapper;
 
     private Questions[] questions;
-
-
+    private int questionNumber;
 
     List<Player> listOfPlayers = new ArrayList<>();
+
+    private int quizCode = generateRandomQuizCode();
 
 
     /* Henter ut quiz fra url, returnerer som array */
@@ -41,12 +41,8 @@ public class QuestionsController {
 
     @GetMapping("/")
     public String frontPage(){
-
         return "front_page";
     }
-
-
-
 
     @GetMapping("/register-quiz")
     public String initializeQuiz(Model model) {
@@ -56,7 +52,8 @@ public class QuestionsController {
     @PostMapping("/register-quiz")
     public String registerQuiz(@RequestParam Integer numberOfQuestions){
         questions = getQuiz(numberOfQuestions);
-        return "redirect:/play/" + generateRandomQuizCode();
+        questionNumber = 0;
+        return "redirect:/play/" + quizCode;
     }
 
     // Register players get & post
@@ -66,10 +63,10 @@ public class QuestionsController {
     }
 
     @PostMapping("/register-players")
-    public String registeredPlayers(@RequestParam String quizCode, @RequestParam String name){
+    public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name){
         Player player = new Player(name);
         listOfPlayers.add(player);
-        return "redirect:/play/" + quizCode;
+        return "redirect:/play/" + userQuizCode;
     }
 
 
@@ -77,17 +74,22 @@ public class QuestionsController {
     @GetMapping("/play/{quizCode}")
     public String startQuiz(@PathVariable String quizCode, Model model){
         model.addAttribute("listOfPlayers", listOfPlayers);
+        model.addAttribute("quizCode", quizCode);
         return "start_quiz";
+    }
+
+
+
+    @GetMapping("/play/{quizCode}/{questionNumber}")
+    public String questionPage(@PathVariable int quizCode, @PathVariable int questionNumber, Model model) throws JsonProcessingException {
+        model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()));
+        questionNumber++;
+        return "question_page";
     }
 
     @GetMapping("/waiting-page")
     public String waitingPage(){
         return "waiting_page";
-    }
-
-    @GetMapping("/question-page")
-    public String questionPage(){
-        return "question_page";
     }
 
     public int generateRandomQuizCode(){
