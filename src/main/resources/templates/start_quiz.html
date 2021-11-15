@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="1">
     <title>Quiz</title>
 </head>
 <body>
@@ -11,16 +12,22 @@
 <ul th:each="item : ${listOfPlayers}">
     <li th:text="${item.getName()}"></li>
 
-
+    <p th:text="${isReady}"></p>
 </ul>
 
 <div th:if="${player.getRole() != 'player'}">
     <h2>Let's start the quiz!</h2>
-    <a th:href="'/play/' + ${quizCode} + '/' + ${questionNumber}">Start quiz</a>
+
+    <form method="post" th:action="'/play/' + ${quizCode}">
+        <input type="submit">
+    </form>
 </div>
 
 
 <script>
+    function clickButton(){
+        document.getElementById('clickButton').click();
+    }
 
 </script>
 

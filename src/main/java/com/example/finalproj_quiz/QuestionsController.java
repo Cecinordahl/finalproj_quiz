@@ -25,8 +25,9 @@ public class QuestionsController {
     @Autowired
     ObjectMapper mapper;
 
+    private boolean isReady = false;
     private Questions[] questions;
-    private int questionNumber;
+    private int questionNumber = 0;
     private Player player;
 
     List<Player> listOfPlayers = new ArrayList<>();
@@ -54,7 +55,6 @@ public class QuestionsController {
     @PostMapping("/register-quiz")
     public String registerQuiz(@RequestParam Integer numberOfQuestions, HttpSession session){
         questions = getQuiz(numberOfQuestions);
-        questionNumber = 0;
         player = new Player();
         player.setRole("admin");
         session.setAttribute("player", player);
@@ -83,9 +83,19 @@ public class QuestionsController {
         model.addAttribute("listOfPlayers", listOfPlayers);
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("questionNumber", questionNumber);
-
+        model.addAttribute("isReady", isReady);
         model.addAttribute("player", session.getAttribute("player"));
+        if (isReady){
+            isReady = false;
+            return "redirect:/play/" + quizCode + '/' + questionNumber;
+        }
         return "start_quiz";
+    }
+
+    @PostMapping("/play/{quizCode}")
+    public String postStartQuiz(@PathVariable String quizCode){
+        isReady = true;
+        return "redirect:/play/" + quizCode + '/' + questionNumber;
     }
 
 
