@@ -7,7 +7,7 @@
 <body>
 
 <!--<h2 th:text="'Question ' + ${QUESTION_NUMBER}"></h2>-->
-<div sec:authorize="hasRole('ROLE_ADMIN')">
+<div>
     <p th:text="${question}"></p>
     <div class="displayAlternativesAsAdmin">
         <p th:text="${A}"></p>
@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<div sec:authorize="hasRole('ROLE_USER')">
+<div>
     <form>
         <label><input type="radio" name="radio_button"><span th:text="${A}"></span>
         </label>

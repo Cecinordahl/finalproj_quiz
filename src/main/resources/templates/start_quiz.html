@@ -12,7 +12,7 @@
     <li th:text="${item.getName()}"></li>
 </ul>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')">
+<div>
     <h2>Let's start the quiz!</h2>
     <a href="'/play/' + ${quizCode} + '/' + ${questionNumber}">Start quiz</a>
 </div>
