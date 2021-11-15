@@ -65,6 +65,7 @@ public class QuestionsController {
     @PostMapping("/register-players")
     public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name){
         Player player = new Player(name);
+        player.setRole("player");
         listOfPlayers.add(player);
         return "redirect:/play/" + userQuizCode;
     }
@@ -75,6 +76,7 @@ public class QuestionsController {
     public String startQuiz(@PathVariable String quizCode, Model model){
         model.addAttribute("listOfPlayers", listOfPlayers);
         model.addAttribute("quizCode", quizCode);
+        model.addAttribute("questionNumber", questionNumber);
         return "start_quiz";
     }
 

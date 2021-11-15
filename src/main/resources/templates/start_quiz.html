@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Quiz</title>
@@ -12,9 +12,9 @@
     <li th:text="${item.getName()}"></li>
 </ul>
 
-<div>
+<div th:if="${!}">
     <h2>Let's start the quiz!</h2>
-    <a href="'/play/' + ${quizCode} + '/' + ${questionNumber}">Start quiz</a>
+    <a th:href="'/play/' + ${quizCode} + '/' + ${questionNumber}">Start quiz</a>
 </div>
 
 
