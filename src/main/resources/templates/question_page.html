@@ -26,10 +26,10 @@
 
 <div th:if="${player.getRole() == 'player'}">
     <form class="answer_form" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" method="post">
-        <input type="button" id="A" name="answer" th:value="${A}">
-        <input type="button" id="B" name="answer" th:value="${B}">
-        <input type="button" id="C" name="answer" th:value="${C}">
-        <input type="button" id="D" name="answer" th:value="${D}">
+        <input type="button" id="A" name="answer" th:value="${A}" onClick="setAnswer(selectedAnswer, this.id)">
+        <input type="button" id="B" name="answer" th:value="${B}" onClick="setAnswer(selectedAnswer, this.id)">
+        <input type="button" id="C" name="answer" th:value="${C}" onClick="setAnswer(selectedAnswer, this.id)">
+        <input type="button" id="D" name="answer" th:value="${D}" onClick="setAnswer(selectedAnswer, this.id)">
     </form>
 </div>
 
@@ -46,6 +46,12 @@
         }
         timeleft -= 1;
     }, 1000);
+
+
+    function setAnswer(selectedAnswer, clicked_id)
+    {
+        selectedAnswer = clicked_id;
+    }
 
 
 </script>

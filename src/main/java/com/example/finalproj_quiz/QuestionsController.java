@@ -116,6 +116,8 @@ public class QuestionsController {
         model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
 
         nextQuestion();
+        model.addAttribute("selectedAnswer", null);
+
         return "question_page";
     }
 
@@ -123,6 +125,7 @@ public class QuestionsController {
     public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model){
         model.addAttribute("player", session.getAttribute("player"));
 
+        System.out.println(answer);
         return "waiting_page";
     }
 
