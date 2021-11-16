@@ -11,7 +11,7 @@
 
 
     <div th:if="${player.getRole() == 'admin'}">
-        <form method="post" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}">
+        <form method="post" th:action="'/play/' + ${quizCode}">
             <input type="submit" value="Next">
         </form>
     </div>

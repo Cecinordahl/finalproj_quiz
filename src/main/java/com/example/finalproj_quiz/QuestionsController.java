@@ -115,18 +115,21 @@ public class QuestionsController {
         model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""));
         model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
 
-        questionNumber++;
+        questionNumber = questionNumber + 1;
         return "question_page";
     }
 
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber){
-        return "redirect:/play/" + quizCode + "/wait";
+    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model){
+        model.addAttribute("player", session.getAttribute("player"));
+
+        return "waiting_page";
     }
 
     @GetMapping("/play/{quizCode}/wait")
-    public String waitingPage(@PathVariable int quizCode, @PathVariable int questionNumber, Model model){
+    public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
         model.addAttribute("scoreboard", scoreboard);
+        model.addAttribute("player", session.getAttribute("player"));
 
         return "waiting_page";
     }

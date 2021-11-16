@@ -7,7 +7,7 @@
 <body>
 
 <div id="countdown"></div>
-<form method="get" th:action="'/play/' + ${quizCode} + '/wait'" hidden>
+<form method="post" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" hidden>
     <input id="elementID" type="submit">
 </form>
 
