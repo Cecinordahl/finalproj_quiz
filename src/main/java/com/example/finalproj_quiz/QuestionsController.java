@@ -28,6 +28,8 @@ public class QuestionsController {
     private Questions[] questions;
     private int questionNumber = 0;
     private Player player;
+    private boolean isFinalQuestion = false;
+    private int numberOfQuestions;
 
     private List<Player> listOfPlayers = new ArrayList<>();
     private HashMap<String, Integer> scoreboard = new HashMap<>();
@@ -53,8 +55,10 @@ public class QuestionsController {
     }
 
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer numberOfQuestions, HttpSession session){
-        questions = getQuiz(numberOfQuestions);
+    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session){
+        numberOfQuestions = inputNumberOfQuestions;
+
+        questions = getQuiz(inputNumberOfQuestions);
         player = new Player();
         player.setRole("admin");
         session.setAttribute("player", player);
@@ -80,11 +84,17 @@ public class QuestionsController {
     // Start quiz
     @GetMapping("/play/{quizCode}")
     public String startQuiz(@PathVariable String quizCode, Model model, HttpSession session){
+        if (questionNumber == numberOfQuestions-1) {
+            isFinalQuestion = true;
+        }
+
         model.addAttribute("listOfPlayers", listOfPlayers);
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("questionNumber", questionNumber);
         model.addAttribute("isReady", isReady);
         model.addAttribute("player", session.getAttribute("player"));
+        model.addAttribute("isFinalQuestion", isFinalQuestion);
+
         if (isReady){
             isReady = false;
             return "redirect:/play/" + quizCode + '/' + questionNumber;
