@@ -25,18 +25,11 @@
 </div>
 
 <div th:if="${player.getRole() == 'player'}">
-    <form>
-        <label><input type="radio" id="A" name="radio_button"><span th:text="${A}"></span>
-        </label>
-
-        <label><input type="radio" id="B" name="radio_button"><span th:text="${B}"></span>
-        </label>
-
-        <label><input type="radio" id="C" name="radio_button"><span th:text="${C}"></span>
-        </label>
-
-        <label><input type="radio" id="D" name="radio_button"><span th:text="${D}"></span>
-        </label>
+    <form class="answer_form">
+        <input type="button" id="A" name="answer_button" th:value=${A}>
+        <input type="button" id="B" name="answer_button" th:value=${B}>
+        <input type="button" id="C" name="answer_button" th:value=${C}>
+        <input type="button" id="D" name="answer_button" th:value=${D}>
     </form>
 </div>
 
