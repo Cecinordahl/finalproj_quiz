@@ -26,17 +26,17 @@
 
 <div th:if="${player.getRole() == 'player'}">
     <form class="answer_form" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" method="post">
-        <input type="button" id="A" name="answer" th:value="${A}" onClick="setAnswer(selectedAnswer, this.id)">
-        <input type="button" id="B" name="answer" th:value="${B}" onClick="setAnswer(selectedAnswer, this.id)">
-        <input type="button" id="C" name="answer" th:value="${C}" onClick="setAnswer(selectedAnswer, this.id)">
-        <input type="button" id="D" name="answer" th:value="${D}" onClick="setAnswer(selectedAnswer, this.id)">
+        <input type="button" id="A" name="answerA" th:value="${A}">
+        <input type="button" id="B" name="answerB" th:value="${B}">
+        <input type="button" id="C" name="answerC" th:value="${C}">
+        <input type="button" id="D" name="answerD" th:value="${D}">
     </form>
 </div>
 
 
 <script>
 
-    var timeleft = 2;
+    var timeleft = 5;
     var downloadTimer = setInterval(function(){
         if(timeleft <= 0){
             clearInterval(downloadTimer);
