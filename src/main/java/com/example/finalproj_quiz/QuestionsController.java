@@ -136,7 +136,7 @@ public class QuestionsController {
     @PostMapping("/play/{quizCode}/{questionNumber}")
     public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer){
         model.addAttribute("player", session.getAttribute("player"));
-
+        System.out.println(answer);
         if (isFinalQuestion){
             isFinalQuestion = false;
             resetQuestionNumber();

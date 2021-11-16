@@ -26,10 +26,10 @@
 
 <div th:if="${player.getRole() == 'player'}">
     <form class="answer_form" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" method="post">
-        <input type="button" id="A" name="answerA" th:value="${A}">
-        <input type="button" id="B" name="answerB" th:value="${B}">
-        <input type="button" id="C" name="answerC" th:value="${C}">
-        <input type="button" id="D" name="answerD" th:value="${D}">
+        <input type="submit" id="A" name="A" th:value="${A}">
+        <input type="submit" id="B" name="B" th:value="${B}">
+        <input type="submit" id="C" name="C" th:value="${C}">
+        <input type="submit" id="D" name="D" th:value="${D}">
     </form>
 </div>
 
