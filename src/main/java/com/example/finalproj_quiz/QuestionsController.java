@@ -26,7 +26,7 @@ public class QuestionsController {
 
     private boolean isReady = false;
     private Questions[] questions;
-    private int questionNumber = 0;
+    private int questionNumber;
     private Player player;
     private boolean isFinalQuestion = false;
     private int numberOfQuestions;
@@ -51,6 +51,8 @@ public class QuestionsController {
 
     @GetMapping("/register-quiz")
     public String initializeQuiz(Model model) {
+        isReady = false;
+        questionNumber = 0;
         return "admin_first_page";
     }
 
@@ -132,7 +134,7 @@ public class QuestionsController {
     }
 
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam String answer){
+    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer){
         model.addAttribute("player", session.getAttribute("player"));
 
         if (isFinalQuestion){
