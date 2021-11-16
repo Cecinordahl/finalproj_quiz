@@ -132,7 +132,7 @@ public class QuestionsController {
     }
 
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model){
+    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam String answer){
         model.addAttribute("player", session.getAttribute("player"));
 
         if (isFinalQuestion){
@@ -148,7 +148,6 @@ public class QuestionsController {
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
         model.addAttribute("scoreboard", scoreboard);
         model.addAttribute("player", session.getAttribute("player"));
-
         return "waiting_page";
     }
 
