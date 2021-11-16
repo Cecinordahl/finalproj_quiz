@@ -34,7 +34,7 @@ public class QuestionsController {
     private List<Player> listOfPlayers = new ArrayList<>();
     private HashMap<String, Integer> scoreboard = new HashMap<>();
 
-    private int quizCode = generateRandomQuizCode();
+    private int quizCode;
 
 
     /* Henter ut quiz fra url, returnerer som array */
@@ -52,7 +52,9 @@ public class QuestionsController {
     @GetMapping("/register-quiz")
     public String initializeQuiz(Model model) {
         isReady = false;
+        isFinalQuestion = false;
         questionNumber = 0;
+        quizCode = generateRandomQuizCode();
         return "admin_first_page";
     }
 
@@ -127,8 +129,8 @@ public class QuestionsController {
         model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""));
         model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
 
-        nextQuestion();
-        model.addAttribute("selectedAnswer", null);
+        model.addAttribute("selectedAnswer", "none");
+
 
         return "question_page";
     }
@@ -137,19 +139,31 @@ public class QuestionsController {
     public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer){
         model.addAttribute("player", session.getAttribute("player"));
         System.out.println(answer);
+
         if (isFinalQuestion){
-            isFinalQuestion = false;
             resetQuestionNumber();
             return "result_page";
         }
 
-        return "waiting_page";
+        player = (Player) session.getAttribute("player");
+        if(player.getRole().equals("admin")) {
+            nextQuestion();
+        }
+
+        return "redirect:/play/" + quizCode + "/wait";
     }
 
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
+
+        if (isReady){
+            isReady = false;
+            return "redirect:/play/" + quizCode + '/' + questionNumber;
+        }
+
         model.addAttribute("scoreboard", scoreboard);
         model.addAttribute("player", session.getAttribute("player"));
+
         return "waiting_page";
     }
 

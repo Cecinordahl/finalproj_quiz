@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="2">
+    <meta http-equiv="refresh" content="1">
     <title>Quiz</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
     <li th:text="${item.getName()}"></li>
 </ul>
 
-<div th:if="${player.getRole() != 'player'}">
+<div th:if="${player.getRole() == 'admin'}">
     <h2>Let's start the quiz!</h2>
 
     <form method="post" th:action="'/play/' + ${quizCode}">
