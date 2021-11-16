@@ -115,13 +115,14 @@ public class QuestionsController {
         model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""));
         model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
 
+        model.addAttribute("selectedAnswer", null);
         questionNumber++;
         return "question_page";
     }
 
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber){
-
+    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, @RequestParam String answer){
+        System.out.println(answer);
         return "redirect:/play/" + quizCode + '/' + questionNumber + "/wait";
     }
 
