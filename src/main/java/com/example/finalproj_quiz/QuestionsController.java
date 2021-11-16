@@ -24,6 +24,7 @@ public class QuestionsController {
     @Autowired
     ObjectMapper mapper;
 
+    private int playerCounter;
     private boolean isReady = false;
     private Questions[] questions;
     private int questionNumber;
@@ -100,7 +101,10 @@ public class QuestionsController {
 
 
         if (isReady){
-            isReady = false;
+            playerCounter++;
+            if(playerCounter == listOfPlayers.size()) {
+                isReady = false;
+            }
             return "redirect:/play/" + quizCode + '/' + questionNumber;
         }
         return "start_quiz";
@@ -109,6 +113,7 @@ public class QuestionsController {
     @PostMapping("/play/{quizCode}")
     public String postStartQuiz(@PathVariable String quizCode){
         isReady = true;
+        playerCounter = 0;
         return "redirect:/play/" + quizCode + '/' + questionNumber;
     }
 
@@ -169,9 +174,13 @@ public class QuestionsController {
 
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
+        System.out.println(isReady);
 
         if (isReady){
-            isReady = false;
+            playerCounter++;
+            if(playerCounter == listOfPlayers.size()) {
+                isReady = false;
+            }
             return "redirect:/play/" + quizCode + '/' + questionNumber;
         }
 
