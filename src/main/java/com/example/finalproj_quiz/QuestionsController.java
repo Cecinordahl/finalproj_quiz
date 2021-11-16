@@ -84,16 +84,12 @@ public class QuestionsController {
     // Start quiz
     @GetMapping("/play/{quizCode}")
     public String startQuiz(@PathVariable String quizCode, Model model, HttpSession session){
-        if (questionNumber == numberOfQuestions-1) {
-            isFinalQuestion = true;
-        }
-
         model.addAttribute("listOfPlayers", listOfPlayers);
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("questionNumber", questionNumber);
         model.addAttribute("isReady", isReady);
         model.addAttribute("player", session.getAttribute("player"));
-        model.addAttribute("isFinalQuestion", isFinalQuestion);
+
 
         if (isReady){
             isReady = false;
@@ -112,6 +108,10 @@ public class QuestionsController {
 
     @GetMapping("/play/{quizCode}/{questionNumber}")
     public String questionPage(@PathVariable int quizCode, @PathVariable int questionNumber, Model model, HttpSession session) throws JsonProcessingException {
+        if (questionNumber == numberOfQuestions-1) {
+            isFinalQuestion = true;
+        }
+
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()));
         model.addAttribute("player", session.getAttribute("player"));
 
@@ -135,7 +135,10 @@ public class QuestionsController {
     public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model){
         model.addAttribute("player", session.getAttribute("player"));
 
-        System.out.println(answer);
+        if (isFinalQuestion){
+            return "result_page";
+        }
+
         return "waiting_page";
     }
 
@@ -148,37 +151,22 @@ public class QuestionsController {
     }
 
 
+
+
+
+
+
+    // function to increase question number
     public void nextQuestion(){
         questionNumber++;
     }
 
-
-
-
-
-
+    // function to generate a random number between 1 and 1000 that represents the quiz code
     public int generateRandomQuizCode(){
         return ThreadLocalRandom.current().nextInt(1, 1000);
     }
 
 
-
-
-
-
-
-
-
-
-
-
-            /*
-            model.addAttribute("entireQuiz", mapper.writeValueAsString(quiz));
-            model.addAttribute("question", mapper.writeValueAsString(quiz[0].getQuestion()));
-        model.addAttribute("A", mapper.writeValueAsString(quiz[0].getCorrectAnswer()));
-        model.addAttribute("B", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[0]));
-        model.addAttribute("C", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[1]));
-        model.addAttribute("D", mapper.writeValueAsString(quiz[0].getIncorrectAnswers()[2]));*/
 }
 
 
