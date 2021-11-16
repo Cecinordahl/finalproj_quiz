@@ -121,6 +121,7 @@ public class QuestionsController {
 
     @PostMapping("/play/{quizCode}/{questionNumber}")
     public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber){
+
         return "redirect:/play/" + quizCode + '/' + questionNumber + "/wait";
     }
 
