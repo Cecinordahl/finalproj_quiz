@@ -51,6 +51,8 @@ public class QuestionsController {
 
     @GetMapping("/register-quiz")
     public String initializeQuiz(Model model) {
+        scoreboard.clear();
+        listOfPlayers.clear();
         isReady = false;
         isFinalQuestion = false;
         questionNumber = 0;
@@ -81,6 +83,8 @@ public class QuestionsController {
         player.setRole("player");
         listOfPlayers.add(player);
         session.setAttribute("player", player);
+
+        scoreboard.put(player.getName(), 0);
         return "redirect:/play/" + userQuizCode;
     }
 
@@ -136,12 +140,22 @@ public class QuestionsController {
     }
 
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer){
-        model.addAttribute("player", session.getAttribute("player"));
+    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer) throws JsonProcessingException {
+        player = (Player) session.getAttribute("player");
+        model.addAttribute("player", player);
+
+
+        if (player.getRole().equals("player") && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)){
+                int tempScore = scoreboard.get(player.getName());
+                scoreboard.put(player.getName(), tempScore+1);
+        }
+
         System.out.println(answer);
+
 
         if (isFinalQuestion){
             resetQuestionNumber();
+            model.addAttribute("scoreboard", scoreboard);
             return "result_page";
         }
 

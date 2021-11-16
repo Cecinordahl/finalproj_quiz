@@ -8,7 +8,11 @@
 
 <h1>Results page</h1>
 
+<ul th:each="item : ${scoreboard}">
+    <li th:text="${item}"></li>
+</ul>
 
+<a href="/">To the front page</a>
 
 </body>
 </html>

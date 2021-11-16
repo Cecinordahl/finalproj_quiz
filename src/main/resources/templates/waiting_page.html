@@ -16,6 +16,11 @@
 
 <div th:if="${player.getRole() == 'admin'}">
     <h2>The current scores are:</h2>
+    <ul th:each="item : ${scoreboard}">
+        <li th:text="${item}"></li>
+    </ul>
+
+
     <form method="post" th:action="'/play/' + ${quizCode}">
         <input type="submit" value="Next">
     </form>
