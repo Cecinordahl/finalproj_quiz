@@ -61,12 +61,7 @@ public class QuestionsController {
     public String initializeQuiz(Model model) {
         model.addAttribute("categoriesList", categoriesList());
 
-        scoreboard.clear();
-        listOfPlayers.clear();
-        isReady = false;
-        isFinalQuestion = false;
-        questionNumber = 0;
-        quizCode = generateRandomQuizCode();
+        restartQuiz();
         return "admin_first_page";
     }
 
@@ -83,6 +78,7 @@ public class QuestionsController {
         player = new Player();
         player.setRole("admin");
         session.setAttribute("player", player);
+
         return "redirect:/play/" + quizCode;
     }
 
@@ -148,7 +144,7 @@ public class QuestionsController {
             isFinalQuestion = true;
         }
 
-        model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()));
+        model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("player", session.getAttribute("player"));
 
         List<String> alternatives = Arrays.asList("A", "B", "C", "D");
@@ -160,8 +156,6 @@ public class QuestionsController {
         model.addAttribute(alternatives.get(1), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""));
         model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""));
         model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
-
-        model.addAttribute("selectedAnswer", "none");
 
 
         return "question_page";
@@ -228,7 +222,7 @@ public class QuestionsController {
         return quizzes.getBody();
     }
 
-    //
+    // retrieves quiz as array from api with 'number' amount of questions, and the selected categories, and returns value
     public Questions[] getQuizWithCategory(List<String> categories, int number){
         RestTemplate restTemplate = new RestTemplate();
         List<String> newCategories = new ArrayList<>();
@@ -260,6 +254,18 @@ public class QuestionsController {
         return ThreadLocalRandom.current().nextInt(1, 1000);
     }
 
+    // function to reset the quiz variables
+    private void restartQuiz() {
+        scoreboard.clear();
+        listOfPlayers.clear();
+        isReady = false;
+        isFinalQuestion = false;
+        questionNumber = 0;
+        quizCode = generateRandomQuizCode();
+    }
+
+
+    // list of quiz categories
     public List<String> categoriesList(){
         List<String> categoriesList = new ArrayList<>();
         categoriesList.add("Food and Drink");
@@ -274,7 +280,6 @@ public class QuestionsController {
         categoriesList.add("Sport and Leisure");
 
         return categoriesList;
-
     }
 
 
