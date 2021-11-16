@@ -25,11 +25,11 @@
 </div>
 
 <div th:if="${player.getRole() == 'player'}">
-    <form class="answer_form">
-        <input type="button" id="A" name="answer_button" th:value=${A}>
-        <input type="button" id="B" name="answer_button" th:value=${B}>
-        <input type="button" id="C" name="answer_button" th:value=${C}>
-        <input type="button" id="D" name="answer_button" th:value=${D}>
+    <form class="answer_form" th:action="/play/${quizCode}/${questionNumber}" method="post">
+        <input type="button" id="A" name="answer" th:value="${A}">
+        <input type="button" id="B" name="answer" th:value="${B}">
+        <input type="button" id="C" name="answer" th:value="${C}">
+        <input type="button" id="D" name="answer" th:value="${D}">
     </form>
 </div>
 
