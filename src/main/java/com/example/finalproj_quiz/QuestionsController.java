@@ -124,10 +124,12 @@ public class QuestionsController {
     public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, @RequestParam String answer){
         System.out.println(answer);
         return "redirect:/play/" + quizCode + '/' + questionNumber + "/wait";
+    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber){
+        return "redirect:/play/" + quizCode + "/wait";
     }
 
     @GetMapping("/play/{quizCode}/wait")
-    public String waitingPage(@PathVariable int quizCode, Model model){
+    public String waitingPage(@PathVariable int quizCode, @PathVariable int questionNumber, Model model){
         model.addAttribute("scoreboard", scoreboard);
 
         return "waiting_page";
