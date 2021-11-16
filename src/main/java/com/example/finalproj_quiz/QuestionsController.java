@@ -115,7 +115,7 @@ public class QuestionsController {
         model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""));
         model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
 
-        questionNumber = questionNumber + 1;
+        nextQuestion();
         return "question_page";
     }
 
@@ -134,6 +134,10 @@ public class QuestionsController {
         return "waiting_page";
     }
 
+
+    public void nextQuestion(){
+        questionNumber++;
+    }
 
 
 
