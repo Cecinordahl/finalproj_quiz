@@ -9,5 +9,11 @@
     <h2>The current scores are:</h2>
 
 
+
+    <div th:if="${player.getRole() == 'admin'}">
+        <form method="post" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}">
+            <input type="submit" value="Next">
+        </form>
+    </div>
 </body>
 </html>
