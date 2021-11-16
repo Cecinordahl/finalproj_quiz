@@ -136,6 +136,8 @@ public class QuestionsController {
         model.addAttribute("player", session.getAttribute("player"));
 
         if (isFinalQuestion){
+            isFinalQuestion = false;
+            resetQuestionNumber();
             return "result_page";
         }
 
@@ -159,6 +161,11 @@ public class QuestionsController {
     // function to increase question number
     public void nextQuestion(){
         questionNumber++;
+    }
+
+    // function to reset question number
+    public void resetQuestionNumber(){
+        questionNumber = 0;
     }
 
     // function to generate a random number between 1 and 1000 that represents the quiz code
