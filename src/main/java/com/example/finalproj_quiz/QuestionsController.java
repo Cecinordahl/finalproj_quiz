@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -58,6 +59,8 @@ public class QuestionsController {
     // admin only : initializes and clears anything needed for the quiz
     @GetMapping("/register-quiz")
     public String initializeQuiz(Model model) {
+        model.addAttribute("categoriesList", categoriesList());
+
         scoreboard.clear();
         listOfPlayers.clear();
         isReady = false;
@@ -69,10 +72,14 @@ public class QuestionsController {
 
     // admin only : creates quiz and sets role "admin" to the player object in session
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session){
+    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category){
         numberOfQuestions = inputNumberOfQuestions;
+        if(category != null){
+            questions = getQuizWithCategory(category, inputNumberOfQuestions);
+        }else{
+            questions = getQuiz(inputNumberOfQuestions);
+        }
 
-        questions = getQuiz(inputNumberOfQuestions);
         player = new Player();
         player.setRole("admin");
         session.setAttribute("player", player);
@@ -222,6 +229,23 @@ public class QuestionsController {
         return quizzes.getBody();
     }
 
+    //
+    public Questions[] getQuizWithCategory(List<String> categories, int number){
+        RestTemplate restTemplate = new RestTemplate();
+        List<String> newCategories = new ArrayList<>();
+
+        for (String category : categories) {
+            newCategories.add(category.replaceAll(" ", "_"));
+        }
+
+        String categoriesAsString = newCategories.stream()
+                .map(n -> String.valueOf(n))
+                .collect(Collectors.joining(",")).toLowerCase();
+        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?categories=" + categoriesAsString + "&limit=" + number, Questions[].class);
+
+        return quizzes.getBody();
+    }
+
     // function to increase question number
     public void nextQuestion(){
         questionNumber++;
@@ -236,6 +260,26 @@ public class QuestionsController {
     public int generateRandomQuizCode(){
         return ThreadLocalRandom.current().nextInt(1, 1000);
     }
+
+    public List<String> categoriesList(){
+        List<String> categoriesList = new ArrayList<>();
+        categoriesList.add("Food and Drink");
+        categoriesList.add("Geography");
+        categoriesList.add("General Knowledge");
+        categoriesList.add("History");
+        categoriesList.add("Art and Literature");
+        categoriesList.add("Movies");
+        categoriesList.add("Music");
+        categoriesList.add("Science");
+        categoriesList.add("Society and Culture");
+        categoriesList.add("Sport and Leisure");
+
+        return categoriesList;
+
+    }
+
+
+
 
 }
 

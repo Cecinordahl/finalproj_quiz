@@ -58,4 +58,6 @@ public class Questions {
     public void setType(String type) {
         this.type = type;
     }
+
+
 }

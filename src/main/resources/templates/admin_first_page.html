@@ -5,10 +5,19 @@
     <title>Quiz</title>
 </head>
 <body>
-    <h1>Welcome to the XX quiz!</h1>
+    <h1>Welcome to Fuzz!</h1>
+    <h2>Create quiz:</h2>
     <form action="/register-quiz" method="post">
         <label>How many questions do you want in your quiz? </label>
         <input name="inputNumberOfQuestions" type="number" min="5" max="50">
+
+        <div><p>If you want to play with categories, check any you would like</p>
+            <p>Leave blank if you want to play with all categories</p><br>
+            <div th:each="item : ${categoriesList}"><input name="category" type="checkbox" th:text="${item}" th:value="${item}"></div>
+        </div>
+
+
+
         <button>Submit</button>
     </form>
 </body>
