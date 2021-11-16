@@ -11,8 +11,6 @@
 <h2>The players of this quiz are:</h2>
 <ul th:each="item : ${listOfPlayers}">
     <li th:text="${item.getName()}"></li>
-
-    <p th:text="${isReady}"></p>
 </ul>
 
 <div th:if="${player.getRole() != 'player'}">
@@ -25,10 +23,6 @@
 
 
 <script>
-    function clickButton(){
-        document.getElementById('clickButton').click();
-    }
-
 </script>
 
 </body>

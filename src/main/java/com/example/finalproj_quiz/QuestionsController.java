@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -32,7 +29,8 @@ public class QuestionsController {
     private int questionNumber = 0;
     private Player player;
 
-    List<Player> listOfPlayers = new ArrayList<>();
+    private List<Player> listOfPlayers = new ArrayList<>();
+    private HashMap<String, Integer> scoreboard = new HashMap<>();
 
     private int quizCode = generateRandomQuizCode();
 
@@ -121,8 +119,15 @@ public class QuestionsController {
         return "question_page";
     }
 
-    @GetMapping("/waiting-page")
-    public String waitingPage(){
+    @PostMapping("/play/{quizCode}/{questionNumber}")
+    public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber){
+        return "redirect:/play/" + quizCode + '/' + questionNumber + "/wait";
+    }
+
+    @GetMapping("/play/{quizCode}/wait")
+    public String waitingPage(@PathVariable int quizCode, Model model){
+        model.addAttribute("scoreboard", scoreboard);
+
         return "waiting_page";
     }
 
