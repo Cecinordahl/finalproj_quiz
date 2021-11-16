@@ -200,7 +200,6 @@ public class QuestionsController {
 
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
-        System.out.println(isReady);
 
         if (isReady){
             playerCounter++;
