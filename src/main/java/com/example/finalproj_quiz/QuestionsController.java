@@ -20,36 +20,42 @@ import java.util.concurrent.ThreadLocalRandom;
 @Controller
 public class QuestionsController {
 
-
     @Autowired
     ObjectMapper mapper;
 
+    // int variables
     private int playerCounter;
-    private boolean isReady = false;
-    private Questions[] questions;
     private int questionNumber;
-    private Player player;
-    private boolean isFinalQuestion = false;
     private int numberOfQuestions;
+    private int quizCode;
 
+    // boolean variables
+    private boolean isReady = false;
+    private boolean isFinalQuestion = false;
+
+    // object variables
+    private Player player;
+
+    // list, array, hashmap variables
+    private Questions[] questions;
     private List<Player> listOfPlayers = new ArrayList<>();
     private HashMap<String, Integer> scoreboard = new HashMap<>();
 
-    private int quizCode;
+
+    //------------------------------------------------------------------------------------------------------------------
 
 
-    /* Henter ut quiz fra url, returnerer som array */
-    public Questions[] getQuiz(int number){
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=" + number, Questions[].class);
-        return quizzes.getBody();
-    }
-
+    // front page
     @GetMapping("/")
     public String frontPage(){
         return "front_page";
     }
 
+
+    //----------------------------------------------- admin only -------------------------------------------------------
+
+
+    // admin only : initializes and clears anything needed for the quiz
     @GetMapping("/register-quiz")
     public String initializeQuiz(Model model) {
         scoreboard.clear();
@@ -61,6 +67,7 @@ public class QuestionsController {
         return "admin_first_page";
     }
 
+    // admin only : creates quiz and sets role "admin" to the player object in session
     @PostMapping("/register-quiz")
     public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session){
         numberOfQuestions = inputNumberOfQuestions;
@@ -72,12 +79,17 @@ public class QuestionsController {
         return "redirect:/play/" + quizCode;
     }
 
-    // Register players get & post
+
+    //----------------------------------------------- player only ------------------------------------------------------
+
+
+    // player only : form to register players
     @GetMapping("/register-players")
     public String registerPlayers(){
         return "register_players";
     }
 
+    // player only : registered players through form and sets role "player" to the player object in session
     @PostMapping("/register-players")
     public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name, HttpSession session){
         player = new Player(name);
@@ -90,7 +102,10 @@ public class QuestionsController {
     }
 
 
-    // Start quiz
+    //------------------------------------------------------------------------------------------------------------------
+
+
+    // Start quiz from the generated quiz
     @GetMapping("/play/{quizCode}")
     public String startQuiz(@PathVariable String quizCode, Model model, HttpSession session){
         model.addAttribute("listOfPlayers", listOfPlayers);
@@ -99,7 +114,7 @@ public class QuestionsController {
         model.addAttribute("isReady", isReady);
         model.addAttribute("player", session.getAttribute("player"));
 
-
+        // controls flow of players
         if (isReady){
             playerCounter++;
             if(playerCounter == listOfPlayers.size()) {
@@ -110,6 +125,7 @@ public class QuestionsController {
         return "start_quiz";
     }
 
+    // post method when admin has clicked on start quiz
     @PostMapping("/play/{quizCode}")
     public String postStartQuiz(@PathVariable String quizCode){
         isReady = true;
@@ -118,7 +134,7 @@ public class QuestionsController {
     }
 
 
-
+    // display page for each quiz question
     @GetMapping("/play/{quizCode}/{questionNumber}")
     public String questionPage(@PathVariable int quizCode, @PathVariable int questionNumber, Model model, HttpSession session) throws JsonProcessingException {
         if (questionNumber == numberOfQuestions-1) {
@@ -144,6 +160,7 @@ public class QuestionsController {
         return "question_page";
     }
 
+    // retrieves answers from players
     @PostMapping("/play/{quizCode}/{questionNumber}")
     public String postScore(@PathVariable int quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer) throws JsonProcessingException {
         player = (Player) session.getAttribute("player");
@@ -155,9 +172,7 @@ public class QuestionsController {
                 scoreboard.put(player.getName(), tempScore+1);
         }
 
-        System.out.println(answer);
-
-
+        // returns result page is this is currently the last question
         if (isFinalQuestion){
             resetQuestionNumber();
             model.addAttribute("scoreboard", scoreboard);
@@ -171,6 +186,10 @@ public class QuestionsController {
 
         return "redirect:/play/" + quizCode + "/wait";
     }
+
+
+
+    //---------------------------------------------- waiting page ------------------------------------------------------
 
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
@@ -193,8 +212,15 @@ public class QuestionsController {
 
 
 
+    //----------------------------------------------- functions --------------------------------------------------------
 
 
+    // retrieves quiz as array from api with 'number' amount of questions and returns value
+    public Questions[] getQuiz(int number){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=" + number, Questions[].class);
+        return quizzes.getBody();
+    }
 
     // function to increase question number
     public void nextQuestion(){
@@ -210,7 +236,6 @@ public class QuestionsController {
     public int generateRandomQuizCode(){
         return ThreadLocalRandom.current().nextInt(1, 1000);
     }
-
 
 }
 
