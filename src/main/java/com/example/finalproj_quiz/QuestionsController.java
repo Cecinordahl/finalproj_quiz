@@ -42,6 +42,7 @@ public class QuestionsController {
     private Questions[] questions;
     private List<Player> listOfPlayers = new ArrayList<>();
     private HashMap<String, Integer> scoreboard = new HashMap<>();
+    private List<Integer> fuzzModeScoreList = new ArrayList<>();
 
 
     //------------------------------------------------------------------------------------------------------------------
@@ -50,7 +51,6 @@ public class QuestionsController {
     // front page
     @GetMapping("/")
     public String frontPage(Model model){
-        model.addAttribute("isAnsweredCorrectly", isAnsweredCorrectly);
         return "front_page";
     }
 
@@ -70,9 +70,11 @@ public class QuestionsController {
 
     // admin only : creates quiz and sets role "admin" to the player object in session
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category, @RequestParam boolean isFuzz){
-        this.isFuzz = isFuzz;
-        session.setAttribute("isFuzz", isFuzz);
+    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category, @RequestParam(required = false) boolean isFuzz){
+        if (isFuzz == true) {
+            this.isFuzz = isFuzz;
+        }
+        session.setAttribute("isFuzz", this.isFuzz);
 
         numberOfQuestions = inputNumberOfQuestions;
         player = new Player();
@@ -143,6 +145,13 @@ public class QuestionsController {
         isReady = true;
         playerCounter = 0;
 
+        if (isFuzz) {
+            fuzzModeScoreList.clear();
+            for (int i = listOfPlayers.size(); i >= 0; i--) {
+                fuzzModeScoreList.add(i);
+            }
+        }
+
         return "redirect:/play/" + quizCode + '/' + questionNumber;
     }
 
@@ -188,7 +197,12 @@ public class QuestionsController {
         // if player role is player and they answer the question correctly, increase points
         if (player.getRole().equals("player") && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)){
                 int tempScore = scoreboard.get(player.getName());
-                scoreboard.put(player.getName(), tempScore+1);
+                if (isFuzz) {
+                    scoreboard.put(player.getName(), tempScore + fuzzModeScoreList.get(0));
+                    fuzzModeScoreList.remove(0);
+                } else {
+                    scoreboard.put(player.getName(), tempScore + 1);
+                }
         }
 
         // returns result page if this is currently the last question
@@ -233,6 +247,7 @@ public class QuestionsController {
             model.addAttribute("placementScoreboard", placementScoreboard);
             model.addAttribute("numberOfQuestions", numberOfQuestions);
             model.addAttribute("numberOfPlayers", listOfPlayers.size());
+            model.addAttribute("isFuzz", isFuzz);
             return "result_page";
         }
 
@@ -357,6 +372,7 @@ public class QuestionsController {
     private void restartQuiz() {
         scoreboard.clear();
         listOfPlayers.clear();
+        fuzzModeScoreList.clear();
         isReady = false;
         isFinalQuestion = false;
         isFuzz = false;

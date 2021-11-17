@@ -25,7 +25,11 @@
 </div>
 
 <div class="playerScore" th:if="${player.getRole() == 'player'}">
-    <p>Your score was <span th:text="${scoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfQuestions}"></span>.</p>
+    <p>Your score was <span th:text="${scoreboard.get(player.getName())}"></span> out of
+        <span th:if="${isFuzz}" th:text="${numberOfQuestions*numberOfPlayers}"></span>
+        <span th:if="${!isFuzz}" th:text="${numberOfQuestions}"></span>
+        possible points.
+    </p>
     <p>You were number <span th:text="${placementScoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfPlayers}"></span> players.</p>
 </div>
 
