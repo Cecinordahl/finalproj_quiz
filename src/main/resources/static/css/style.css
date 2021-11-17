@@ -1,4 +1,21 @@
-/* Popup container - can be anything you want */
+
+html {
+    background: url("../images/pink_clouds_background_verticalRotated.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+
+
+
+
+
+
+
+/* ------------------------ popup info button --------------------------- */
 .popup {
     position: relative;
     display: inline-block;
