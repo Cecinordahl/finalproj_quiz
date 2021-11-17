@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Quiz</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <h1>Welcome to Fuzz!</h1>
@@ -17,11 +18,29 @@
         </div>
         <br>
 
-        <input type="checkbox" name="isFuzz" id="fuzzCheckbox">
-        <label for="fuzzCheckbox">Fuzz-mode</label>
+
+
+        <div>
+            <input type="checkbox" name="isFuzz" id="fuzzCheckbox">
+            <label for="fuzzCheckbox">Fuzz-mode</label>
+            <div class="popup" onclick="myFunction()"><sup>&#x1F6C8;</sup>
+                <span class="popuptext" id="myPopup">Answer quicker than your quiz-mates to get the most points</span>
+            </div>
+        </div>
         <br>
 
         <button>Submit</button>
     </form>
+
+
+
+
+    <script>
+
+        function myFunction() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+    </script>
 </body>
 </html>
