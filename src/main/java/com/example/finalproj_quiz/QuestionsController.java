@@ -226,6 +226,8 @@ public class QuestionsController {
     public Questions[] getQuiz(int number){
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=" + number, Questions[].class);
+
+
         return quizzes.getBody();
     }
 
