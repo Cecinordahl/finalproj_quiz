@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -34,6 +32,8 @@ public class QuestionsController {
     private boolean isReady = false;
     private boolean isFinalQuestion = false;
     private boolean isFuzz = false;
+    private boolean isAnsweredCorrectly = false;
+
 
     // object variables
     private Player player;
@@ -49,7 +49,8 @@ public class QuestionsController {
 
     // front page
     @GetMapping("/")
-    public String frontPage(){
+    public String frontPage(Model model){
+        model.addAttribute("isAnsweredCorrectly", isAnsweredCorrectly);
         return "front_page";
     }
 
@@ -128,8 +129,8 @@ public class QuestionsController {
             playerCounter++;
             if(playerCounter == listOfPlayers.size()) {
                 isReady = false;
-            } return "redirect:/play/" + quizCode + '/' + questionNumber;
-
+            }
+            return "redirect:/play/" + quizCode + '/' + questionNumber;
         }
 
         return "start_quiz";
@@ -159,6 +160,9 @@ public class QuestionsController {
 
         model.addAttribute("player", session.getAttribute("player"));
 
+        /* ----------- */
+        model.addAttribute("isAnsweredCorrectly", isAnsweredCorrectly);
+
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
 
@@ -180,6 +184,7 @@ public class QuestionsController {
         if (isFuzz) {
 
         }
+
         // if player role is player and they answer the question correctly, increase points
         if (player.getRole().equals("player") && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)){
                 int tempScore = scoreboard.get(player.getName());
@@ -259,6 +264,21 @@ public class QuestionsController {
 
         return "waiting_page";
     }
+
+
+
+
+    /*
+    @GetMapping("/play/{quizCode}/status")
+    @ResponseBody
+    public String status(@PathVariable int quizCode, HttpServletResponse response){
+        return "{\"isAnsweredCorrectly\" : " + isAnsweredCorrectly + "}";
+    }
+    */
+
+
+
+
 
 
 

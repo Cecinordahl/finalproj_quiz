@@ -38,7 +38,7 @@
 
     var timeleft = 10;
     var downloadTimer = setInterval(function(){
-        if(timeleft <= 0){
+        if(timeleft <= 0 || '<%=isAnsweredCorrectly%>'){    /* || isAnsweredCorrectly */
             clearInterval(downloadTimer);
             document.getElementById('elementID').click();
         } else {
@@ -46,6 +46,8 @@
         }
         timeleft -= 1;
     }, 1000);
+
+
 
 
 
