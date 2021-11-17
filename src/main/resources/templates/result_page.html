@@ -9,9 +9,18 @@
 <h1>Results page</h1>
 
 <div th:if="${player.getRole() == 'admin'}">
-    <ul th:each="item : ${scoreboard}">
-        <li th:text="${item}"></li>
-    </ul>
+    <table>
+        <tr>
+            <th>Placement</th>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+        <tr th:each="item : ${scoreboard}">
+            <td th:text="${placementScoreboard.get(item.getKey())} + '.'"></td>
+            <td th:text="${item.getKey()}"></td>
+            <td th:text="${item.getValue()}"></td>
+        </tr>
+    </table>
 </div>
 
 <div th:if="${player.getRole() == 'player'}">
