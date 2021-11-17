@@ -176,7 +176,35 @@ public class QuestionsController {
         // returns result page is this is currently the last question
         if (isFinalQuestion){
             resetQuestionNumber();
+
+            //sort the scoreboard
+            List<HashMap.Entry<String, Integer>> list = new ArrayList<>(scoreboard.entrySet());
+            list.sort(HashMap.Entry.comparingByValue());
+            Collections.reverse(list);
+
+            List<String> orderedListWithNames = new ArrayList<>();
+            for (Map.Entry<String, Integer> item : list) {
+                orderedListWithNames.add(item.getKey());
+            }
+            model.addAttribute("scoreboardList", orderedListWithNames);
+
+            HashMap<String, Integer> sorted = new LinkedHashMap<>();
+            for (HashMap.Entry<String, Integer> entry : list) {
+                sorted.put(entry.getKey(), entry.getValue());
+            }
+
+            scoreboard = sorted;
+            //done with sorting
+
+            //create placement scoreboard
+            //List<HashMap.Entry<String, Integer>> tempList = new ArrayList<>(scoreboard.entrySet());
+
+
+            //done with placement scoreboard
+
             model.addAttribute("scoreboard", scoreboard);
+            model.addAttribute("numberOfQuestions", numberOfQuestions);
+            model.addAttribute("numberOfPlayers", listOfPlayers.size());
             return "result_page";
         }
 
@@ -218,8 +246,22 @@ public class QuestionsController {
     // retrieves quiz as array from api with 'number' amount of questions and returns value
     public Questions[] getQuiz(int number){
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=" + number, Questions[].class);
-        return quizzes.getBody();
+        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?limit=" + (number+10), Questions[].class);
+        Questions[] quizBody = quizzes.getBody();
+
+        Questions[] returnQuiz = new Questions[number];
+        int index = 0;
+
+        for (Questions question : quizBody) {
+            if (index == number) {
+                break;
+            }
+            if (question.getIncorrectAnswers().length > 2) {
+                returnQuiz[index] = question;
+                index++;
+            }
+        }
+        return returnQuiz;
     }
 
     // retrieves quiz as array from api with 'number' amount of questions, and the selected categories, and returns value
@@ -234,9 +276,23 @@ public class QuestionsController {
         String categoriesAsString = newCategories.stream()
                 .map(n -> String.valueOf(n))
                 .collect(Collectors.joining(",")).toLowerCase();
-        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?categories=" + categoriesAsString + "&limit=" + number, Questions[].class);
+        ResponseEntity<Questions[]> quizzes = restTemplate.getForEntity("https://api.trivia.willfry.co.uk/questions?categories=" + categoriesAsString + "&limit=" + (number+10), Questions[].class);
 
-        return quizzes.getBody();
+        Questions[] quizBody = quizzes.getBody();
+
+        Questions[] returnQuiz = new Questions[number];
+        int index = 0;
+
+        for (Questions question : quizBody) {
+            if (index == number) {
+                break;
+            }
+            if (question.getIncorrectAnswers().length > 2) {
+                returnQuiz[index] = question;
+                index++;
+            }
+        }
+        return returnQuiz;
     }
 
     // function to increase question number
