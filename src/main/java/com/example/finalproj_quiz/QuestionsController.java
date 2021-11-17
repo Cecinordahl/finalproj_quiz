@@ -204,12 +204,22 @@ public class QuestionsController {
             //done with sorting
 
             //create placement scoreboard
-            //List<HashMap.Entry<String, Integer>> tempList = new ArrayList<>(scoreboard.entrySet());
-
-
+            List<HashMap.Entry<String, Integer>> tempList = new ArrayList<>(scoreboard.entrySet());
+            Map<String, Integer> placementScoreboard = new HashMap<>();
+            int playerPlacement = 1;
+            placementScoreboard.put(tempList.get(0).getKey(), 1);
+            for (int i = 1; i < tempList.size(); i++) {
+                if (tempList.get(i).getValue() == tempList.get(i - 1).getValue()) {
+                    placementScoreboard.put(tempList.get(i).getKey(), playerPlacement);
+                } else {
+                    playerPlacement = i + 1;
+                    placementScoreboard.put(tempList.get(i).getKey(), playerPlacement);
+                }
+            }
             //done with placement scoreboard
 
             model.addAttribute("scoreboard", scoreboard);
+            model.addAttribute("placementScoreboard", placementScoreboard);
             model.addAttribute("numberOfQuestions", numberOfQuestions);
             model.addAttribute("numberOfPlayers", listOfPlayers.size());
             return "result_page";

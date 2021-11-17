@@ -15,8 +15,8 @@
 </div>
 
 <div th:if="${player.getRole() == 'player'}">
-    <p>Your score was: <span th:text="${scoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfQuestions}"></span>.</p>
-    <p>You were number <span th:text="${scoreboardList.indexOf(player.getName()) + 1}"></span> out of <span th:text="${numberOfPlayers}"></span> players.</p>
+    <p>Your score was <span th:text="${scoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfQuestions}"></span>.</p>
+    <p>You were number <span th:text="${placementScoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfPlayers}"></span> players.</p>
 </div>
 
 <a href="/">To the front page</a>
