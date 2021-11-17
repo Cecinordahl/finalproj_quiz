@@ -147,7 +147,7 @@ public class QuestionsController {
 
         if (isFuzz) {
             fuzzModeScoreList.clear();
-            for (int i = listOfPlayers.size(); i >= 0; i++) {
+            for (int i = listOfPlayers.size(); i >= 0; i--) {
                 fuzzModeScoreList.add(i);
             }
         }
@@ -247,6 +247,7 @@ public class QuestionsController {
             model.addAttribute("placementScoreboard", placementScoreboard);
             model.addAttribute("numberOfQuestions", numberOfQuestions);
             model.addAttribute("numberOfPlayers", listOfPlayers.size());
+            model.addAttribute("isFuzz", isFuzz);
             return "result_page";
         }
 
