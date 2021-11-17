@@ -11,12 +11,15 @@
         <label>How many questions do you want in your quiz? </label>
         <input name="inputNumberOfQuestions" type="number" min="5" max="50">
 
-        <div><p>If you want to play with categories, check any you would like</p>
-            <p>Leave blank if you want to play with all categories</p><br>
+        <div><p>If you want to play with categories, check any you would lik.</p>
+            <p>Leave blank if you want to play with all categories.</p>
             <div th:each="item : ${categoriesList}"><input name="category" type="checkbox" th:text="${item}" th:value="${item}"></div>
         </div>
+        <br>
 
-
+        <input type="checkbox" name="isFuzz" id="fuzzCheckbox">
+        <label for="fuzzCheckbox">Fuzz-mode</label>
+        <br>
 
         <button>Submit</button>
     </form>

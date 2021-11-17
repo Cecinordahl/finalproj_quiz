@@ -33,6 +33,7 @@ public class QuestionsController {
     // boolean variables
     private boolean isReady = false;
     private boolean isFinalQuestion = false;
+    private boolean isFuzz = false;
 
     // object variables
     private Player player;
@@ -68,7 +69,9 @@ public class QuestionsController {
 
     // admin only : creates quiz and sets role "admin" to the player object in session
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category){
+    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category, @RequestParam boolean isFuzz){
+        this.isFuzz = isFuzz;
+        session.setAttribute("isFuzz", isFuzz);
 
         numberOfQuestions = inputNumberOfQuestions;
         player = new Player();
@@ -174,6 +177,9 @@ public class QuestionsController {
         player = (Player) session.getAttribute("player");
         model.addAttribute("player", player);
 
+        if (isFuzz) {
+
+        }
         // if player role is player and they answer the question correctly, increase points
         if (player.getRole().equals("player") && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)){
                 int tempScore = scoreboard.get(player.getName());
@@ -333,6 +339,7 @@ public class QuestionsController {
         listOfPlayers.clear();
         isReady = false;
         isFinalQuestion = false;
+        isFuzz = false;
         questionNumber = 0;
         quizCode = generateRandomQuizCode();
     }
