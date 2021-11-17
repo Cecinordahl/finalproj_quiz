@@ -9,17 +9,26 @@
 <h1>Results page</h1>
 
 <div th:if="${player.getRole() == 'admin'}">
-    <ul th:each="item : ${scoreboard}">
-        <li th:text="${item}"></li>
-    </ul>
+    <table class="resultTable">
+        <tr>
+            <th>Placement</th>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+        <tr th:each="item : ${scoreboard}">
+            <td th:text="${placementScoreboard.get(item.getKey())} + '.'"></td>
+            <td th:text="${item.getKey()}"></td>
+            <td th:text="${item.getValue()}"></td>
+        </tr>
+    </table>
 </div>
 
-<div th:if="${player.getRole() == 'player'}">
-    <p>Your score was: <span th:text="${scoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfQuestions}"></span>.</p>
-    <p>You were number <span th:text="${scoreboardList.indexOf(player.getName()) + 1}"></span> out of <span th:text="${numberOfPlayers}"></span> players.</p>
+<div class="playerScore" th:if="${player.getRole() == 'player'}">
+    <p>Your score was <span th:text="${scoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfQuestions}"></span>.</p>
+    <p>You were number <span th:text="${placementScoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfPlayers}"></span> players.</p>
 </div>
 
-<a href="/">To the front page</a>
+<a class="frontPageLink" href="/">To the front page</a>
 
 </body>
 </html>
