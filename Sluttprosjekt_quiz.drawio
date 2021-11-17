@@ -1,1 +1,45 @@
-<mxfile host="app.diagrams.net" modified="2021-11-11T14:33:51.773Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="keoAmH8Zff-Wx_zslMM6" version="15.5.8" type="device"><diagram id="9L_Ml2j55nvWZuc7Kf5e" name="Page-1">7VjJbtswEP0aA+2hhRavR29pgrqtAxdIcioYiZbYUKRA0bGdr+9QIkXJil0HSREXycXgvOGQ4rw31Mgtf5xsvgiUxt94iGnLc8JNy5+0PG/Qd+FXAdsC6HjdAogECQvItcCCPGANOhpdkRBntYmScypJWgcDzhgOZA1DQvB1fdqS0/quKYpwA1gEiDbRKxLKuED7Hcfi55hEsdnZdbQnQWayBrIYhXxdgfxpyx8LzmUxSjZjTFXuTF6KuLM93vLBBGbymICr61+924vzy8vRVA7P737Mh/37T26nWOYe0ZU+8SLgAt9yJEL93HJrkpGtSUIRA2sUxISGM7TlK7V5JlFwZ6xRzAV54EwiCi4XAHALqbn1ndqMhYoEWKGCr1iIQx20BL+OcdvG1s/i5IsKfleS4ql4nMH8ucmIU0IzlEnzKIYF5Q1RFuf7KQNREjEYBxCNBQA6M1hIvNmbc7dkEioA8wRLsYUpOsAbaPK1+l1f22urJbersbiqI6MapPUblWtbimGgWX4K490G45AxSQKSIiYvwHZavdHZ11YPhjDXd1VyLlc4k4Szff7KEkOWrSF/1pcLqqElk26Kl7Jkc8wph9RPGM9FtiSU7kBZigLColkeNWnv6ESpQBFGoICHegPJUyMEdFuqR3CJZMUGTo1EjuL9QDU11aDZP5b8wT/jvneI+/dyf265d7zTK/d+g3JTw/OdGv6OkjdSpr0TL9NBgzNz/77X6Eu/kn3v1WvULHxEjRod/MQbWYGHFPLDkCT30CtbeMyFgKbYvJHfQmkPTru0zUEqNOAQPji0yYWMecQZolOLVopQ5cnOmXGV2Dxjv7GUW80BWkmuClomptjxhsjryvhGLfW5o63JRq+cG1tjMDjvddWoRCnThuWWjQuH6rvLCgaQM6LSlPuL86tDHy5gyBFfiQAf0crCVRbhg6roP64KgWleM7VtH+M8D4VjoW1lQsoJk1ll5bkC7E3T7ux0A4OdD7Sd+Y3uoT4fBsUTWPWVR3mGIL3XFKQV4U3F8zdBWg3e1CT4HwlyzzV1tCCfdwn5j/QX5GHMkxRL8t5mvESb0T25LwGv/eQuAy4358OMZKrVoLLiADtS9sc30VQU9fIaTQWY9g/C4sq3/7L60z8=</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-11-17T18:53:26.614Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="jBOqyLjE2omroroN7P9m" version="15.8.1" type="github">
+  <diagram id="9L_Ml2j55nvWZuc7Kf5e" name="Page-1">
+    <mxGraphModel dx="1038" dy="521" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-15" value="Scoreboard" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+          <mxGeometry x="290" y="130" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-16" value="ParticipantID {FK}&#xa;QuestionID {FK}&#xa;ParticipantAnswer&#xa;Score" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="WX_7bIHQQBEtAHkOPA8v-15" vertex="1">
+          <mxGeometry y="30" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-17" value="Player" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+          <mxGeometry x="520" y="130" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-18" value="ID {PK}&#xa;Name" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="WX_7bIHQQBEtAHkOPA8v-17" vertex="1">
+          <mxGeometry y="30" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-19" value="Question" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+          <mxGeometry x="290" y="320" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-20" value="ID {PK}&#xa;QuestionText&#xa;Alternatives&#xa;CorrectAnswer" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="WX_7bIHQQBEtAHkOPA8v-19" vertex="1">
+          <mxGeometry y="30" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="WX_7bIHQQBEtAHkOPA8v-16" target="WX_7bIHQQBEtAHkOPA8v-18" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="190" />
+              <mxPoint x="520" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="WX_7bIHQQBEtAHkOPA8v-16" target="WX_7bIHQQBEtAHkOPA8v-19" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-23" value="QuizCompetition" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+          <mxGeometry x="60" y="130" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="WX_7bIHQQBEtAHkOPA8v-24" value="ID {PK}&#xa;Questions (List&lt;Question&gt;)" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="WX_7bIHQQBEtAHkOPA8v-23" vertex="1">
+          <mxGeometry y="30" width="160" height="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
