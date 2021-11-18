@@ -62,8 +62,14 @@ body{
     justify-content: center;
 }
 
+.frontPageLinks a {
+    text-decoration: none;
+    padding: 20px;
+}
 
 
+
+/* ------------------------------- Admin first page --------------------------------- */
 
 
 
