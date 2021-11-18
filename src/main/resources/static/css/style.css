@@ -300,6 +300,44 @@ input[type="submit"] {
 
 
 
+
+/* --------------------------- Waiting page -------------------------- */
+.currentScores {
+    width: 30vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.currentScores h3 {
+    width: 30vw;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+.currentScores ul {
+    width: 30vw;
+    text-align: center;
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+}
+
+.currentScores form {
+    width: 30vw;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#nextQuestionButton {
+    justify-content: center;
+}
+
+
+
+
+
 /* ------------------------ popup info button --------------------------- */
 .popup {
     position: relative;

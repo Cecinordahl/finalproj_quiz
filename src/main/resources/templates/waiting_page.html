@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="1">
+<!--    <meta http-equiv="refresh" content="1">-->
     <title>Quiz</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,14 +16,14 @@
 
 
 
-<div th:if="${player.getRole() == 'admin'}">
+<div class="currentScores" th:if="${player.getRole() == 'admin'}">
     <h3>The current scores are:</h3>
     <ul th:each="item : ${scoreboard}">
         <li th:text="${item}" style="text-decoration: none"></li>
     </ul>
 
     <form method="post" th:action="'/play/' + ${quizCode}">
-        <input type="submit" value="Next">
+        <input id="nextQuestionButton" type="submit" value="Next">
     </form>
 </div>
 
