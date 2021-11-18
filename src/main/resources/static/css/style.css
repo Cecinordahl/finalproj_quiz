@@ -51,6 +51,7 @@ input[type="submit"] {
 
 
 
+
 /* ------------------------- images---------------------- */
 #peeking-corner-monster{
     width: 700px;
@@ -62,6 +63,8 @@ input[type="submit"] {
     position: relative;
     left: -80px;
 }
+
+
 
 
 /* --------------- Welcome page -----------------*/
@@ -95,6 +98,8 @@ input[type="submit"] {
 .frontPageLinks a:hover {
     text-decoration: underline;
 }
+
+
 
 
 /* ------------------------------- Admin first page --------------------------------- */
@@ -136,26 +141,6 @@ input[type="submit"] {
     width: 35vw;
     text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -213,11 +198,59 @@ input[type="submit"] {
 .container-question {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+    width: 30vw;
+    top: 100px;
+}
+
+#questionX {
+    font-family: 'Oswald', serif;
+    font-size: 80px;
+    color: #FFFFFF;
+    margin: 0 auto 150px auto;
+    text-align: center;
+    width: 30vw;
+    top: 100px;
+}
+
+#countdownClockCircle {
+    height: 100px;
+    width: 100px;
+    background-color: #a94752;
+    border-radius: 100px;
+    text-align: center;
+}
+
+#countdown {
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    position: relative;
+    top: 25px;
 }
 
 .question {
-    width: 500px;
+    background-color: white;
+    opacity: 0.8;
+    width: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 75px;
+    text-align: center;
+    padding: 30px;
+    border-radius: 5px;
 }
+
+/*.countdownClockCircle {
+    margin: 40px 90%;
+    width: 100px;
+    height: 40px;
+    border-radius: 100px;
+    border: none;
+    color: white;
+    text-align: center;
+    !*text-justify: auto;*!
+}*/
 
 .answer_form input[type="submit"] {
     background-color: #a94752;
@@ -229,8 +262,6 @@ input[type="submit"] {
     text-align: center;
     margin: auto;
 }
-
-
 
 
 

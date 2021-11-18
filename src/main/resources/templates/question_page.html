@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<div id="countdown"></div>
 
 
 <form method="post" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" hidden>
@@ -16,7 +15,14 @@
 </form>
 
 <div class="container-question">
-    <h2 th:text="'Question ' + ${questionNumber+1}"></h2>
+
+    <div>
+        <h2 id="questionX" th:text="'Question ' + ${questionNumber+1}"></h2>
+    </div>
+
+    <div id="countdownClockCircle">
+        <span id="countdown"></span>
+    </div>
 
     <div class="question" th:if="${player.getRole() == 'admin'}">
         <p th:text="${question}"></p>
@@ -35,7 +41,8 @@
 
 <script>
 
-    var timeleft = 10;
+    var timeleft = 90;
+    document.getElementById("countdown").innerHTML = timeleft;
     var downloadTimer = setInterval(function(){
         if(timeleft <= 0){
             clearInterval(downloadTimer);
