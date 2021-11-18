@@ -9,13 +9,16 @@
 </head>
 
 
-<body>
+<body style="display: block">
 
-<img id="happy-monster" style="position: absolute" src="/images/happy-monster.png" alt=" ">
-<span><h1>Quiz #:</h1><h1 th:text=" ${quizCode}"></h1></span>
+
+<img id="happy-monster" style="position: absolute; left: 35%" src="/images/happy-monster.png" alt=" ">
+
+
 
 <div class="container-start">
 
+    <h2 th:text="'Quiz code: ' + ${quizCode}"></h2>
 
     <h2>The players of this quiz are:</h2>
     <ul th:each="item : ${listOfPlayers}">

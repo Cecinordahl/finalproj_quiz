@@ -37,7 +37,7 @@ body{
 
 /* ------------------------- images---------------------- */
 #peeking-corner-monster{
-    width: 600px;
+    width: 700px;
     padding-left: 50px;
 }
 
@@ -46,6 +46,7 @@ body{
 /* --------------- Welcome page -----------------*/
 
 .container-welcome{
+    border-radius: 5px;
     justify-content: center;
     width: 35vw;
     background-color: white;
@@ -60,7 +61,9 @@ body{
 
 .header{
     justify-content: center;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
 }
 
 .frontPageLinks a {
@@ -106,9 +109,17 @@ body{
 .container-start{
     background-color: white;
     opacity: 0.8;
-    width: 50vw;
-
+    width: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    position: relative;
+    top: 500px;
+    padding: 30px;
+    border-radius: 5px;
 }
+
+
 
 
 
