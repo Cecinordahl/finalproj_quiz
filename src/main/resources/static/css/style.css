@@ -27,9 +27,15 @@ body{
     justify-content: center;
 }
 
-
-
-
+h2{
+    font-family: 'Oswald', serif;
+    font-size: 100px;
+    color: #FFFFFF;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    bottom: 50px;
+}
 
 
 
@@ -41,6 +47,10 @@ body{
     padding-left: 50px;
 }
 
+#monster-logo-header{
+    width: 500px;
+    padding-left: 225px;
+}
 
 
 /* --------------- Welcome page -----------------*/
@@ -68,21 +78,51 @@ body{
 
 .frontPageLinks a {
     text-decoration: none;
-    padding: 20px;
+    padding: 0 20px;
 }
 
 .frontPageLinks a:hover {
     text-decoration: underline;
 }
 
+.headerAndPageTitle {
+    justify-content: center;
+    width: 70vw;
+    margin: auto;
+}
 
 
 /* ------------------------------- Admin first page --------------------------------- */
 
+.categoriesCheckboxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: auto;
+    padding-left: 40px;
+}
 
+.checkboxForEachCategory {
+    width: 12vw;
+    text-align: left;
+    padding: 5px;
+}
 
+.fuzzmodeCheckbox {
+    margin: 25px auto;
+}
 
+.createQuizForm {
+    width: 50vw;
+    text-align: center;
+}
 
+.chooseCategories {
+    width: 30vw;
+    text-align: center;
+    margin: auto;
+    padding-top: 15px;
+}
 
 
 
