@@ -8,33 +8,39 @@
 </head>
 <body>
 
-<h1>Results page</h1>
+<div class="container-results">
 
-<div th:if="${player.getRole() == 'admin'}">
-    <table class="resultTable">
-        <tr>
-            <th>Placement</th>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-        <tr th:each="item : ${scoreboard}">
-            <td th:text="${placementScoreboard.get(item.getKey())} + '.'"></td>
-            <td th:text="${item.getKey()}"></td>
-            <td th:text="${item.getValue()}"></td>
-        </tr>
-    </table>
+    <div class="headerResults">
+        <h2>Results</h2>
+    </div>
+
+    <div class="resultTableDiv" th:if="${player.getRole() == 'admin'}">
+        <table class="resultTable">
+            <tr>
+                <th id="resultTablePlacement">Placement</th>
+                <th id="resultTableName">Name</th>
+                <th id="resultTableScore">Score</th>
+            </tr>
+            <tr th:each="item : ${scoreboard}">
+                <td th:text="${placementScoreboard.get(item.getKey())} + '.'"></td>
+                <td th:text="${item.getKey()}"></td>
+                <td th:text="${item.getValue()}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="playerScore" th:if="${player.getRole() == 'player'}">
+        <p>Your score was <span th:text="${scoreboard.get(player.getName())}"></span> out of
+            <span th:if="${isFuzz}" th:text="${numberOfQuestions*numberOfPlayers}"></span>
+            <span th:if="${!isFuzz}" th:text="${numberOfQuestions}"></span>
+            possible points.
+        </p>
+        <p>You were number <span th:text="${placementScoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfPlayers}"></span> players.</p>
+    </div>
+
+    <a class="frontPageLink" href="/">To the front page</a>
+
 </div>
-
-<div class="playerScore" th:if="${player.getRole() == 'player'}">
-    <p>Your score was <span th:text="${scoreboard.get(player.getName())}"></span> out of
-        <span th:if="${isFuzz}" th:text="${numberOfQuestions*numberOfPlayers}"></span>
-        <span th:if="${!isFuzz}" th:text="${numberOfQuestions}"></span>
-        possible points.
-    </p>
-    <p>You were number <span th:text="${placementScoreboard.get(player.getName())}"></span> out of <span th:text="${numberOfPlayers}"></span> players.</p>
-</div>
-
-<a class="frontPageLink" href="/">To the front page</a>
 
 </body>
 </html>

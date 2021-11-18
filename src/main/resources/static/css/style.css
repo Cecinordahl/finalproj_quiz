@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-*{
+* {
     color:#3b3838;
 }
 
@@ -15,20 +15,22 @@ html {
     font-family: 'Montserrat', serif;
 }
 
-h1{
-    font-family: 'Oswald', serif;
-    font-size: 200px;
-    color: #FFFFFF;
-}
-
-body{
+body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin: auto;
 }
 
-h2{
+/* h1 = header on front page only */
+h1 {
+    font-family: 'Oswald', serif;
+    font-size: 200px;
+    color: #FFFFFF;
+}
+
+/* h2 = headers on other main pages, like register quiz/players, results */
+h2 {
     font-family: 'Oswald', serif;
     font-size: 100px;
     color: #FFFFFF;
@@ -36,6 +38,11 @@ h2{
     text-align: center;
     position: relative;
     bottom: 50px;
+}
+
+/* h3 = smaller text headers */
+h3 {
+
 }
 
 input[type="submit"] {
@@ -67,7 +74,7 @@ input[type="submit"] {
 
 
 
-/* --------------- Welcome page -----------------*/
+/* --------------- Welcome page (front page) -----------------*/
 
 .container-welcome{
     border-radius: 5px;
@@ -160,18 +167,6 @@ input[type="submit"] {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /* ---------------------------------- Start quiz page ---------------------------------*/
 
 .container-start{
@@ -186,8 +181,6 @@ input[type="submit"] {
     padding: 30px;
     border-radius: 5px;
 }
-
-
 
 
 
@@ -242,7 +235,11 @@ input[type="submit"] {
     font-size: 32px;
 }
 
-.answer_form input[type="submit"] {
+.answers {
+
+}
+
+.answers input[type="submit"] {
     background-color: #a94752;
     color: white;
     border: none;
@@ -253,6 +250,53 @@ input[type="submit"] {
     margin: auto;
 }
 
+
+
+
+/* ---------------------- Results page --------------------------------*/
+.container-results {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 30vw;
+}
+
+.headerResults h2 {
+    width: 30vw;
+    padding-top: 100px;
+}
+
+.resultTable {
+    width: 30vw;
+    text-align: center;
+}
+
+.resultTable tr {
+    margin-bottom: 10px;
+}
+
+#resultTablePlacement {
+    width: 25%;
+}
+
+#resultTableName {
+    width: 50%;
+}
+
+#resultTableScore {
+    width: 25%;
+}
+
+.frontPageLink {
+    text-decoration: none;
+    background-color: #a94752;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    text-align: center;
+    margin: 50px auto;
+    padding: 10px 30px;
+}
 
 
 

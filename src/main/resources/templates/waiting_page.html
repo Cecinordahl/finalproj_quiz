@@ -11,17 +11,16 @@
 
 
 <div th:if="${player.getRole() == 'player'}">
-    <h1>Waiting for the other players...</h1>
+    <h3>Waiting for the other players...</h3>
 </div>
 
 
 
 <div th:if="${player.getRole() == 'admin'}">
-    <h2>The current scores are:</h2>
+    <h3>The current scores are:</h3>
     <ul th:each="item : ${scoreboard}">
-        <li th:text="${item}"></li>
+        <li th:text="${item}" style="text-decoration: none"></li>
     </ul>
-
 
     <form method="post" th:action="'/play/' + ${quizCode}">
         <input type="submit" value="Next">
