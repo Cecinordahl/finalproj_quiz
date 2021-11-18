@@ -159,8 +159,11 @@ input[type="submit"] {
 .join_quiz_container{
     background-color: white;
     opacity: 0.8;
-    width: 30vw;
+    width: 20vw;
     padding: 20px;
+    margin-top: 300px;
+    text-align: center;
+    border-radius: 5px;
 }
 
 
