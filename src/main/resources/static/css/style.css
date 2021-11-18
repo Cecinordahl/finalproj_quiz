@@ -13,10 +13,7 @@ html {
     background-size: cover;
     box-sizing: border-box;
     font-family: 'Montserrat', serif;
-
 }
-
-
 
 h1{
     font-family: 'Oswald', serif;
@@ -27,10 +24,20 @@ h1{
 
 
 
-/* images */
+
+
+
+
+
+
+/* ------------------------- images---------------------- */
 #peeking-corner-monster{
     width: 500px;
 }
+
+
+
+/* --------------- Welcome page -----------------*/
 
 .container-welcome{
     justify-content: center;
@@ -41,15 +48,15 @@ h1{
     margin-right: 15vw;
     opacity: 0.8;
     text-align: center;
+    padding-bottom: 30px;
 }
 
 .header{
     justify-content: center;
     margin: auto;
-
 }
 
-.body-welcome{
+body{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
