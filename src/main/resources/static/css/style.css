@@ -121,6 +121,7 @@ input[type="submit"] {
 .checkboxForEachCategory {
     width: 13vw;
     text-align: left;
+    margin-top: 5px;
 }
 
 .fuzzmodeCheckbox {
@@ -201,9 +202,26 @@ input[type="submit"] {
 
 
 
+/* ------------------------- question page ------------------------------- */
+.container-question {
+    display: flex;
+    justify-content: center;
+}
 
+.question {
+    width: 500px;
+}
 
-
+.answer_form input[type="submit"] {
+    background-color: #a94752;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    max-width: 400px;
+    height: 100px;
+    text-align: center;
+    margin: auto;
+}
 
 
 

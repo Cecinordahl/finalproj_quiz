@@ -13,26 +13,21 @@
     <input id="elementID" type="submit">
 </form>
 
+<div class="container-question">
+    <h2 th:text="'Question ' + ${questionNumber+1}"></h2>
 
-<h2 th:text="'Question ' + ${questionNumber+1}"></h2>
+    <div class="question" th:if="${player.getRole() == 'admin'}">
+        <p th:text="${question}"></p>
+    </div>
 
-<div th:if="${player.getRole() == 'admin'}">
-    <p th:text="${question}"></p>
-<!--    <div class="displayAlternativesAsAdmin">
-        <p th:text="${A}"></p>
-        <p th:text="${B}"></p>
-        <p th:text="${C}"></p>
-        <p th:text="${D}"></p>
-    </div>-->
-</div>
-
-<div th:if="${player.getRole() == 'player'}">
-    <form class="answer_form" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" method="post">
-        <input type="submit" id="A" name="answer" th:value="${A}">
-        <input type="submit" id="B" name="answer" th:value="${B}">
-        <input type="submit" id="C" name="answer" th:value="${C}">
-        <input type="submit" id="D" name="answer" th:value="${D}">
-    </form>
+    <div th:if="${player.getRole() == 'player'}">
+        <form class="answer_form" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" method="post">
+            <input type="submit" id="A" name="answer" th:value="${A}">
+            <input type="submit" id="B" name="answer" th:value="${B}">
+            <input type="submit" id="C" name="answer" th:value="${C}">
+            <input type="submit" id="D" name="answer" th:value="${D}">
+        </form>
+    </div>
 </div>
 
 
@@ -48,12 +43,6 @@
         }
         timeleft -= 1;
     }, 1000);
-
-
-
-
-
-
 
 </script>
 
