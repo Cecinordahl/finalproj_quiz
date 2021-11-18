@@ -37,7 +37,16 @@ h2{
     bottom: 50px;
 }
 
-
+input[type="submit"] {
+    background-color: #a94752;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    width: 80px;
+    text-align: center;
+    margin: auto;
+    padding: 10px;
+}
 
 
 
