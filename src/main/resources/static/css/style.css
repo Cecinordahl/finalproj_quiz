@@ -144,6 +144,32 @@ h2{
 
 
 
+
+
+
+/* -------------------- join quiz / register players siden --------------- */
+.join_quiz_container{
+    background-color: white;
+    opacity: 0.8;
+    width: 30vw;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ---------------------------------- Start quiz page ---------------------------------*/
 
 .container-start{
