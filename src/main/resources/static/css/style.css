@@ -85,14 +85,21 @@ h2{
     text-decoration: underline;
 }
 
+
+/* ------------------------------- Admin first page --------------------------------- */
+
 .headerAndPageTitle {
     justify-content: center;
     width: 70vw;
     margin: auto;
 }
 
-
-/* ------------------------------- Admin first page --------------------------------- */
+.chooseCategories {
+    width: 30vw;
+    text-align: center;
+    margin: auto;
+    padding-top: 15px;
+}
 
 .categoriesCheckboxes {
     display: flex;
@@ -103,9 +110,8 @@ h2{
 }
 
 .checkboxForEachCategory {
-    width: 12vw;
+    width: 13vw;
     text-align: left;
-    padding: 5px;
 }
 
 .fuzzmodeCheckbox {
@@ -115,13 +121,6 @@ h2{
 .createQuizForm {
     width: 50vw;
     text-align: center;
-}
-
-.chooseCategories {
-    width: 30vw;
-    text-align: center;
-    margin: auto;
-    padding-top: 15px;
 }
 
 
