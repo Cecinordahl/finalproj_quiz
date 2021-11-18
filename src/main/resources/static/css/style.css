@@ -25,6 +25,7 @@ body{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin: auto;
 }
 
 h2{
@@ -58,7 +59,8 @@ input[type="submit"] {
 
 #monster-logo-header{
     width: 500px;
-    padding-left: 225px;
+    position: relative;
+    left: -80px;
 }
 
 
@@ -98,6 +100,7 @@ input[type="submit"] {
 /* ------------------------------- Admin first page --------------------------------- */
 
 .headerAndPageTitle {
+    text-align: center;
     justify-content: center;
     width: 70vw;
     margin: auto;
@@ -113,15 +116,16 @@ input[type="submit"] {
 .categoriesCheckboxes {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: auto;
-    padding-left: 40px;
+    max-width: 25vw;
 }
 
 .checkboxForEachCategory {
-    width: 13vw;
+    width: 10vw;
     text-align: left;
     margin-top: 5px;
+    margin-left: 45px;
 }
 
 .fuzzmodeCheckbox {
@@ -129,7 +133,7 @@ input[type="submit"] {
 }
 
 .createQuizForm {
-    width: 50vw;
+    width: 35vw;
     text-align: center;
 }
 

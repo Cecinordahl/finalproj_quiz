@@ -17,14 +17,14 @@
         <input name="inputNumberOfQuestions" type="number" min="5" max="50">
 
         <div class="chooseCategories">
-            <p>Do you want to play with categories? Check any you would like or leave blank if you want to play with all categories.</p>
+            <p style="max-width: 25vw; margin: 15px auto">Do you want to play with categories? Check any you would like or leave blank if you want to play with all categories.</p>
             <div class="categoriesCheckboxes">
                 <div class="checkboxForEachCategory" th:each="item : ${categoriesList}"><input name="category" type="checkbox" th:text="${item}" th:value="${item}"></div>
             </div>
         </div>
 
         <div class="fuzzmodeCheckbox">
-            <span style="padding-right: 20px">Do you want to spice it up?</span>
+            <span style="padding-right: 8px">Do you want to spice it up?</span>
             <input type="checkbox" name="isFuzz" id="fuzzCheckbox">
             <label for="fuzzCheckbox">Fuzz-mode</label>
             <div class="popup" onclick="myFunction()"><sup>&#x1F6C8;</sup>

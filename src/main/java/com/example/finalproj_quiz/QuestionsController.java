@@ -70,7 +70,7 @@ public class QuestionsController {
 
     // admin only : creates quiz and sets role "admin" to the player object in session
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category, @RequestParam(required = false) boolean isFuzz){
+    public String registerQuiz(@RequestParam(required = false, defaultValue = "10") Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category, @RequestParam(required = false) boolean isFuzz){
         if (isFuzz == true) {
             this.isFuzz = isFuzz;
         }
