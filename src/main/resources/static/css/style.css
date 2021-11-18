@@ -1,15 +1,59 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+*{
+    color:#3b3838;
+}
+
 html {
     background: url("../images/pink_clouds_background_verticalRotated.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    box-sizing: border-box;
+    font-family: 'Montserrat', serif;
+
 }
 
 
+
+h1{
+    font-family: 'Oswald', serif;
+    font-size: 150px;
+    color: #FFFFFF;
+}
+
+
+
+
+/* images */
+#peeking-corner-monster{
+    width: 500px;
+}
+
+.container-welcome{
+    justify-content: center;
+    width: 35vw;
+    background-color: white;
+    color: black;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    opacity: 0.8;
+    text-align: center;
+}
+
+.header{
+    justify-content: center;
+    margin: auto;
+
+}
+
+.body-welcome{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
 
 
