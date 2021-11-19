@@ -192,7 +192,7 @@ input[type="submit"] {
     border-radius: 5px;
 }
 
-.listOfPlayers ul {
+.listOfPlayers {
     text-align: center;
     list-style-type: none; /* Remove bullets */
     padding: 0; /* Remove padding */
@@ -331,12 +331,18 @@ input[type="submit"] {
     margin-top: 50px;
 }
 
-.currentScores ul {
-    width: 30vw;
+.scoresTable {
+    width: 28vw;
+}
+
+.scoresTableName {
+    width: 70%;
+    text-align: left;
+}
+
+.scoresTableScore {
+    width: 30%;
     text-align: center;
-    list-style-type: none; /* Remove bullets */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margins */
 }
 
 .currentScores form {
@@ -347,7 +353,7 @@ input[type="submit"] {
 
 #nextQuestionButton {
     justify-content: center;
-    width: 200px;
+    width: 150px;
 }
 
 

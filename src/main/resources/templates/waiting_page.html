@@ -20,9 +20,9 @@
     <h3>The current scores are:</h3>
 
     <table class="scoresTable">
-        <tr th:each="item : ${scoreboard}">
-            <td th:text="${item.getKey()}"></td>
-            <td th:text="${item.getValue()}"></td>
+        <tr class="scoresTableRow" th:each="item : ${scoreboard}">
+            <td class="scoresTableName" th:text="${item.getKey()}"></td>
+            <td class="scoresTableScore" th:text="${item.getValue()}"></td>
         </tr>
     </table>
 
