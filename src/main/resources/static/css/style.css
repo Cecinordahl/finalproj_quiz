@@ -562,16 +562,14 @@ input[type="submit"] {
         float: none;
     }
 
-    .container-results{
-        width: 90vw;
-    }
+
+
 
     /* start quiz */
     .container-start{
         width: 200px;
 
     }
-
 
 
 
@@ -590,6 +588,29 @@ input[type="submit"] {
         color: #FFFFFF;
         margin: 2vh auto;
         top: 0;
+    }
+
+
+
+    /* result page */
+    .container-results{
+        width: 90vw;
+        text-align: center;
+    }
+
+    .headerResults h2 {
+        width: 100%;
+        font-size: 18vw;
+        font-max-size: 65px;
+        color: #FFFFFF;
+        margin: 2vh auto;
+        top: 0;
+    }
+
+    .playerScore p {
+        width: 95%;
+        text-align: center;
+        margin-top: 5vh;
     }
 
 
