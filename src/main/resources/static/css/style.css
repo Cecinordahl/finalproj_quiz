@@ -543,14 +543,13 @@ input[type="submit"] {
 
     #join_quiz_h3 {
         font-size: 40px;
-    #join_quiz_h3 h3{
-        font-size: 100px;
     }
 
     .join_quiz_container input[type="submit"] {
-        width: 80%;
+        width: 70%;
         float: none;
     }
+
     .container-results{
         width: 90vw;
     }
