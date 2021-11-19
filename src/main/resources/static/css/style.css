@@ -444,12 +444,26 @@ input[type="submit"] {
         font-size: 15vw;
     }
 
+    /* front page*/
+
+    #peeking-corner-monster{
+        width: 50vw;
+    }
+    .container-welcome{
+        width: 80vw;
+    }
+
     .frontPageLinks{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
     }
 
+
+
+
+
+    /* create quiz */
     .createQuizForm, .checkboxForEachCategory, .categoriesCheckboxes, .chooseCategories, .checkboxForEachCategory {
         width: 95vw;
         padding: 0;
