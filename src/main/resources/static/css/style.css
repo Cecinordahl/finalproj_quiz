@@ -13,7 +13,7 @@ html {
     background-size: cover;
     box-sizing: border-box;
     font-family: 'Montserrat', serif;
-    font-size: 2vw;
+    font-size: 1vw;
 }
 
 body {
@@ -33,7 +33,7 @@ h1 {
 /* h2 = headers on other main pages, like register quiz/players, results */
 h2 {
     font-family: 'Oswald', serif;
-    font-size: 100px;
+    font-size: 8vw;
     color: #FFFFFF;
     margin: 0 auto;
     text-align: center;
@@ -43,8 +43,10 @@ h2 {
 
 /* h3 = smaller text headers */
 h3 {
-
+    font-size: 2vw;
 }
+
+
 
 input[type="submit"] {
     background-color: #a94752;
@@ -96,7 +98,7 @@ input[type="submit"] {
     margin-right: 15vw;
     opacity: 0.8;
     text-align: center;
-    padding-bottom: 30px;
+    padding: 2vw 2vw 3vw;
     font-size: 2vw;
 }
 
@@ -146,8 +148,8 @@ input[type="submit"] {
 .checkboxForEachCategory {
     width: 10vw;
     text-align: left;
-    margin-top: 5px;
-    margin-left: 45px;
+    margin-top: 1vw;
+
 }
 
 .fuzzmodeCheckbox {
