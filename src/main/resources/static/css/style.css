@@ -180,21 +180,40 @@ input[type="submit"] {
 
 
 /* -------------------- join quiz / register players siden --------------- */
-.join_quiz_container{
+.join_quiz_container {
     background-color: white;
     opacity: 0.8;
     width: 20vw;
-    padding: 20px;
-    margin-top: 300px;
+    margin-top: 30vh;
     text-align: center;
     border-radius: 5px;
 }
 
-.join_quiz_container input[type="text"]{
-    width: 10vw;
-    float: right;
+.join_quiz_inputDiv {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 10px auto;
 }
 
+.join_quiz_inputDiv input {
+    width: 50%;
+}
+
+.join_quiz_inputDiv label {
+    width: 40%;
+    text-align: left;
+    padding-left: 0;
+}
+
+#join_quiz_h3 {
+    font-size: 40px;
+}
+
+.join_quiz_container input[type="submit"] {
+    width: 70%;
+    margin: 2vh auto 5vh auto;
+}
 
 
 
@@ -528,16 +547,6 @@ input[type="submit"] {
 
 
     /* join quiz */
-    .join_quiz_container input[type="text"] {
-        width: 90%;
-        margin-bottom: 4vh;
-        float: none;
-    }
-
-    .join_quiz_container label {
-        margin-bottom: 1vh;
-    }
-
     .join_quiz_container {
         display: flex;
         flex-wrap: wrap;
@@ -546,13 +555,31 @@ input[type="submit"] {
         margin-top: 10vh;
     }
 
+    .join_quiz_inputDiv {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 85%;
+        margin: 5px auto;
+    }
+
+    .join_quiz_inputDiv input[type="text"] {
+        width: 80%;
+        margin-bottom: 4vh;
+    }
+
+    .join_quiz_inputDiv label {
+        width: 80%;
+        margin-bottom: 1vh;
+        text-align: center;
+    }
+
     #join_quiz_h3 {
-        font-size: 40px;
+        font-size: 5vh;
     }
 
     .join_quiz_container input[type="submit"] {
         width: 70%;
-        float: none;
     }
 
 
