@@ -13,6 +13,7 @@ html {
     background-size: cover;
     box-sizing: border-box;
     font-family: 'Montserrat', serif;
+    font-size: 2vw;
 }
 
 body {
@@ -25,7 +26,7 @@ body {
 /* h1 = header on front page only */
 h1 {
     font-family: 'Oswald', serif;
-    font-size: 200px;
+    font-size: 10vw;
     color: #FFFFFF;
 }
 
@@ -61,7 +62,7 @@ input[type="submit"] {
 
 /* ------------------------- images---------------------- */
 #peeking-corner-monster{
-    width: 700px;
+    width: 35vw;
     padding-left: 50px;
 }
 
@@ -76,6 +77,15 @@ input[type="submit"] {
 
 /* --------------- Welcome page (front page) -----------------*/
 
+.h1-welcome{
+    color: white;
+    margin-bottom: 0;
+    margin-top: 0;
+    position: relative;
+    top: 8vw;
+    z-index: -1
+}
+
 .container-welcome{
     border-radius: 5px;
     justify-content: center;
@@ -87,7 +97,7 @@ input[type="submit"] {
     opacity: 0.8;
     text-align: center;
     padding-bottom: 30px;
-    font-size: 30px;
+    font-size: 2vw;
 }
 
 .header{
@@ -406,7 +416,13 @@ input[type="submit"] {
 
 /* ----------------------------------------- phone/player display -------------------------------------------- */
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 600px) { /* set to 450 when ready */
+
+    .frontPageLinks{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
 
 }
