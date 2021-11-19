@@ -20,13 +20,12 @@
 
     <h3 th:text="'Quiz code: ' + ${quizCode}"></h3>
 
-    <h3>The players of this quiz are:</h3>
+    <p>The players of this quiz are:</p>
     <ul class="listOfPlayers" th:each="item : ${listOfPlayers}">
         <li th:text="${item.getName()}"></li>
     </ul>
 
     <div th:if="${player.getRole() == 'admin'}">
-        <h3>Let's start the quiz!</h3>
 
         <form method="post" th:action="'/play/' + ${quizCode}">
             <input type="submit" value="Start quiz">

@@ -75,7 +75,10 @@ input[type="submit"] {
     top: 3vw;
 }
 
-
+#happy-monster{
+    position: relative;
+    width: 500px;
+}
 
 
 /* --------------- Welcome page (front page) -----------------*/
@@ -201,7 +204,7 @@ input[type="submit"] {
     margin-right: auto;
     text-align: center;
     position: relative;
-    top: 500px;
+    top: 45vh;
     padding: 30px;
     border-radius: 5px;
 }
@@ -530,8 +533,12 @@ input[type="submit"] {
         margin-top: 150px;
     }
 
-    #join_quiz_h3{
+    #join_quiz_h3 h3{
         font-size: 100px;
+    }
+
+    .container-results{
+        width: 90vw;
     }
 
 }
