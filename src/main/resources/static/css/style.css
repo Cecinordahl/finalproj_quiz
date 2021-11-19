@@ -265,18 +265,20 @@ input[type="submit"] {
 }
 
 .answers {
-
+    width: 90vw;
+    text-align: center;
+    margin-top: 8vw;
 }
 
 .answers input[type="submit"] {
     background-color: #a94752;
     color: white;
-    border: none;
+    font-size: 3vh;
     border-radius: 20px;
-    max-width: 400px;
-    height: 100px;
+    width: 90%;
+    height: 18vw;
     text-align: center;
-    margin: auto;
+    margin: 2vh auto;
 }
 
 
@@ -533,5 +535,24 @@ input[type="submit"] {
     #join_quiz_h3{
         font-size: 100px;
     }
+
+
+
+    /* question page */
+    .container-question {
+        display: flex;
+        justify-content: center;
+        width: 90vw;
+        top: 0;
+    }
+
+    #questionX {
+        width: 100%;
+        font-size: 65px;
+        color: #FFFFFF;
+        margin: 2vh auto;
+        top: 0;
+    }
+
 
 }
