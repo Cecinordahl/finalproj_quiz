@@ -437,18 +437,37 @@ input[type="submit"] {
 
 @media only screen and (max-width: 600px) { /* set to 450 when ready */
 
+    *{
+        font-size: 5vw;
+    }
+
     html {
         font-size: 3vw;
+    }
+
+    h1{
+        font-size: 18vw;
     }
 
     h2{
         font-size: 15vw;
     }
 
+    h3{
+        font-size: 4vw;
+    }
+
+
     /* front page */
 
     #peeking-corner-monster{
-        width: 50vw;
+        width: 70vw;
+        padding-left: 15px;
+
+    }
+
+    .h1-welcome{
+        top: 14vw;
     }
     .container-welcome{
         width: 80vw;
