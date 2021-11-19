@@ -21,7 +21,7 @@
     <h3 th:text="'Quiz code: ' + ${quizCode}"></h3>
 
     <h3>The players of this quiz are:</h3>
-    <ul th:each="item : ${listOfPlayers}">
+    <ul class="listOfPlayers" th:each="item : ${listOfPlayers}">
         <li th:text="${item.getName()}"></li>
     </ul>
 
