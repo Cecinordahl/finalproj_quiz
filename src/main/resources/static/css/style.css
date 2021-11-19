@@ -77,7 +77,11 @@ input[type="submit"] {
 
 #happy-monster{
     position: relative;
-    width: 500px;
+    width: 300px;
+    z-index: -1;
+
+
+
 }
 
 
@@ -205,8 +209,8 @@ input[type="submit"] {
     margin-right: auto;
     text-align: center;
     position: relative;
-    top: 45vh;
-    padding: 30px;
+    top: -100px;
+    padding: 15px;
     border-radius: 5px;
 }
 
@@ -216,6 +220,7 @@ input[type="submit"] {
     padding: 0; /* Remove padding */
     margin: 0; /* Remove margins */
 }
+
 
 
 
@@ -543,8 +548,6 @@ input[type="submit"] {
 
     #join_quiz_h3 {
         font-size: 40px;
-    #join_quiz_h3 h3{
-        font-size: 100px;
     }
 
     .join_quiz_container input[type="submit"] {
@@ -554,6 +557,13 @@ input[type="submit"] {
     .container-results{
         width: 90vw;
     }
+
+    /* start quiz */
+    .container-start{
+        width: 200px;
+
+    }
+
 
 
 
