@@ -330,11 +330,11 @@ input[type="submit"] {
     width: 30vw;
     text-align: center;
     margin-bottom: 20px;
-    margin-top: 50px;
+    margin-top: 100px;
 }
 
 .scoresTable {
-    width: 28vw;
+    width: 24vw;
 }
 
 .scoresTableName {
@@ -354,8 +354,11 @@ input[type="submit"] {
 }
 
 #nextQuestionButton {
+    font-size: 18px;
     justify-content: center;
-    width: 150px;
+    width: 170px;
+    padding: 12px;
+    border-radius: 30px;
 }
 
 
