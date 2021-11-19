@@ -182,7 +182,12 @@ input[type="submit"] {
     border-radius: 5px;
 }
 
-
+.listOfPlayers ul {
+    text-align: center;
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+}
 
 
 
@@ -332,6 +337,7 @@ input[type="submit"] {
 
 #nextQuestionButton {
     justify-content: center;
+    width: 200px;
 }
 
 

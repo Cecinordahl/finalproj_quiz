@@ -18,12 +18,16 @@
 
 <div class="currentScores" th:if="${player.getRole() == 'admin'}">
     <h3>The current scores are:</h3>
-    <ul th:each="item : ${scoreboard}">
-        <li th:text="${item}" style="text-decoration: none"></li>
-    </ul>
+
+    <table class="scoresTable">
+        <tr th:each="item : ${scoreboard}">
+            <td th:text="${item.getKey()}"></td>
+            <td th:text="${item.getValue()}"></td>
+        </tr>
+    </table>
 
     <form method="post" th:action="'/play/' + ${quizCode}">
-        <input id="nextQuestionButton" type="submit" value="Next">
+        <input id="nextQuestionButton" type="submit" value="Next question">
     </form>
 </div>
 
