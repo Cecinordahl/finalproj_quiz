@@ -551,9 +551,10 @@ input[type="submit"] {
     }
 
     .join_quiz_container input[type="submit"] {
-        width: 80%;
+        width: 70%;
         float: none;
     }
+
     .container-results{
         width: 90vw;
     }
@@ -577,7 +578,8 @@ input[type="submit"] {
 
     #questionX {
         width: 100%;
-        font-size: 65px;
+        font-size: 18vw;
+        font-max-size: 65px;
         color: #FFFFFF;
         margin: 2vh auto;
         top: 0;
