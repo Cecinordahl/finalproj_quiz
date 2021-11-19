@@ -75,13 +75,20 @@ input[type="submit"] {
     top: 3vw;
 }
 
-#happy-monster{
+/*#happy-monster{
     position: relative;
     width: 500px;
     z-index: -1;
     left: 47%;
     transform: translateX(-50%);
+}*/
+#happy-monster{
+    position: absolute;
+    width: 500px;
+    z-index: -1;
+    margin: 2vh auto 0 auto;
 }
+
 
 
 /* --------------- Welcome page (front page) -----------------*/
@@ -232,9 +239,9 @@ input[type="submit"] {
     padding: 15px;
     border-radius: 5px;
     position: relative;
-    top: 45vh;
+    top: 41vh;
     height: fit-content;
-    transform: translateX(-50%);
+    /*transform: translateX(-50%);*/
 
 
 
@@ -245,9 +252,12 @@ input[type="submit"] {
     list-style-type: none; /* Remove bullets */
     padding: 0; /* Remove padding */
     margin: 0; /* Remove margins */
+    margin-bottom: 20px;
 }
 
-
+.container-start input[type="submit"] {
+    margin-bottom: 20px;
+}
 
 
 
@@ -595,10 +605,9 @@ input[type="submit"] {
     /* start quiz */
     #happy-monster{
         position: relative;
-        width: 300px;
+        width: 280px;
         z-index: -1;
-        left: 42%;
-        transform: translateX(-50%);
+        margin: 2vh auto 0 auto;
     }
 
 
@@ -612,8 +621,7 @@ input[type="submit"] {
         padding: 15px;
         border-radius: 5px;
         position: relative;
-        top: -100px;
-        left: 120px;
+        top: -13vh;
         height: fit-content;
     }
 
