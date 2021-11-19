@@ -77,11 +77,10 @@ input[type="submit"] {
 
 #happy-monster{
     position: relative;
-    width: 300px;
+    width: 500px;
     z-index: -1;
-
-
-
+    left: 47%;
+    transform: translateX(-50%);
 }
 
 
@@ -201,6 +200,9 @@ input[type="submit"] {
 
 /* ---------------------------------- Start quiz page ---------------------------------*/
 
+.start_quiz_body{
+
+}
 .container-start{
     background-color: white;
     opacity: 0.8;
@@ -208,10 +210,15 @@ input[type="submit"] {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    position: relative;
-    top: -100px;
     padding: 15px;
     border-radius: 5px;
+    position: relative;
+    top: 45vh;
+    height: fit-content;
+    transform: translateX(-50%);
+
+
+
 }
 
 .listOfPlayers {
