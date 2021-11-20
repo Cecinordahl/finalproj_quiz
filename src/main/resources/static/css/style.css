@@ -383,6 +383,15 @@ input[type="submit"] {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 80px;
+}
+
+.currentScores p {
+    width: 100%;
+    font-size: 22px;
+    text-align: center;
+    margin: 0;
+    margin-top: 10px;
 }
 
 .currentScores h3 {
@@ -666,6 +675,8 @@ input[type="submit"] {
         width: 95%;
         text-align: center;
         margin-top: 5vh;
+        margin-left: auto;
+        margin-right: auto;
     }
 
 

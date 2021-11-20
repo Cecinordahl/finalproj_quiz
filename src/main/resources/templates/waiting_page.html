@@ -17,6 +17,9 @@
 
 
 <div class="currentScores" th:if="${player.getRole() == 'admin'}">
+    <p>The correct answer was: </p>
+    <p th:text="${session.correctAnswerText}"></p>
+
     <h3>The current scores are:</h3>
 
     <table class="scoresTable">
@@ -29,6 +32,8 @@
     <form method="post" th:action="'/play/' + ${quizCode}">
         <input id="nextQuestionButton" type="submit" value="Next question">
     </form>
+
+
 </div>
 
 

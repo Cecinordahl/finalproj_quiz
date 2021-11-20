@@ -140,10 +140,11 @@ public class QuestionsController {
 
     // post method when admin has clicked on start quiz
     @PostMapping("/play/{quizCode}")
-    public String postStartQuiz(@PathVariable String quizCode){
+    public String postStartQuiz(@PathVariable String quizCode, HttpSession session){
 
         isReady = true;
         playerCounter = 0;
+        session.removeAttribute("correctAnswerText");
 
         if (isFuzz) {
             fuzzModeScoreList.clear();
@@ -174,6 +175,7 @@ public class QuestionsController {
 
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
+        session.setAttribute("correctAnswerText", mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""));
 
         model.addAttribute(alternatives.get(0), mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""));
         model.addAttribute(alternatives.get(1), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""));
@@ -189,10 +191,6 @@ public class QuestionsController {
 
         player = (Player) session.getAttribute("player");
         model.addAttribute("player", player);
-
-        if (isFuzz) {
-
-        }
 
         // if player role is player and they answer the question correctly, increase points
         if (player.getRole().equals("player") && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)){
@@ -251,6 +249,8 @@ public class QuestionsController {
             return "result_page";
         }
 
+        model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
+
         // if player role is admin, generate next question
         if(player.getRole().equals("admin")) {
             nextQuestion();
@@ -265,6 +265,7 @@ public class QuestionsController {
 
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
+//        model.addAttribute("correctAnswerText", session.getAttribute("correctAnswerText"));
 
         if (isReady){
             playerCounter++;
@@ -279,19 +280,6 @@ public class QuestionsController {
 
         return "waiting_page";
     }
-
-
-
-
-    /*
-    @GetMapping("/play/{quizCode}/status")
-    @ResponseBody
-    public String status(@PathVariable int quizCode, HttpServletResponse response){
-        return "{\"isAnsweredCorrectly\" : " + isAnsweredCorrectly + "}";
-    }
-    */
-
-
 
 
 
