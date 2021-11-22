@@ -47,7 +47,16 @@
 
 
     <script>
+        //Prevent user from clicking the backbutton
+        function preventBack() {
+            window.history.forward();
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () {
+            null
+        };
 
+        //Info-bullet on "fuzz-mode"
         function myFunction() {
             var popup = document.getElementById("myPopup");
             popup.classList.toggle("show");

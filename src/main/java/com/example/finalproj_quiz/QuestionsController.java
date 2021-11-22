@@ -27,6 +27,7 @@ public class QuestionsController {
     private int questionNumber;
     private int numberOfQuestions;
     private int quizCode;
+    private int answerCounter;
 
     // boolean variables
     private boolean isReady = false;
@@ -45,7 +46,7 @@ public class QuestionsController {
     private List<Player> listOfPlayers = new ArrayList<>();
     private HashMap<String, Integer> scoreboard = new HashMap<>();
     private List<Integer> fuzzModeScoreList = new ArrayList<>();
-    private int answerCounter;
+
 
 
     //------------------------------------------------------------------------------------------------------------------
@@ -63,10 +64,11 @@ public class QuestionsController {
 
     // admin only : initializes and clears anything needed for the quiz
     @GetMapping("/register-quiz")
-    public String initializeQuiz(Model model) {
+    public String initializeQuiz(Model model, HttpSession session) {
 
         model.addAttribute("categoriesList", categoriesList());
         restartQuiz();
+        session.removeAttribute("correctAnswerText");
 
         return "admin_first_page";
     }
@@ -164,10 +166,11 @@ public class QuestionsController {
 
     // post method when admin has clicked on start quiz
     @PostMapping("/play/{quizCode}")
-    public String postStartQuiz(@PathVariable String quizCode){
+    public String postStartQuiz(@PathVariable String quizCode, HttpSession session){
 
-        playerCounter = 0;
         isReady = true;
+        playerCounter = 0;
+        session.removeAttribute("correctAnswerText");
 
         if (isFuzz) {
             fuzzModeScoreList.clear();
@@ -199,10 +202,25 @@ public class QuestionsController {
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
 
-        model.addAttribute(alternatives.get(0), mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""));
-        model.addAttribute(alternatives.get(1), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""));
-        model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""));
-        model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
+        //To account for a discovered mistake in the API:
+        String[] answerTextArray = {mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", "")
+                                    };
+
+        for (int i = 0; i < answerTextArray.length; i++) {
+            if (answerTextArray[i].contains("Bæ Hovedr")) {
+                answerTextArray[i] = answerTextArray[i].replace("Bæ Hovedr", "Bullock");
+            }
+        }
+
+        session.setAttribute("correctAnswerText", answerTextArray[0]);
+
+        model.addAttribute(alternatives.get(0), answerTextArray[0]);
+        model.addAttribute(alternatives.get(1), answerTextArray[1]);
+        model.addAttribute(alternatives.get(2), answerTextArray[2]);
+        model.addAttribute(alternatives.get(3), answerTextArray[3]);
 
         return "question_page";
     }
@@ -278,6 +296,8 @@ public class QuestionsController {
             return "result_page";
         }
 
+        model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
+
         // if player role is admin, generate next question
         if(player.getRole().equals("admin")) {
             nextQuestion();
@@ -292,6 +312,7 @@ public class QuestionsController {
 
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
+//        model.addAttribute("correctAnswerText", session.getAttribute("correctAnswerText"));
 
         if (answerCounter == listOfPlayers.size()){
             answerCounter = 0;

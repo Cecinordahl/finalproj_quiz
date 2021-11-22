@@ -75,13 +75,20 @@ input[type="submit"] {
     top: 3vw;
 }
 
-#happy-monster{
+/*#happy-monster{
     position: relative;
     width: 500px;
     z-index: -1;
     left: 47%;
     transform: translateX(-50%);
+}*/
+#happy-monster{
+    position: absolute;
+    width: 500px;
+    z-index: -1;
+    margin: 2vh auto 0 auto;
 }
+
 
 
 /* --------------- Welcome page (front page) -----------------*/
@@ -232,9 +239,9 @@ input[type="submit"] {
     padding: 15px;
     border-radius: 5px;
     position: relative;
-    top: 45vh;
+    top: 41vh;
     height: fit-content;
-    transform: translateX(-50%);
+    /*transform: translateX(-50%);*/
 
 
 
@@ -245,9 +252,12 @@ input[type="submit"] {
     list-style-type: none; /* Remove bullets */
     padding: 0; /* Remove padding */
     margin: 0; /* Remove margins */
+    margin-bottom: 20px;
 }
 
-
+.container-start input[type="submit"] {
+    margin-bottom: 20px;
+}
 
 
 
@@ -300,20 +310,20 @@ input[type="submit"] {
 }
 
 .answers {
-    width: 90vw;
+    width: 70vw;
     text-align: center;
-    margin-top: 8vw;
+    margin-top: 100px;
 }
 
 .answers input[type="submit"] {
     background-color: #a94752;
     color: white;
-    font-size: 3vh;
+    font-size: 22px;
     border-radius: 20px;
-    width: 90%;
-    height: 18vw;
+    width: 80%;
+    height: 80px;
     text-align: center;
-    margin: 2vh auto;
+    margin: 10px auto;
 }
 
 
@@ -325,6 +335,21 @@ input[type="submit"] {
     justify-content: center;
     flex-wrap: wrap;
     width: 30vw;
+}
+
+.lastCorrectAnswer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 80px;
+}
+
+.lastCorrectAnswer p {
+    width: 100%;
+    font-size: 22px;
+    text-align: center;
+    margin: 0;
+    margin-top: 10px;
 }
 
 .headerResults h2 {
@@ -373,6 +398,15 @@ input[type="submit"] {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 80px;
+}
+
+.currentScores p {
+    width: 100%;
+    font-size: 22px;
+    text-align: center;
+    margin: 0;
+    margin-top: 10px;
 }
 
 .currentScores h3 {
@@ -595,10 +629,9 @@ input[type="submit"] {
     /* start quiz */
     #happy-monster{
         position: relative;
-        width: 300px;
+        width: 280px;
         z-index: -1;
-        left: 42%;
-        transform: translateX(-50%);
+        margin: 2vh auto 0 auto;
     }
 
 
@@ -612,8 +645,7 @@ input[type="submit"] {
         padding: 15px;
         border-radius: 5px;
         position: relative;
-        top: -100px;
-        left: 120px;
+        top: -13vh;
         height: fit-content;
     }
 
@@ -637,6 +669,23 @@ input[type="submit"] {
         top: 0;
     }
 
+    .answers {
+        width: 90vw;
+        text-align: center;
+        margin-top: 8vw;
+    }
+
+    .answers input[type="submit"] {
+        background-color: #a94752;
+        color: white;
+        font-size: 3vh;
+        border-radius: 20px;
+        width: 90%;
+        height: 18vw;
+        text-align: center;
+        margin: 2vh auto;
+    }
+
 
 
     /* result page */
@@ -658,6 +707,8 @@ input[type="submit"] {
         width: 95%;
         text-align: center;
         margin-top: 5vh;
+        margin-left: auto;
+        margin-right: auto;
     }
 
 
