@@ -32,6 +32,14 @@
             </div>
         </div>
 
+        <input type="checkbox" name="isRemote" id="remoteCheckbox" onclick="isRemoteChecked()">
+        <label for="remoteCheckbox">Remote players?</label>
+
+        <div class="join_quiz_inputDiv" id="text" style="display: none">
+            <label for="userName">Your name :</label>
+            <input type="text" name="name" id="userName" required>
+        </div>
+
         <input type="submit" value="Create">
     </form>
 
@@ -43,6 +51,16 @@
         function myFunction() {
             var popup = document.getElementById("myPopup");
             popup.classList.toggle("show");
+        }
+
+        function isRemoteChecked(){
+            var checkBox = document.getElementById("remoteCheckbox");
+            var text = document.getElementById("text");
+            if (checkBox.checked == true){
+                text.style.display = "block";
+            } else {
+                text.style.display = "none";
+            }
         }
     </script>
 </body>

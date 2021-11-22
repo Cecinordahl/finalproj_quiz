@@ -33,6 +33,8 @@ public class QuestionsController {
     private boolean isFinalQuestion = false;
     private boolean isFuzz = false;
     private boolean isAnsweredCorrectly = false;
+    private boolean isRemote = false;
+    private boolean showNextQuestion = false;
 
 
     // object variables
@@ -43,6 +45,7 @@ public class QuestionsController {
     private List<Player> listOfPlayers = new ArrayList<>();
     private HashMap<String, Integer> scoreboard = new HashMap<>();
     private List<Integer> fuzzModeScoreList = new ArrayList<>();
+    private int answerCounter;
 
 
     //------------------------------------------------------------------------------------------------------------------
@@ -70,16 +73,34 @@ public class QuestionsController {
 
     // admin only : creates quiz and sets role "admin" to the player object in session
     @PostMapping("/register-quiz")
-    public String registerQuiz(@RequestParam(required = false, defaultValue = "10") Integer inputNumberOfQuestions, HttpSession session, @RequestParam(required = false) List<String> category, @RequestParam(required = false) boolean isFuzz){
+    public String registerQuiz(@RequestParam(required = false, defaultValue = "10") Integer inputNumberOfQuestions,
+                               HttpSession session,
+                               @RequestParam(required = false) List<String> category,
+                               @RequestParam(required = false) boolean isFuzz,
+                               @RequestParam(required = false) boolean isRemote,
+                               @RequestParam(required = false) String name) {
         if (isFuzz == true) {
             this.isFuzz = isFuzz;
         }
+
+        if (isRemote == true){
+            this.isRemote = isRemote;
+            player = new Player(name);
+            player.setRole("admin");
+            session.setAttribute("player", player);
+            listOfPlayers.add(player);
+            scoreboard.put(player.getName(), 0);
+        }
+        else {
+            player = new Player();
+            player.setRole("admin");
+            session.setAttribute("player", player);
+        }
+
         session.setAttribute("isFuzz", this.isFuzz);
+        session.setAttribute("isRemote", this.isRemote);
 
         numberOfQuestions = inputNumberOfQuestions;
-        player = new Player();
-        player.setRole("admin");
-        session.setAttribute("player", player);
 
         if(category != null){
             questions = getQuizWithCategory(category, inputNumberOfQuestions);
@@ -124,6 +145,7 @@ public class QuestionsController {
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("questionNumber", questionNumber);
         model.addAttribute("isReady", isReady);
+        model.addAttribute("isRemote", isRemote);
         model.addAttribute("player", session.getAttribute("player"));
 
         // controls flow of players
@@ -131,8 +153,10 @@ public class QuestionsController {
             playerCounter++;
             if(playerCounter == listOfPlayers.size()) {
                 isReady = false;
-            }
-            return "redirect:/play/" + quizCode + '/' + questionNumber;
+                System.out.println("setting counter to 0");
+                if(isRemote){return "redirect:/play/" + quizCode + '/' + questionNumber;}
+            } // *******************************************************
+            if(!isRemote){return "redirect:/play/" + quizCode + '/' + questionNumber;}
         }
 
         return "start_quiz";
@@ -142,8 +166,8 @@ public class QuestionsController {
     @PostMapping("/play/{quizCode}")
     public String postStartQuiz(@PathVariable String quizCode){
 
-        isReady = true;
         playerCounter = 0;
+        isReady = true;
 
         if (isFuzz) {
             fuzzModeScoreList.clear();
@@ -169,7 +193,7 @@ public class QuestionsController {
 
         model.addAttribute("player", session.getAttribute("player"));
 
-        /* ----------- */
+        model.addAttribute("isRemote", isRemote);
         model.addAttribute("isAnsweredCorrectly", isAnsweredCorrectly);
 
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
@@ -190,12 +214,15 @@ public class QuestionsController {
         player = (Player) session.getAttribute("player");
         model.addAttribute("player", player);
 
-        if (isFuzz) {
-
+        if(isRemote && (answer != null)){
+            answerCounter++;
+            showNextQuestion = false;
         }
 
+
+
         // if player role is player and they answer the question correctly, increase points
-        if (player.getRole().equals("player") && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)){
+        if ((player.getRole().equals("player") || isRemote) && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)) {
                 int tempScore = scoreboard.get(player.getName());
                 if (isFuzz) {
                     scoreboard.put(player.getName(), tempScore + fuzzModeScoreList.get(0));
@@ -266,16 +293,30 @@ public class QuestionsController {
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable int quizCode, Model model, HttpSession session){
 
-        if (isReady){
+        if (answerCounter == listOfPlayers.size()){
+            answerCounter = 0;
+            showNextQuestion = true;
+        }
+
+        model.addAttribute("showNextQuestion", showNextQuestion);
+        model.addAttribute("isRemote", isRemote);
+        model.addAttribute("scoreboard", scoreboard);
+        model.addAttribute("player", session.getAttribute("player"));
+
+        if (isReady && !isRemote){
             playerCounter++;
             if(playerCounter == listOfPlayers.size()) {
                 isReady = false;
-            }
+            } // ********************* skal denne være her eller et hakk tilbake/inn ?
             return "redirect:/play/" + quizCode + '/' + questionNumber;
         }
 
-        model.addAttribute("scoreboard", scoreboard);
-        model.addAttribute("player", session.getAttribute("player"));
+        if (isReady && isRemote){
+            playerCounter++;
+            if(playerCounter == listOfPlayers.size()) {
+                isReady = false;
+                return "redirect:/play/" + quizCode + '/' + questionNumber;
+            }}
 
         return "waiting_page";
     }
@@ -283,13 +324,6 @@ public class QuestionsController {
 
 
 
-    /*
-    @GetMapping("/play/{quizCode}/status")
-    @ResponseBody
-    public String status(@PathVariable int quizCode, HttpServletResponse response){
-        return "{\"isAnsweredCorrectly\" : " + isAnsweredCorrectly + "}";
-    }
-    */
 
 
 

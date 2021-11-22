@@ -24,11 +24,15 @@
         <span id="countdown"></span>
     </div>
 
-    <div class="question" th:if="${player.getRole() == 'admin'}">
+    <div class="question" th:if="${player.getRole() == 'admin'} or ${isRemote}">
         <p th:text="${question}"></p>
     </div>
 
-    <div class="answers" th:if="${player.getRole() == 'player'}">
+
+
+
+
+    <div class="answers" th:if="${player.getRole() == 'player'} or ${isRemote}">
         <form class="answer_form" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" method="post">
             <input type="submit" id="A" name="answer" th:value="${A}">
             <input type="submit" id="B" name="answer" th:value="${B}">
@@ -36,6 +40,9 @@
             <input type="submit" id="D" name="answer" th:value="${D}">
         </form>
     </div>
+
+
+
 </div>
 
 
