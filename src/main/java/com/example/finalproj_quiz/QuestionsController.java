@@ -60,10 +60,11 @@ public class QuestionsController {
 
     // admin only : initializes and clears anything needed for the quiz
     @GetMapping("/register-quiz")
-    public String initializeQuiz(Model model) {
+    public String initializeQuiz(Model model, HttpSession session) {
 
         model.addAttribute("categoriesList", categoriesList());
         restartQuiz();
+        session.removeAttribute("correctAnswerText");
 
         return "admin_first_page";
     }
