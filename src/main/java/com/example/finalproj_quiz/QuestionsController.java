@@ -176,12 +176,26 @@ public class QuestionsController {
 
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
-        session.setAttribute("correctAnswerText", mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""));
 
-        model.addAttribute(alternatives.get(0), mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""));
-        model.addAttribute(alternatives.get(1), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""));
-        model.addAttribute(alternatives.get(2), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""));
-        model.addAttribute(alternatives.get(3), mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", ""));
+        //To account for a discovered mistake in the API:
+        String[] answerTextArray = {mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", "")
+                                    };
+
+        for (int i = 0; i < answerTextArray.length; i++) {
+            if (answerTextArray[i].contains("Bæ Hovedr")) {
+                answerTextArray[i] = answerTextArray[i].replace("Bæ Hovedr", "Bullock");
+            }
+        }
+
+        session.setAttribute("correctAnswerText", answerTextArray[0]);
+
+        model.addAttribute(alternatives.get(0), answerTextArray[0]);
+        model.addAttribute(alternatives.get(1), answerTextArray[1]);
+        model.addAttribute(alternatives.get(2), answerTextArray[2]);
+        model.addAttribute(alternatives.get(3), answerTextArray[3]);
 
         return "question_page";
     }
