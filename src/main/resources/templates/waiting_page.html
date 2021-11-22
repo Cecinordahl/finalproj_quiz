@@ -36,6 +36,16 @@
 
 </div>
 
+<script>
+    //Prevent user from clicking the backbutton
+    function preventBack() {
+        window.history.forward();
+    }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () {
+        null
+    };
+</script>
 
 </body>
 </html>

@@ -39,6 +39,7 @@
 
 <script>
 
+    //Countdown clock
     var timeleft = 10;
     document.getElementById("countdown").innerHTML = timeleft;
     var downloadTimer = setInterval(function(){
@@ -50,6 +51,15 @@
         }
         timeleft -= 1;
     }, 1000);
+
+    //Prevent user from clicking the backbutton
+    function preventBack() {
+        window.history.forward();
+    }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () {
+        null
+    };
 
 </script>
 
