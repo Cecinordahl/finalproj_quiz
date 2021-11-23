@@ -45,6 +45,7 @@ public class QuestionsController {
     private List<Player> listOfPlayers = new ArrayList<>();
     private HashMap<String, Integer> scoreboard = new HashMap<>();
     private List<Integer> fuzzModeScoreList = new ArrayList<>();
+    private HashMap<String, Integer> lastScoresMap = new HashMap<>();
 
 
 
@@ -246,14 +247,14 @@ public class QuestionsController {
                 int tempScore = scoreboard.get(player.getName());
                 if (isFuzz) {
                     scoreboard.put(player.getName(), tempScore + fuzzModeScoreList.get(0));
-                    session.setAttribute("lastScore", fuzzModeScoreList.get(0));
+                    lastScoresMap.put(player.getName(), fuzzModeScoreList.get(0));
                     fuzzModeScoreList.remove(0);
                 } else {
-                    session.setAttribute("lastScore", 1);
+                    lastScoresMap.put(player.getName(), 1);
                     scoreboard.put(player.getName(), tempScore + 1);
                 }
         } else {
-            session.setAttribute("lastScore", 0);
+            lastScoresMap.put(player.getName(), 0);
         }
 
         // returns result page if this is currently the last question
@@ -285,6 +286,7 @@ public class QuestionsController {
         model.addAttribute("isRemote", isRemote);
         model.addAttribute("scoreboard", scoreboard);
         model.addAttribute("player", session.getAttribute("player"));
+        model.addAttribute("lastScores", lastScoresMap);
 
 
         if (isReady){
