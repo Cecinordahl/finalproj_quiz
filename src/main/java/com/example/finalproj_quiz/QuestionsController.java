@@ -225,7 +225,11 @@ public class QuestionsController {
 
     // retrieves answers from players
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable String quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer) throws JsonProcessingException {
+    public String postScore(@PathVariable String quizCode,
+                            @PathVariable int questionNumber,
+                            HttpSession session, Model model,
+                            @RequestParam(required = false) String answer) throws JsonProcessingException {
+
         String correctAnswer = mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "");
         String question = mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", "");
         player = (Player) session.getAttribute("player");
@@ -242,10 +246,14 @@ public class QuestionsController {
                 int tempScore = scoreboard.get(player.getName());
                 if (isFuzz) {
                     scoreboard.put(player.getName(), tempScore + fuzzModeScoreList.get(0));
+                    session.setAttribute("lastScore", fuzzModeScoreList.get(0));
                     fuzzModeScoreList.remove(0);
                 } else {
+                    session.setAttribute("lastScore", 1);
                     scoreboard.put(player.getName(), tempScore + 1);
                 }
+        } else {
+            session.setAttribute("lastScore", 0);
         }
 
         // returns result page if this is currently the last question
@@ -278,6 +286,7 @@ public class QuestionsController {
         model.addAttribute("scoreboard", scoreboard);
         model.addAttribute("player", session.getAttribute("player"));
 
+
         if (isReady){
             playerCounter++;
             if((!isRemote && playerCounter == listOfPlayers.size()) || (isRemote && playerCounter >= listOfPlayers.size()-1)) {
@@ -294,6 +303,7 @@ public class QuestionsController {
     public String calculatingResults(@PathVariable String quizCode, Model model, HttpSession session){
         model.addAttribute("player", session.getAttribute("player"));
         model.addAttribute("quizCode", quizCode);
+        model.addAttribute("isRemote", isRemote);
 
         return "calculating_results";
     }
