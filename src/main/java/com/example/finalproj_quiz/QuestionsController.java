@@ -156,14 +156,20 @@ public class QuestionsController {
 
 
         // controls flow of players
-        if (isReady){
+        if (isReady && !isRemote){
             playerCounter++;
             if(playerCounter == listOfPlayers.size()) {
                 isReady = false;
-                System.out.println("setting counter to 0");
-                if(isRemote){return "redirect:/play/" + quizCode + '/' + questionNumber;}
-            } // *******************************************************
-            if(!isRemote){return "redirect:/play/" + quizCode + '/' + questionNumber;}
+            }
+            return "redirect:/play/" + quizCode + '/' + questionNumber;
+        }
+        // controls flow of players
+        if (isReady && isRemote){
+            playerCounter++;
+            if(playerCounter == listOfPlayers.size()+1) {
+                isReady = false;
+            }
+            return "redirect:/play/" + quizCode + '/' + questionNumber;
         }
 
         return "start_quiz";
@@ -340,10 +346,10 @@ public class QuestionsController {
 
         if (isReady && isRemote){
             playerCounter++;
-            if(playerCounter == listOfPlayers.size()) {
+            if(playerCounter == listOfPlayers.size()+1) {
                 isReady = false;
-                return "redirect:/play/" + quizCode + '/' + questionNumber;
             }
+            return "redirect:/play/" + quizCode + '/' + questionNumber;
 
         }
 
