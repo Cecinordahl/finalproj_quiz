@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="1">
     <title>Quiz</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,6 +57,15 @@
     window.onunload = function () {
         null
     };
+
+    function reloadWindow(){
+        setInterval(function (){
+            location.reload()
+        }, 1000)
+    }
+
+    reloadWindow();
+
 </script>
 
 </body>
