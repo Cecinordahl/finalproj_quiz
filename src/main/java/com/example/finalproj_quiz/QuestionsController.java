@@ -80,7 +80,7 @@ public class QuestionsController {
                                @RequestParam(required = false) List<String> category,
                                @RequestParam(required = false) boolean isFuzz,
                                @RequestParam(required = false) boolean isRemote,
-                               @RequestParam(required = false) String name) {
+                               @RequestParam(required = false, defaultValue = "Quiz Master") String name) {
         if (isFuzz == true) {
             this.isFuzz = isFuzz;
         }
@@ -109,6 +109,8 @@ public class QuestionsController {
         }else{
             questions = getQuiz(inputNumberOfQuestions);
         }
+
+
 
         return "redirect:/play/" + quizCode;
     }
@@ -143,12 +145,15 @@ public class QuestionsController {
     // Start quiz from the generated quiz
     @GetMapping("/play/{quizCode}")
     public String startQuiz(@PathVariable String quizCode, Model model, HttpSession session){
+
         model.addAttribute("listOfPlayers", listOfPlayers);
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("questionNumber", questionNumber);
         model.addAttribute("isReady", isReady);
         model.addAttribute("isRemote", isRemote);
         model.addAttribute("player", session.getAttribute("player"));
+
+
 
         // controls flow of players
         if (isReady){
@@ -293,6 +298,7 @@ public class QuestionsController {
             model.addAttribute("numberOfQuestions", numberOfQuestions);
             model.addAttribute("numberOfPlayers", listOfPlayers.size());
             model.addAttribute("isFuzz", isFuzz);
+            model.addAttribute("isRemote", isRemote);
             return "result_page";
         }
 

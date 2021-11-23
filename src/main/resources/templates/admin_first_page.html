@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="fuzzmodeCheckbox">
+        <div class="fuzzmodeCheckbox" id="fuzzModeCheckbox">
             <p style="margin: 0; padding: 0">Do you want to spice it up?</p>
             <input type="checkbox" name="isFuzz" id="fuzzCheckbox">
             <label style="margin: 0; padding: 0" for="fuzzCheckbox">Fuzz-mode</label>
@@ -32,14 +32,18 @@
             </div>
         </div>
 
-        <input type="checkbox" name="isRemote" id="remoteCheckbox" onclick="isRemoteChecked()">
-        <label for="remoteCheckbox">Remote players?</label>
+        <div style="display: block">
+            <input type="checkbox" name="isRemote" id="remoteCheckbox" onclick="isRemoteChecked()">
+            <label for="remoteCheckbox">Remote players?</label>
+        </div>
+
 
         <div class="join_quiz_inputDiv" id="text" style="display: none">
             <label for="userName">Your name :</label>
-            <input type="text" name="name" id="userName" required>
+            <input type="text" name="name" id="userName">
         </div>
 
+        <p></p>
         <input type="submit" value="Create">
     </form>
 
@@ -64,13 +68,18 @@
 
         function isRemoteChecked(){
             var checkBox = document.getElementById("remoteCheckbox");
+            var fuzzModeCheckbox = document.getElementById("fuzzModeCheckbox");
             var text = document.getElementById("text");
+
             if (checkBox.checked == true){
                 text.style.display = "block";
+                fuzzModeCheckbox.style.display = "none";
             } else {
                 text.style.display = "none";
+                fuzzModeCheckbox.style.display = "block";
             }
         }
+
     </script>
 </body>
 </html>

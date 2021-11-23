@@ -9,7 +9,7 @@
 <body>
 
 <div class="container-results">
-    <div class="lastCorrectAnswer" th:if="${player.getRole() == 'admin'}">
+    <div class="lastCorrectAnswer" th:if="${player.getRole() == 'admin'} or ${isRemote}">
         <p>The correct answer was: </p>
         <p th:text="${session.correctAnswerText}"></p>
     </div>
@@ -18,7 +18,7 @@
         <h2>Results</h2>
     </div>
 
-    <div class="resultTableDiv" th:if="${player.getRole() == 'admin'}">
+    <div class="resultTableDiv" th:if="${player.getRole() == 'admin'} or ${isRemote}">
         <table class="resultTable">
             <tr>
                 <th id="resultTablePlacement">Placement</th>
@@ -33,7 +33,7 @@
         </table>
     </div>
 
-    <div class="playerScore" th:if="${player.getRole() == 'player'}">
+    <div class="playerScore" th:if="${player.getRole() == 'player'} and not ${isRemote}">
         <p>Your score was <span th:text="${scoreboard.get(player.getName())}"></span> out of
             <span th:if="${isFuzz}" th:text="${numberOfQuestions*numberOfPlayers}"></span>
             <span th:if="${!isFuzz}" th:text="${numberOfQuestions}"></span>
