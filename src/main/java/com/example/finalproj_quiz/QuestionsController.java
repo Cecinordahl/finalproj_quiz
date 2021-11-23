@@ -86,17 +86,13 @@ public class QuestionsController {
 
         if (isRemote == true){
             this.isRemote = isRemote;
-            player = new Player(name);
-            player.setRole("admin");
-            session.setAttribute("player", player);
+            createNewAdmin(session, name);
             listOfPlayers.add(player);
             scoreboard.put(player.getName(), 0);
             answerCounter = 0;
         }
         else {
-            player = new Player();
-            player.setRole("admin");
-            session.setAttribute("player", player);
+            createNewAdmin(session, name);
         }
 
         session.setAttribute("isFuzz", this.isFuzz);
@@ -110,10 +106,10 @@ public class QuestionsController {
             questions = getQuiz(inputNumberOfQuestions);
         }
 
-
-
         return "redirect:/play/" + quizCode;
     }
+
+
 
 
     //----------------------------------------------- player only ------------------------------------------------------
@@ -129,11 +125,7 @@ public class QuestionsController {
     @PostMapping("/register-players")
     public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name, HttpSession session){
 
-        player = new Player(name);
-        player.setRole("player");
-        listOfPlayers.add(player);
-        session.setAttribute("player", player);
-        scoreboard.put(player.getName(), 0);
+        createNewPlayer(name, session);
 
         return "redirect:/play/" + userQuizCode;
     }
@@ -154,19 +146,9 @@ public class QuestionsController {
         model.addAttribute("player", session.getAttribute("player"));
 
 
-
-        // controls flow of players
-        if (isReady && !isRemote){
+        if (isReady){
             playerCounter++;
-            if(playerCounter == listOfPlayers.size()) {
-                isReady = false;
-            }
-            return "redirect:/play/" + quizCode + '/' + questionNumber;
-        }
-        // controls flow of players
-        if (isReady && isRemote){
-            playerCounter++;
-            if(playerCounter == listOfPlayers.size()-1) {
+            if((!isRemote && playerCounter == listOfPlayers.size()) || (isRemote && playerCounter == listOfPlayers.size()-1)) {
                 isReady = false;
             }
             return "redirect:/play/" + quizCode + '/' + questionNumber;
@@ -419,6 +401,21 @@ public class QuestionsController {
     // function to generate a random number between 1 and 1000 that represents the quiz code
     public int generateRandomQuizCode(){
         return ThreadLocalRandom.current().nextInt(1, 1000);
+    }
+
+    // new player
+    private void createNewPlayer(String name, HttpSession session) {
+        player = new Player(name);
+        player.setRole("player");
+        listOfPlayers.add(player);
+        session.setAttribute("player", player);
+        scoreboard.put(player.getName(), 0);
+    }
+
+    private void createNewAdmin(HttpSession session, String name) {
+        player = new Player(name);
+        player.setRole("admin");
+        session.setAttribute("player", player);
     }
 
     // function to reset the quiz variables
