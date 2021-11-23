@@ -9,10 +9,7 @@
 <body>
 
 <div class="container-results">
-    <div class="lastCorrectAnswer" th:if="${player.getRole() == 'admin'} or ${isRemote}">
-        <p>The correct answer was: </p>
-        <p th:text="${session.correctAnswerText}"></p>
-    </div>
+
 
     <div class="headerResults">
         <h2>Results</h2>

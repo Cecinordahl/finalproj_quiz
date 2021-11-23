@@ -29,15 +29,13 @@
         </tr>
     </table>
 
-    <!--
-
     <form th:if="${player.getRole() == 'admin'} and not ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
         <input id="nextQuestionButton" type="submit" value="Next question">
     </form>
 
-    -->
 
-    <form th:if="${player.getRole() == 'admin'} and ${showNextQuestion}" method="post" th:action="'/play/' + ${quizCode}">
+
+    <form th:if="${player.getRole() == 'admin'} and ${showNextQuestion} and ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
         <input id="nextQuestionButton" type="submit" value="Next question">
     </form>
 

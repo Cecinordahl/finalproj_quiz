@@ -9,7 +9,7 @@
 <body>
 
 <form method="post" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" hidden>
-    <input id="elementID" type="submit">
+    <input id="elementID" type="submit" name="answer" th:value="blank">
 </form>
 
 <div class="container-question">
@@ -25,10 +25,6 @@
     <div class="question" th:if="${player.getRole() == 'admin'} or ${isRemote}">
         <p th:text="${question}"></p>
     </div>
-
-
-
-
 
     <div class="answers" th:if="${player.getRole() == 'player'} or ${isRemote}">
         <form class="answer_form" th:action="'/play/' + ${quizCode} + '/' + ${questionNumber}" method="post">
@@ -49,6 +45,9 @@
     //Countdown clock
     var timeleft = 10;
     document.getElementById("countdown").innerHTML = timeleft;
+
+
+
     var downloadTimer = setInterval(function(){
         if(timeleft <= 0){
             clearInterval(downloadTimer);

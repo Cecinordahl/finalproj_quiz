@@ -34,7 +34,7 @@
 
         <div style="display: block">
             <input type="checkbox" name="isRemote" id="remoteCheckbox" onclick="isRemoteChecked()">
-            <label for="remoteCheckbox">Remote players?</label>
+            <label for="remoteCheckbox">Remote players or play by yourself</label>
         </div>
 
 
@@ -44,9 +44,11 @@
         </div>
 
         <p></p>
-        <div id="submtiButton" onclick="hideFunction()">
+
+        <div id="submitButton" onclick="hideFunction()">
             <input type="submit" value="Create">
         </div>
+
     </form>
 
 
@@ -83,7 +85,7 @@
         }
 
         function hideFunction(){
-            var submitButton = document.getElementById("submtiButton");
+            var submitButton = document.getElementById("submitButton");
             submitButton.style.display = "none";
         }
 
