@@ -10,4 +10,9 @@ class FinalprojQuestionsApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void returnsCategoriesList(){
+        //Assert.assertEquals();
+    }
+
 }

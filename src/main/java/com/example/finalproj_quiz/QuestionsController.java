@@ -167,7 +167,6 @@ public class QuestionsController {
             isReady = false;
         }
 
-
         playerCounter = 0;
         session.removeAttribute("correctAnswerText");
 
@@ -196,10 +195,8 @@ public class QuestionsController {
         Collections.shuffle(alternatives);
 
         model.addAttribute("player", session.getAttribute("player"));
-
         model.addAttribute("isRemote", isRemote);
         model.addAttribute("isAnsweredCorrectly", isAnsweredCorrectly);
-
         model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
 
@@ -255,7 +252,6 @@ public class QuestionsController {
         if (isFinalQuestion){
             return "redirect:/play/" + quizCode + "/calculatingresults";
         }
-
 
         // if player role is admin, generate next question
         if(player.getRole().equals("admin")) {
