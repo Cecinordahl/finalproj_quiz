@@ -334,7 +334,7 @@ public class QuestionsController {
             playerCounter++;
             if(playerCounter == listOfPlayers.size()) {
                 isReady = false;
-            } // ********************* skal denne være her eller et hakk tilbake/inn ?
+            }
             return "redirect:/play/" + quizCode + '/' + questionNumber;
         }
 
@@ -343,7 +343,9 @@ public class QuestionsController {
             if(playerCounter == listOfPlayers.size()) {
                 isReady = false;
                 return "redirect:/play/" + quizCode + '/' + questionNumber;
-            }}
+            }
+
+        }
 
         return "waiting_page";
     }
