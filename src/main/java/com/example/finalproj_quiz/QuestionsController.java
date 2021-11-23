@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -167,10 +166,8 @@ public class QuestionsController {
         // controls flow of players
         if (isReady && isRemote){
             playerCounter++;
-            System.out.println("GetMapping /play/{quizCode}; 1st if statement: " + player.getName());
             if(playerCounter == listOfPlayers.size()-1) {
                 isReady = false;
-                System.out.println("GetMapping /play/{quizCode}; 2nd if statement: " +player.getName());
             }
             return "redirect:/play/" + quizCode + '/' + questionNumber;
         }
@@ -188,7 +185,6 @@ public class QuestionsController {
             isReady = false;
         }
 
-        System.out.println("PostMapping /play/{quizCode}; " + player.getName() + isReady);
 
         playerCounter = 0;
         session.removeAttribute("correctAnswerText");
@@ -251,19 +247,19 @@ public class QuestionsController {
     // retrieves answers from players
     @PostMapping("/play/{quizCode}/{questionNumber}")
     public String postScore(@PathVariable String quizCode, @PathVariable int questionNumber, HttpSession session, Model model, @RequestParam(required = false) String answer) throws JsonProcessingException {
-
+        String correctAnswer = mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "");
+        String question = mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", "");
         player = (Player) session.getAttribute("player");
+
         model.addAttribute("player", player);
+        model.addAttribute("question", question);
 
         if(isRemote){
             answerCounter++;
-            System.out.println("answercounter etter svar : " + answerCounter + player.getName());
         }
 
-
-
         // if player role is player and they answer the question correctly, increase points
-        if ((player.getRole().equals("player") || isRemote) && mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "").equals(answer)) {
+        if ((player.getRole().equals("player") || isRemote) && correctAnswer.equals(answer)) {
                 int tempScore = scoreboard.get(player.getName());
                 if (isFuzz) {
                     scoreboard.put(player.getName(), tempScore + fuzzModeScoreList.get(0));
@@ -278,12 +274,10 @@ public class QuestionsController {
             return "redirect:/play/" + quizCode + "/calculatingresults";
         }
 
-        model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
 
         // if player role is admin, generate next question
         if(player.getRole().equals("admin")) {
             nextQuestion();
-            System.out.println("generating next question");
         }
 
         return "redirect:/play/" + quizCode + "/wait";
@@ -295,9 +289,6 @@ public class QuestionsController {
 
     @GetMapping("/play/{quizCode}/wait")
     public String waitingPage(@PathVariable String quizCode, Model model, HttpSession session){
-//        model.addAttribute("correctAnswerText", session.getAttribute("correctAnswerText"));
-
-        System.out.println("waiting page");
 
         if (answerCounter >= listOfPlayers.size()){
             answerCounter = 0;
@@ -309,25 +300,12 @@ public class QuestionsController {
         model.addAttribute("scoreboard", scoreboard);
         model.addAttribute("player", session.getAttribute("player"));
 
-        if (isReady && !isRemote){
+        if (isReady){
             playerCounter++;
-            if(playerCounter == listOfPlayers.size()) {
+            if((!isRemote && playerCounter == listOfPlayers.size()) || (isRemote && playerCounter >= listOfPlayers.size()-1)) {
                 isReady = false;
             }
             return "redirect:/play/" + quizCode + '/' + questionNumber;
-        }
-
-        if (isReady && isRemote){
-            playerCounter++;
-            System.out.println("første if");
-            System.out.println(playerCounter);
-            System.out.println(listOfPlayers.size());
-            if(playerCounter >= listOfPlayers.size()-1) {
-                isReady = false;
-                System.out.println("andre if");
-            }
-            return "redirect:/play/" + quizCode + '/' + questionNumber;
-
         }
 
         return "waiting_page";
@@ -350,42 +328,11 @@ public class QuestionsController {
 
         resetQuestionNumber();
 
-        //sort the scoreboard
-        List<HashMap.Entry<String, Integer>> list = new ArrayList<>(scoreboard.entrySet());
-        list.sort(HashMap.Entry.comparingByValue());
-        Collections.reverse(list);
-
-        List<String> orderedListWithNames = new ArrayList<>();
-        for (Map.Entry<String, Integer> item : list) {
-            orderedListWithNames.add(item.getKey());
-        }
-        model.addAttribute("scoreboardList", orderedListWithNames);
-
-        HashMap<String, Integer> sorted = new LinkedHashMap<>();
-        for (HashMap.Entry<String, Integer> entry : list) {
-            sorted.put(entry.getKey(), entry.getValue());
-        }
-
-        scoreboard = sorted;
-        //done with sorting
-
-        //create placement scoreboard
-        List<HashMap.Entry<String, Integer>> tempList = new ArrayList<>(scoreboard.entrySet());
-        Map<String, Integer> placementScoreboard = new HashMap<>();
-        int playerPlacement = 1;
-        placementScoreboard.put(tempList.get(0).getKey(), 1);
-        for (int i = 1; i < tempList.size(); i++) {
-            if (tempList.get(i).getValue() == tempList.get(i - 1).getValue()) {
-                placementScoreboard.put(tempList.get(i).getKey(), playerPlacement);
-            } else {
-                playerPlacement = i + 1;
-                placementScoreboard.put(tempList.get(i).getKey(), playerPlacement);
-            }
-        }
-        //done with placement scoreboard
+        model.addAttribute("scoreboardList", orderListByName(reversedScoreboardList()));
+        sortScoreboard(reversedScoreboardList());
 
         model.addAttribute("scoreboard", scoreboard);
-        model.addAttribute("placementScoreboard", placementScoreboard);
+        model.addAttribute("placementScoreboard", placementScoreboard());
         model.addAttribute("numberOfQuestions", numberOfQuestions);
         model.addAttribute("numberOfPlayers", listOfPlayers.size());
         model.addAttribute("isFuzz", isFuzz);
@@ -506,6 +453,56 @@ public class QuestionsController {
 
 
 
+    public List<Map.Entry<String, Integer>> reversedScoreboardList() {
+        List<HashMap.Entry<String, Integer>> list = new ArrayList<>(scoreboard.entrySet());
+
+        list.sort(HashMap.Entry.comparingByValue());
+        Collections.reverse(list);
+
+        return list;
+    }
+
+
+    public List<String> orderListByName (List<Map.Entry<String, Integer>> list) {
+        List<String> orderedListWithNames = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> item : list) {
+            orderedListWithNames.add(item.getKey());
+        }
+
+        return orderedListWithNames;
+    }
+
+
+    public void sortScoreboard(List<Map.Entry<String, Integer>> list){
+        HashMap<String, Integer> sorted = new LinkedHashMap<>();
+
+        for (HashMap.Entry<String, Integer> entry : list) {
+            sorted.put(entry.getKey(), entry.getValue());
+        }
+
+        scoreboard = sorted;
+    }
+
+
+    public Map<String, Integer> placementScoreboard(){
+        List<HashMap.Entry<String, Integer>> tempList = new ArrayList<>(scoreboard.entrySet());
+        Map<String, Integer> placementScoreboard = new HashMap<>();
+
+        int playerPlacement = 1;
+        placementScoreboard.put(tempList.get(0).getKey(), 1);
+
+        for (int i = 1; i < tempList.size(); i++) {
+            if (tempList.get(i).getValue() == tempList.get(i - 1).getValue()) {
+                placementScoreboard.put(tempList.get(i).getKey(), playerPlacement);
+            } else {
+                playerPlacement = i + 1;
+                placementScoreboard.put(tempList.get(i).getKey(), playerPlacement);
+            }
+        }
+
+        return placementScoreboard;
+    }
 
 }
 
