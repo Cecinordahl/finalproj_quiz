@@ -44,7 +44,9 @@
         </div>
 
         <p></p>
-        <input type="submit" value="Create">
+        <div id="submtiButton" onclick="hideFunction()">
+            <input type="submit" value="Create">
+        </div>
     </form>
 
 
@@ -78,6 +80,11 @@
                 text.style.display = "none";
                 fuzzModeCheckbox.style.display = "block";
             }
+        }
+
+        function hideFunction(){
+            var submitButton = document.getElementById("submtiButton");
+            submitButton.style.display = "none";
         }
 
     </script>
