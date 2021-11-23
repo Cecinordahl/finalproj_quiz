@@ -33,7 +33,7 @@ h1 {
 /* h2 = headers on other main pages, like register quiz/players, results */
 h2 {
     font-family: 'Oswald', serif;
-    font-size: 7vw;
+    font-size: 6vw;
     color: #FFFFFF;
     margin: 0 auto;
     text-align: center;
@@ -272,17 +272,16 @@ input[type="submit"] {
     justify-content: center;
     flex-wrap: wrap;
     width: 50vw;
-    top: 100px;
 }
 
 #questionX {
     font-family: 'Oswald', serif;
     font-size: 80px;
     color: #FFFFFF;
-    margin: 0 auto 150px auto;
+    margin: 0 auto 75px auto;
     text-align: center;
     width: 50vw;
-    top: 100px;
+    top: 50px;
 }
 
 #countdownClockCircle {
@@ -307,9 +306,9 @@ input[type="submit"] {
     width: 50vw;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 75px;
+    margin-top: 50px;
     text-align: center;
-    padding: 30px;
+    padding: 15px;
     border-radius: 5px;
     font-size: 32px;
 }
@@ -317,7 +316,7 @@ input[type="submit"] {
 .answers {
     width: 70vw;
     text-align: center;
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 .answers input[type="submit"] {
@@ -326,9 +325,9 @@ input[type="submit"] {
     font-size: 22px;
     border-radius: 20px;
     width: 80%;
-    height: 80px;
+    padding: 20px;
     text-align: center;
-    margin: 10px auto;
+    margin: 8px auto;
 }
 
 
@@ -340,21 +339,6 @@ input[type="submit"] {
     justify-content: center;
     flex-wrap: wrap;
     width: 30vw;
-}
-
-.lastCorrectAnswer {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 80px;
-}
-
-.lastCorrectAnswer p {
-    width: 100%;
-    font-size: 22px;
-    text-align: center;
-    margin: 0;
-    margin-top: 10px;
 }
 
 .headerResults h2 {
@@ -398,12 +382,34 @@ input[type="submit"] {
 
 
 /* --------------------------- Waiting page -------------------------- */
+.waitingContainer {
+    width: 50vw;
+    display: block;
+    text-align: center;
+}
+
+.lastCorrectAnswer {
+    display: block;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.lastCorrectAnswer p {
+    width: 100%;
+    font-size: 22px;
+    text-align: center;
+    margin: 0;
+    margin-top: 10px;
+}
+
 .currentScores {
     width: 30vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .currentScores p {
@@ -415,14 +421,14 @@ input[type="submit"] {
 }
 
 .currentScores h3 {
-    width: 30vw;
+    width: 100%;
     text-align: center;
     margin-bottom: 20px;
     margin-top: 100px;
 }
 
 .scoresTable {
-    width: 24vw;
+    width: 80%;
 }
 
 .scoresTableName {
@@ -448,6 +454,31 @@ input[type="submit"] {
     padding: 12px;
     border-radius: 30px;
 }
+
+
+
+
+/* ------------------------ calculating result -----------------------------*/
+.calculatingDiv {
+    width: 30vw;
+    display: block;
+    text-align: center;
+}
+
+#myProgress {
+    width: 100%;
+    height: 30px;
+    background-color: #FFFFFF;
+    border: #555555 solid 1px;
+}
+
+#myBar {
+    width: 1%;
+    height: 100%;
+    background-color: #a94752;
+}
+
+
 
 
 
@@ -661,23 +692,31 @@ input[type="submit"] {
     .container-question {
         display: flex;
         justify-content: center;
-        width: 90vw;
+        width: 85vw;
         top: 0;
     }
 
     #questionX {
-        width: 100%;
-        font-size: 18vw;
-        font-max-size: 65px;
+        width: 85vw;
+        font-size: 40px;
         color: #FFFFFF;
         margin: 2vh auto;
         top: 0;
     }
 
-    .answers {
-        width: 90vw;
+    .question {
+        width: 100%;
+        margin-top: 25px;
         text-align: center;
-        margin-top: 8vw;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 32px;
+    }
+
+    .answers {
+        width: 100%;
+        text-align: center;
+        margin-top: 5vw;
     }
 
     .answers input[type="submit"] {
@@ -686,9 +725,36 @@ input[type="submit"] {
         font-size: 3vh;
         border-radius: 20px;
         width: 90%;
-        height: 18vw;
+        padding: 10px;
         text-align: center;
         margin: 2vh auto;
+    }
+
+
+    /* waiting page */
+    .waitingContainer {
+        width: 90vw;
+        display: block;
+        text-align: center;
+    }
+
+    .currentScores {
+        width: 80vw;
+    }
+
+    .currentScores h3 {
+        font-size: 18px;
+    }
+
+    /* calculating result */
+    .calculatingDiv {
+        width: 80vw;
+        display: block;
+        text-align: center;
+    }
+
+    #myProgress {
+        height: 22px;
     }
 
 
@@ -714,6 +780,10 @@ input[type="submit"] {
         margin-top: 5vh;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    .resultTable {
+        width: 80vw;
     }
 
 

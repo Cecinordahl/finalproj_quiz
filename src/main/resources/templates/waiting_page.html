@@ -9,37 +9,38 @@
 </head>
 <body>
 
+<div class="waitingContainer">
 
-<div th:if="${player.getRole() == 'player'} or ${isRemote}">
-    <h3>Waiting for the other players...</h3>
-</div>
-
-
-
-<div class="currentScores" th:if="${player.getRole() == 'admin'} or ${isRemote}">
-    <p>The correct answer was: </p>
-    <p th:text="${session.correctAnswerText}"></p>
-
-    <h3>The current scores are:</h3>
-
-    <table class="scoresTable">
-        <tr class="scoresTableRow" th:each="item : ${scoreboard}">
-            <td class="scoresTableName" th:text="${item.getKey()}"></td>
-            <td class="scoresTableScore" th:text="${item.getValue()}"></td>
-        </tr>
-    </table>
-
-    <form th:if="${player.getRole() == 'admin'} and not ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
-        <input id="nextQuestionButton" type="submit" value="Next question">
-    </form>
+    <div th:if="${player.getRole() == 'player'} or ${isRemote}">
+        <h3>Waiting for the other players...</h3>
+    </div>
 
 
+    <div class="currentScores" th:if="${player.getRole() == 'admin'} or ${isRemote}">
+        <p>The correct answer was: </p>
+        <p th:text="${session.correctAnswerText}"></p>
 
-    <form th:if="${player.getRole() == 'admin'} and ${showNextQuestion} and ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
-        <input id="nextQuestionButton" type="submit" value="Next question">
-    </form>
+        <h3>The current scores are:</h3>
+
+        <table class="scoresTable">
+            <tr class="scoresTableRow" th:each="item : ${scoreboard}">
+                <td class="scoresTableName" th:text="${item.getKey()}"></td>
+                <td class="scoresTableScore" th:text="${item.getValue()}"></td>
+            </tr>
+        </table>
+
+        <form th:if="${player.getRole() == 'admin'} and not ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
+            <input id="nextQuestionButton" type="submit" value="Next question">
+        </form>
 
 
+
+        <form th:if="${player.getRole() == 'admin'} and ${showNextQuestion} and ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
+            <input id="nextQuestionButton" type="submit" value="Next question">
+        </form>
+
+
+    </div>
 </div>
 
 <script>

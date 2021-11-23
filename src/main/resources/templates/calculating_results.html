@@ -3,36 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculating Results</title>
-   <!-- <link rel="stylesheet" th:href="@{/css/style.css}"> -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        #myProgress {
-            width: 100%;
-            background-color: #ddd;
-        }
-
-        #myBar {
-            width: 1%;
-            height: 30px;
-            background-color: #04AA6D;
-        }
-    </style>
 </head>
 <body>
 
+<div class="calculatingDiv">
+    <div class="lastCorrectAnswer" th:if="${player.getRole() == 'admin'} or ${isRemote}">
+        <p>The correct answer was: </p>
+        <p th:text="${session.correctAnswerText}"></p>
+    </div>
 
-<div class="lastCorrectAnswer" th:if="${player.getRole() == 'admin'} or ${isRemote}">
-    <p>The correct answer was: </p>
-    <p th:text="${session.correctAnswerText}"></p>
-</div>
-
-<div>
-    <h3>Calculating the results ...</h3>
+    <h3>Calculating the results...</h3>
     <div id="myProgress">
         <div id="myBar"></div>
     </div>
 </div>
-
 
 <a th:href="'/play/' + ${quizCode} + '/results'" id="elementID"></a>
 
