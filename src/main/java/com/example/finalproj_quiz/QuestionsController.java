@@ -362,6 +362,13 @@ public class QuestionsController {
                 index++;
             }
         }
+
+        try {
+            System.out.println(
+                    mapper.writeValueAsString(returnQuiz));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return returnQuiz;
     }
 
@@ -393,6 +400,8 @@ public class QuestionsController {
                 index++;
             }
         }
+        System.out.println(Arrays.deepToString(returnQuiz));
+
         return returnQuiz;
     }
 
@@ -431,13 +440,25 @@ public class QuestionsController {
         scoreboard.clear();
         listOfPlayers.clear();
         fuzzModeScoreList.clear();
+        quizCode = generateRandomQuizCode();
+
         isReady = false;
         isFinalQuestion = false;
         isFuzz = false;
-        questionNumber = 0;
         isRemote = false;
-        quizCode = generateRandomQuizCode();
+        isAnsweredCorrectly = false;
+        showNextQuestion = false;
+
+        playerCounter = 0;
+        numberOfQuestions = 0;
+        answerCounter = 0;
+        questionNumber = 0;
     }
+
+
+
+
+
 
     // list of quiz categories
     public List<String> categoriesList(){

@@ -1,5 +1,7 @@
 package com.example.finalproj_quiz;
 
+import java.util.Arrays;
+
 public class Questions {
     private String category;
     private String correctAnswer;
@@ -59,5 +61,15 @@ public class Questions {
         this.type = type;
     }
 
-
+    @Override
+    public String toString() {
+        return "Questions{" +
+                "category='" + category + '\'' +
+                ", correctAnswer='" + correctAnswer + '\'' +
+                ", id=" + id +
+                ", incorrectAnswers=" + Arrays.toString(incorrectAnswers) +
+                ", question='" + question + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
