@@ -789,8 +789,18 @@ input[type="submit"] {
 
     /* ..................... popup ................. */
     .popup .popuptext {
-        width: 110px;
+        width: 250px;
         padding: 10px 5px;
+        left: -150px;
+        opacity: 0.9;
+    }
+
+    .popup .popuptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 160px;
+        margin-left: -5px;
     }
 
 }
