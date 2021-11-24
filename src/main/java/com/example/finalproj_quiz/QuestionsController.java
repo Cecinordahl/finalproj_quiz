@@ -276,23 +276,10 @@ public class QuestionsController {
             return "waiting_page";
         }
 
+        game.lastScoresMap.clear();
         addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
 
-    }
-
-    private void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer, Game game) {
-
-        game.playerForwarded.add(currentPlayer.getName());
-        int playerCounter = game.playerForwarded.size();
-
-        if (game.isRemote && playerCounter == game.listOfPlayers.size() - 1) {
-            game.forwardPlayers = false;
-            game.playerForwarded.clear();
-        } else if (!game.isRemote && playerCounter == game.listOfPlayers.size()) {
-            game.forwardPlayers = false;
-            game.playerForwarded.clear();
-        }
     }
 
 
@@ -486,6 +473,22 @@ public class QuestionsController {
         }
 
         return placementScoreboard;
+    }
+
+
+    // function to check if all players have been forwarded to the next question
+    private void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer, Game game) {
+
+        game.playerForwarded.add(currentPlayer.getName());
+        int playerCounter = game.playerForwarded.size();
+
+        if (game.isRemote && playerCounter == game.listOfPlayers.size() - 1) {
+            game.forwardPlayers = false;
+            game.playerForwarded.clear();
+        } else if (!game.isRemote && playerCounter == game.listOfPlayers.size()) {
+            game.forwardPlayers = false;
+            game.playerForwarded.clear();
+        }
     }
 
 }
