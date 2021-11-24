@@ -27,7 +27,8 @@
             <p style="margin: 0; padding: 0">Do you want to spice it up?</p>
             <input type="checkbox" name="isFuzz" id="fuzzCheckbox">
             <label style="margin: 0; padding: 0" for="fuzzCheckbox">Fuzz-mode</label>
-            <div class="popup" onclick="myFunction()"><sup>&#x1F6C8;</sup>
+
+            <div class="popup" onclick="fuzzModePopup()"><sup>&#x1F6C8;</sup>
                 <span class="popuptext" id="myPopup">Answer quicker than your quiz-mates to get the most points</span>
             </div>
         </div>
@@ -37,7 +38,7 @@
             <input type="checkbox" name="isRemote" id="remoteCheckbox" onclick="isRemoteChecked()">
             <label for="remoteCheckbox">Remote mode</label>
 
-            <div class="popup" onclick="myFunction()"><sup>&#x1F6C8;</sup>
+            <div class="popup" onclick="remotePopup()"><sup>&#x1F6C8;</sup>
                 <span class="popuptext" id="myPopup2">View each question on your device, enabling you to play by yourself or with friends that aren't in the same room as you</span>
             </div>
         </div>
@@ -70,15 +71,15 @@
         };
 
         //Info-bullet on "fuzz-mode"
-        function myFunction() {
-            var popup1 = document.getElementById("myPopup");
-            var popup2 = document.getElementById("myPopup2");
-
-            popup1.classList.toggle("show");
-            popup2.classList.toggle("show");
-
+        function fuzzModePopup() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
         }
 
+        function remotePopup(){
+            var popup = document.getElementById("myPopup2");
+            popup.classList.toggle("show");
+        }
         function isRemoteChecked(){
             var checkBox = document.getElementById("remoteCheckbox");
             var fuzzModeCheckbox = document.getElementById("fuzzModeCheckbox");
