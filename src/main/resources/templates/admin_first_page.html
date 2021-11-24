@@ -28,15 +28,18 @@
             <input type="checkbox" name="isFuzz" id="fuzzCheckbox">
             <label style="margin: 0; padding: 0" for="fuzzCheckbox">Fuzz-mode</label>
             <div class="popup" onclick="myFunction()"><sup>&#x1F6C8;</sup>
-                <span class="popuptext" id="myPopup">Answer quicker than your quiz-mates to get the most points</span>
+                <span class="popuptext">Answer quicker than your quiz-mates to get the most points</span>
             </div>
         </div>
 
         <div style="display: block">
-            <p>Are you and your quiz-mates seated separately? </p>
-            <p>Or maybe you want to play by yourself?</p>
+            <p>Challenge yourself or distant friends?</p>
             <input type="checkbox" name="isRemote" id="remoteCheckbox" onclick="isRemoteChecked()">
             <label for="remoteCheckbox">Remote mode</label>
+
+            <div class="popup" onclick="myFunction()"><sup>&#x1F6C8;</sup>
+                <span class="popuptext">View each question on your device, enabling you to play by yourself or with friends that aren't in the same room as you</span>
+            </div>
         </div>
 
 
@@ -68,7 +71,7 @@
 
         //Info-bullet on "fuzz-mode"
         function myFunction() {
-            var popup = document.getElementById("myPopup");
+            var popup = document.getElementsByClassName("popuptext");
             popup.classList.toggle("show");
         }
 
