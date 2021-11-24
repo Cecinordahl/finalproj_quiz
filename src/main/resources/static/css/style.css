@@ -514,6 +514,7 @@ input[type="submit"] {
 /* Popup arrow */
 .popup .popuptext::after {
     content: "";
+    padding: 5px;
     position: absolute;
     top: 100%;
     left: 50%;
