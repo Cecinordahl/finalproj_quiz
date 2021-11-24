@@ -789,7 +789,7 @@ input[type="submit"] {
 
     /* ..................... popup ................. */
     .popup .popuptext {
-        width: 250px;
+        width: 100px;
         padding: 10px 5px;
     }
 
