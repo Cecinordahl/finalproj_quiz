@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 
@@ -21,40 +23,15 @@ public class QuestionsController {
     @Autowired
     ObjectMapper mapper;
 
-    // int variables
-    private int playerCounter;
-    private int questionNumber;
-    private int numberOfQuestions;
-    private int quizCode;
-    private int answerCounter;
-
-    // boolean variables
-    private boolean isReady = false;
-    private boolean isFinalQuestion = false;
-    private boolean isFuzz = false;
-    private boolean isAnsweredCorrectly = false;
-    private boolean isRemote = false;
-    private boolean showNextQuestion = false;
-
-
-    // object variables
-    private Player player;
-
-    // list, array, hashmap variables
-    private Questions[] questions;
-    private List<Player> listOfPlayers = new ArrayList<>();
-    private HashMap<String, Integer> scoreboard = new HashMap<>();
-    private List<Integer> fuzzModeScoreList = new ArrayList<>();
-    private HashMap<String, Integer> lastScoresMap = new HashMap<>();
-
-
+    @Autowired
+    GameRepository gameRepository;
 
     //------------------------------------------------------------------------------------------------------------------
 
 
     // front page
     @GetMapping("/")
-    public String frontPage(Model model){
+    public String frontPage(){
         return "front_page";
     }
 
@@ -67,7 +44,6 @@ public class QuestionsController {
     public String initializeQuiz(Model model, HttpSession session) {
 
         model.addAttribute("categoriesList", categoriesList());
-        restartQuiz();
         session.removeAttribute("correctAnswerText");
 
         return "admin_first_page";
@@ -81,33 +57,37 @@ public class QuestionsController {
                                @RequestParam(required = false) boolean isFuzz,
                                @RequestParam(required = false) boolean isRemote,
                                @RequestParam(required = false, defaultValue = "Quiz Master") String name) {
-        if (isFuzz == true) {
-            this.isFuzz = isFuzz;
-        }
+        Game game = new Game();
+        game.isFuzz = isFuzz;
+
+        gameRepository.addGame(game);
+
+        Player player;
 
         if (isRemote == true){
-            this.isRemote = isRemote;
-            createNewAdmin(session, name);
-            listOfPlayers.add(player);
-            scoreboard.put(player.getName(), 0);
-            answerCounter = 0;
+            game.isRemote = isRemote;
+            player = createNewAdmin(name);
+            game.listOfPlayers.add(player);
+            game.scoreboard.put(player.getName(), 0);
+            game.answerCounter = 0;
         }
         else {
-            createNewAdmin(session, name);
+             player = createNewAdmin(name);
         }
+        session.setAttribute("player", player);
 
-        session.setAttribute("isFuzz", this.isFuzz);
-        session.setAttribute("isRemote", this.isRemote);
-
-        numberOfQuestions = inputNumberOfQuestions;
+        session.setAttribute("isFuzz", game.isFuzz);
+        session.setAttribute("isRemote", game.isRemote);
 
         if(category != null){
-            questions = getQuizWithCategory(category, inputNumberOfQuestions);
+            game.questions = getQuizWithCategory(category, inputNumberOfQuestions);
         }else{
-            questions = getQuiz(inputNumberOfQuestions);
+            game.questions = getQuiz(inputNumberOfQuestions);
         }
 
-        return "redirect:/play/" + quizCode;
+
+
+        return "redirect:/play/" + game.quizCode;
     }
 
 
@@ -124,10 +104,13 @@ public class QuestionsController {
 
     // player only : registered players through form and sets role "player" to the player object in session
     @PostMapping("/register-players")
-    public String registeredPlayers(@RequestParam String userQuizCode, @RequestParam String name, HttpSession session){
+    public String registeredPlayers(@RequestParam Integer userQuizCode, @RequestParam String name, HttpSession session){
+        Game game = gameRepository.findByQuizCode(userQuizCode);
 
-        createNewPlayer(name, session);
-
+        Player player = createNewPlayer(name);
+        game.listOfPlayers.add(player);
+        session.setAttribute("player", player);
+        game.scoreboard.put(player.getName(), 0);
         return "redirect:/play/" + userQuizCode;
     }
 
@@ -137,75 +120,72 @@ public class QuestionsController {
 
     // Start quiz from the generated quiz
     @GetMapping("/play/{quizCode}")
-    public String startQuiz(@PathVariable String quizCode, Model model, HttpSession session){
+    public String startQuiz(@PathVariable Integer quizCode, Model model, HttpSession session){
+        Game game = gameRepository.findByQuizCode(quizCode);
 
-        model.addAttribute("listOfPlayers", listOfPlayers);
+        Player currentPlayer = (Player) session.getAttribute("player");
+        model.addAttribute("listOfPlayers", game.listOfPlayers);
         model.addAttribute("quizCode", quizCode);
-        model.addAttribute("questionNumber", questionNumber);
-        model.addAttribute("isReady", isReady);
-        model.addAttribute("isRemote", isRemote);
-        model.addAttribute("player", session.getAttribute("player"));
+        model.addAttribute("player", currentPlayer);
 
-
-        if (isReady){
-            playerCounter++;
-            if((!isRemote && playerCounter == listOfPlayers.size()) || (isRemote && playerCounter == listOfPlayers.size()-1)) {
-                isReady = false;
-            }
-            return "redirect:/play/" + quizCode + '/' + questionNumber;
+        if (!game.forwardPlayers) {
+            return "start_quiz";
         }
 
-        return "start_quiz";
+        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
+        return "redirect:/play/" + quizCode + '/' + game.questionNumber;
     }
 
     // post method when admin has clicked on start quiz
     @PostMapping("/play/{quizCode}")
-    public String postStartQuiz(@PathVariable String quizCode, HttpSession session){
+    public String postStartQuiz(@PathVariable Integer quizCode, HttpSession session){
+        Game game = gameRepository.findByQuizCode(quizCode);
 
-        isReady = true;
+        game.forwardPlayers = true;
 
-        if(isRemote && listOfPlayers.size() == 1){
-            isReady = false;
+        if(game.isRemote && game.listOfPlayers.size() == 1){
+            game.forwardPlayers = false;
         }
 
-        playerCounter = 0;
+        game.playerForwarded.clear();
         session.removeAttribute("correctAnswerText");
 
-        if (isFuzz) {
-            fuzzModeScoreList.clear();
-            for (int i = listOfPlayers.size(); i >= 0; i--) {
-                fuzzModeScoreList.add(i);
+        if (game.isFuzz) {
+            game.fuzzModeScoreList.clear();
+            for (int i = game.listOfPlayers.size(); i >= 0; i--) {
+                game.fuzzModeScoreList.add(i);
             }
         }
 
-        return "redirect:/play/" + quizCode + '/' + questionNumber;
+        return "redirect:/play/" + quizCode + '/' + game.questionNumber;
     }
 
 
     // display page for each quiz question
     @GetMapping("/play/{quizCode}/{questionNumber}")
-    public String questionPage(@PathVariable String quizCode, @PathVariable int questionNumber, Model model, HttpSession session) throws JsonProcessingException {
+    public String questionPage(@PathVariable Integer quizCode, @PathVariable int questionNumber, Model model, HttpSession session) throws JsonProcessingException {
+        Game game = gameRepository.findByQuizCode(quizCode);
 
-        showNextQuestion = false;
+        game.showNextQuestion = false;
 
-        if (questionNumber == numberOfQuestions-1) {
-            isFinalQuestion = true;
+        if (questionNumber == game.questions.length-1) {
+            game.isFinalQuestion = true;
         }
 
         List<String> alternatives = Arrays.asList("A", "B", "C", "D");
         Collections.shuffle(alternatives);
 
         model.addAttribute("player", session.getAttribute("player"));
-        model.addAttribute("isRemote", isRemote);
-        model.addAttribute("isAnsweredCorrectly", isAnsweredCorrectly);
-        model.addAttribute("question", mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
+        model.addAttribute("isRemote", game.isRemote);
+        model.addAttribute("isAnsweredCorrectly", game.isAnsweredCorrectly);
+        model.addAttribute("question", mapper.writeValueAsString(game.questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
 
         //To account for a discovered mistake in the API:
-        String[] answerTextArray = {mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""),
-                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""),
-                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""),
-                                    mapper.writeValueAsString(questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", "")
+        String[] answerTextArray = {mapper.writeValueAsString(game.questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", "")
                                     };
 
         for (int i = 0; i < answerTextArray.length; i++) {
@@ -226,45 +206,47 @@ public class QuestionsController {
 
     // retrieves answers from players
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable String quizCode,
+    public String postScore(@PathVariable Integer quizCode,
                             @PathVariable int questionNumber,
                             HttpSession session, Model model,
                             @RequestParam(required = false) String answer) throws JsonProcessingException {
 
-        String correctAnswer = mapper.writeValueAsString(questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "");
-        String question = mapper.writeValueAsString(questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", "");
-        player = (Player) session.getAttribute("player");
+        Game game = gameRepository.findByQuizCode(quizCode);
 
-        model.addAttribute("player", player);
+        String correctAnswer = mapper.writeValueAsString(game.questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", "");
+        String question = mapper.writeValueAsString(game.questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", "");
+        Player currentPlayer = (Player) session.getAttribute("player");
+
+        model.addAttribute("player", currentPlayer);
         model.addAttribute("question", question);
 
-        if(isRemote){
-            answerCounter++;
+        if(game.isRemote){
+            game.answerCounter++;
         }
 
         // if player role is player and they answer the question correctly, increase points
-        if ((player.getRole().equals("player") || isRemote) && correctAnswer.equals(answer)) {
-                int tempScore = scoreboard.get(player.getName());
-                if (isFuzz) {
-                    scoreboard.put(player.getName(), tempScore + fuzzModeScoreList.get(0));
-                    lastScoresMap.put(player.getName(), fuzzModeScoreList.get(0));
-                    fuzzModeScoreList.remove(0);
+        if ((currentPlayer.getRole().equals("player") || game.isRemote) && correctAnswer.equals(answer)) {
+                int tempScore = game.scoreboard.get(currentPlayer.getName());
+                if (game.isFuzz) {
+                    game.scoreboard.put(currentPlayer.getName(), tempScore + game.fuzzModeScoreList.get(0));
+                    game.lastScoresMap.put(currentPlayer.getName(), game.fuzzModeScoreList.get(0));
+                    game.fuzzModeScoreList.remove(0);
                 } else {
-                    lastScoresMap.put(player.getName(), 1);
-                    scoreboard.put(player.getName(), tempScore + 1);
+                    game.lastScoresMap.put(currentPlayer.getName(), 1);
+                    game.scoreboard.put(currentPlayer.getName(), tempScore + 1);
                 }
         } else {
-            lastScoresMap.put(player.getName(), 0);
+            game.lastScoresMap.put(currentPlayer.getName(), 0);
         }
 
         // returns result page if this is currently the last question
-        if (isFinalQuestion){
+        if (game.isFinalQuestion){
             return "redirect:/play/" + quizCode + "/calculatingresults";
         }
 
         // if player role is admin, generate next question
-        if(player.getRole().equals("admin")) {
-            nextQuestion();
+        if(currentPlayer.getRole().equals("admin")) {
+            game.questionNumber++;
         }
 
         return "redirect:/play/" + quizCode + "/wait";
@@ -275,58 +257,77 @@ public class QuestionsController {
     //---------------------------------------------- waiting page ------------------------------------------------------
 
     @GetMapping("/play/{quizCode}/wait")
-    public String waitingPage(@PathVariable String quizCode, Model model, HttpSession session){
+    public String waitingPage(@PathVariable Integer quizCode, Model model, HttpSession session){
+        Game game = gameRepository.findByQuizCode(quizCode);
 
-        if (answerCounter >= listOfPlayers.size()){
-            answerCounter = 0;
-            showNextQuestion = true;
+        if (game.answerCounter >= game.listOfPlayers.size()){
+            game.answerCounter = 0;
+            game.showNextQuestion = true;
         }
 
-        model.addAttribute("showNextQuestion", showNextQuestion);
-        model.addAttribute("isRemote", isRemote);
-        model.addAttribute("scoreboard", scoreboard);
+        Player currentPlayer = (Player) session.getAttribute("player");
+        model.addAttribute("showNextQuestion", game.showNextQuestion);
+        model.addAttribute("isRemote", game.isRemote);
+        model.addAttribute("scoreboard", game.scoreboard);
         model.addAttribute("player", session.getAttribute("player"));
-        model.addAttribute("lastScores", lastScoresMap);
+        model.addAttribute("lastScores", game.lastScoresMap);
 
-
-        if (isReady){
-            playerCounter++;
-            if((!isRemote && playerCounter == listOfPlayers.size()) || (isRemote && playerCounter >= listOfPlayers.size()-1)) {
-                isReady = false;
-            }
-            return "redirect:/play/" + quizCode + '/' + questionNumber;
+        if (!game.forwardPlayers) {
+            return "waiting_page";
         }
 
-        return "waiting_page";
+        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
+        return "redirect:/play/" + quizCode + '/' + game.questionNumber;
+
+    }
+
+    private void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer, Game game) {
+
+        game.playerForwarded.add(currentPlayer.getName());
+        int playerCounter = game.playerForwarded.size();
+
+        if (game.isRemote && playerCounter == game.listOfPlayers.size() - 1) {
+            game.forwardPlayers = false;
+            game.playerForwarded.clear();
+        } else if (!game.isRemote && playerCounter == game.listOfPlayers.size()) {
+            game.forwardPlayers = false;
+            game.playerForwarded.clear();
+        }
     }
 
 
     @GetMapping("/play/{quizCode}/calculatingresults")
-    public String calculatingResults(@PathVariable String quizCode, Model model, HttpSession session){
+    public String calculatingResults(@PathVariable Integer quizCode, Model model, HttpSession session){
+        Game game = gameRepository.findByQuizCode(quizCode);
+
         model.addAttribute("player", session.getAttribute("player"));
         model.addAttribute("quizCode", quizCode);
-        model.addAttribute("isRemote", isRemote);
+        model.addAttribute("isRemote", game.isRemote);
 
         return "calculating_results";
     }
 
     @GetMapping("/play/{quizCode}/results")
-    public String results(@PathVariable String quizCode, Model model, HttpSession session){
+    public String results(@PathVariable Integer quizCode, Model model, HttpSession session){
+        Game game = gameRepository.findByQuizCode(quizCode);
 
-        player = (Player) session.getAttribute("player");
+
+        Player player = (Player) session.getAttribute("player");
         model.addAttribute("player", player);
 
-        resetQuestionNumber();
+        game.questionNumber = 0;
 
-        model.addAttribute("scoreboardList", orderListByName(reversedScoreboardList()));
-        sortScoreboard(reversedScoreboardList());
+        model.addAttribute("scoreboardList", orderListByName(reversedScoreboardList(game)));
+        sortScoreboard(reversedScoreboardList(game), game);
 
-        model.addAttribute("scoreboard", scoreboard);
-        model.addAttribute("placementScoreboard", placementScoreboard());
-        model.addAttribute("numberOfQuestions", numberOfQuestions);
-        model.addAttribute("numberOfPlayers", listOfPlayers.size());
-        model.addAttribute("isFuzz", isFuzz);
-        model.addAttribute("isRemote", isRemote);
+        model.addAttribute("scoreboard", game.scoreboard);
+        model.addAttribute("placementScoreboard", placementScoreboard(game));
+        model.addAttribute("numberOfQuestions", game.questions.length);
+        model.addAttribute("numberOfPlayers", game.listOfPlayers.size());
+        model.addAttribute("isFuzz", game.isFuzz);
+        model.addAttribute("isRemote", game.isRemote);
+
+
 
         return "result_page";
     }
@@ -363,12 +364,6 @@ public class QuestionsController {
             }
         }
 
-        try {
-            System.out.println(
-                    mapper.writeValueAsString(returnQuiz));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
         return returnQuiz;
     }
 
@@ -405,60 +400,23 @@ public class QuestionsController {
         return returnQuiz;
     }
 
-    // function to increase question number
-    public void nextQuestion(){
-        questionNumber++;
-    }
 
-    // function to reset question number
-    public void resetQuestionNumber(){
-        questionNumber = 0;
-    }
 
-    // function to generate a random number between 1 and 1000 that represents the quiz code
-    public int generateRandomQuizCode(){
-        return ThreadLocalRandom.current().nextInt(1, 1000);
-    }
+
 
     // new player
-    private void createNewPlayer(String name, HttpSession session) {
-        player = new Player(name);
+    private Player createNewPlayer(String name) {
+        Player player = new Player(name);
         player.setRole("player");
-        listOfPlayers.add(player);
-        session.setAttribute("player", player);
-        scoreboard.put(player.getName(), 0);
+
+        return player;
     }
 
-    private void createNewAdmin(HttpSession session, String name) {
-        player = new Player(name);
+    private Player createNewAdmin(String name) {
+        Player player = new Player(name);
         player.setRole("admin");
-        session.setAttribute("player", player);
+        return player;
     }
-
-    // function to reset the quiz variables
-    private void restartQuiz() {
-        scoreboard.clear();
-        listOfPlayers.clear();
-        fuzzModeScoreList.clear();
-        quizCode = generateRandomQuizCode();
-
-        isReady = false;
-        isFinalQuestion = false;
-        isFuzz = false;
-        isRemote = false;
-        isAnsweredCorrectly = false;
-        showNextQuestion = false;
-
-        playerCounter = 0;
-        numberOfQuestions = 0;
-        answerCounter = 0;
-        questionNumber = 0;
-    }
-
-
-
-
-
 
     // list of quiz categories
     public List<String> categoriesList(){
@@ -479,8 +437,8 @@ public class QuestionsController {
 
 
 
-    public List<Map.Entry<String, Integer>> reversedScoreboardList() {
-        List<HashMap.Entry<String, Integer>> list = new ArrayList<>(scoreboard.entrySet());
+    public List<Map.Entry<String, Integer>> reversedScoreboardList(Game game) {
+        List<HashMap.Entry<String, Integer>> list = new ArrayList<>(game.scoreboard.entrySet());
 
         list.sort(HashMap.Entry.comparingByValue());
         Collections.reverse(list);
@@ -500,19 +458,19 @@ public class QuestionsController {
     }
 
 
-    public void sortScoreboard(List<Map.Entry<String, Integer>> list){
+    public void sortScoreboard(List<Map.Entry<String, Integer>> list, Game game){
         HashMap<String, Integer> sorted = new LinkedHashMap<>();
 
         for (HashMap.Entry<String, Integer> entry : list) {
             sorted.put(entry.getKey(), entry.getValue());
         }
 
-        scoreboard = sorted;
+        game.scoreboard = sorted;
     }
 
 
-    public Map<String, Integer> placementScoreboard(){
-        List<HashMap.Entry<String, Integer>> tempList = new ArrayList<>(scoreboard.entrySet());
+    public Map<String, Integer> placementScoreboard(Game game){
+        List<HashMap.Entry<String, Integer>> tempList = new ArrayList<>(game.scoreboard.entrySet());
         Map<String, Integer> placementScoreboard = new HashMap<>();
 
         int playerPlacement = 1;
