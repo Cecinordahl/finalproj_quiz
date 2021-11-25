@@ -30,8 +30,8 @@
             </tr>
             <tr class="scoresTableRow" th:each="item : ${scoreboard}">
                 <td class="scoresTableName" th:text="${item.getKey()}"></td>
-                <td style="text-align: right" class="scoresTableName" th:text="${lastScores.get(item.getKey())}"></td>
-                <td style="text-align: right" class="scoresTableScore" th:text="${item.getValue()}"></td>
+                <td class="scoresTableScore" th:text="${lastScores.get(item.getKey())}"></td>
+                <td class="scoresTableScore" th:text="${item.getValue()}"></td>
             </tr>
         </table>
 

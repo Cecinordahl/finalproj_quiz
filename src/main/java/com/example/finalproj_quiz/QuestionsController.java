@@ -288,7 +288,8 @@ public class QuestionsController {
             return "waiting_page";
         }
 
-        game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
+        game.lastScoresMap.clear();
+        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
 
     }
