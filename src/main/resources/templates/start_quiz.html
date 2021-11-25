@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="1">
     <title>Quiz</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
 </head>
 
 
@@ -18,8 +18,8 @@
     <h3 th:text="'Quiz code: ' + ${quizCode}"></h3>
 
     <p>The players of this quiz are:</p>
-    <ul class="listOfPlayers" th:each="item : ${listOfPlayers}">
-        <li th:text="${item.getName()}"></li>
+    <ul id="listOfPlayers" class="listOfPlayers">
+        <li  th:each="item : ${listOfPlayers}" th:text="${item.getName()}"></li>
     </ul>
 
     <div th:if="${player.getRole() == 'admin'}">
@@ -33,6 +33,29 @@
 
 
 <script>
+    var listOfPlayers = document.getElementById("listOfPlayers");
+    var quizCode = [[${quizCode}]];
+
+
+    function reloadWindow(){
+        setInterval(function (){
+            //location.reload()
+            fetch("/api/play/" + quizCode)
+                .then(r=> r.json())
+                .then(arrayOfPlayers => {
+                    listOfPlayers.innerHTML = "";
+                    arrayOfPlayers.forEach(function(p) {
+                        var liElement = document.createElement('li');
+                        liElement.innerText = p.name;
+                        listOfPlayers.appendChild(liElement);
+                    })
+                })
+        }, 1000)
+    }
+
+    reloadWindow();
+
+
 </script>
 
 </body>

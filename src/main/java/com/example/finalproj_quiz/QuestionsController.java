@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
@@ -127,14 +124,27 @@ public class QuestionsController {
         model.addAttribute("listOfPlayers", game.listOfPlayers);
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("player", currentPlayer);
+        model.addAttribute("quizCode", quizCode);
+
 
         if (!game.forwardPlayers) {
             return "start_quiz";
         }
 
-        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
+        game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
     }
+
+
+    @ResponseBody
+    @GetMapping("/api/play/{quizCode}")
+    public List<Player> waitStart(@PathVariable Integer quizCode) {
+        Game game = gameRepository.findByQuizCode(quizCode);
+        return game.listOfPlayers;
+    }
+
+
+
 
     // post method when admin has clicked on start quiz
     @PostMapping("/play/{quizCode}")
@@ -272,28 +282,18 @@ public class QuestionsController {
         model.addAttribute("player", session.getAttribute("player"));
         model.addAttribute("lastScores", game.lastScoresMap);
 
+        model.addAttribute("quizCode", quizCode);
+
         if (!game.forwardPlayers) {
             return "waiting_page";
         }
 
-        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
+        game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
 
     }
 
-    private void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer, Game game) {
 
-        game.playerForwarded.add(currentPlayer.getName());
-        int playerCounter = game.playerForwarded.size();
-
-        if (game.isRemote && playerCounter == game.listOfPlayers.size() - 1) {
-            game.forwardPlayers = false;
-            game.playerForwarded.clear();
-        } else if (!game.isRemote && playerCounter == game.listOfPlayers.size()) {
-            game.forwardPlayers = false;
-            game.playerForwarded.clear();
-        }
-    }
 
 
     @GetMapping("/play/{quizCode}/calculatingresults")
@@ -334,6 +334,26 @@ public class QuestionsController {
 
 
 
+
+
+
+
+    // ------------------------------------------ TEST RESPONSE BODY ---------------------------------------------
+    @ResponseBody
+    @GetMapping("/api/play/{quizCode}/wait")
+    public int wait(@PathVariable Integer quizCode, HttpSession session) {
+        Game game = gameRepository.findByQuizCode(quizCode);
+
+        if (!game.forwardPlayers) {
+            return -1;
+        }
+        else {
+            game.lastScoresMap.clear();
+            Player currentPlayer = (Player) session.getAttribute("player");
+            game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
+            return game.questionNumber;
+        }
+    }
 
 
 

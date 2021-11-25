@@ -5,6 +5,7 @@
     <title>Quiz</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
 </head>
 <body>
 
@@ -49,10 +50,13 @@
 </div>
 
 <script>
+    var quizCode = [[${quizCode}]];
+
     //Prevent user from clicking the backbutton
     function preventBack() {
         window.history.forward();
     }
+
     setTimeout("preventBack()", 0);
     window.onunload = function () {
         null
@@ -60,9 +64,18 @@
 
     function reloadWindow(){
         setInterval(function (){
-            location.reload()
+            //location.reload()
+            fetch("/api/play/" + quizCode + "/wait")
+                .then(r=> r.json())
+                .then(questionNumber => {
+                    if (questionNumber !== -1) {
+                        window.location.href = "/play/" + quizCode + "/" + questionNumber;
+                        //go to /play/" + quizCode + '/' + questionNumber
+                    }
+                });
         }, 1000)
     }
+
 
     reloadWindow();
 
