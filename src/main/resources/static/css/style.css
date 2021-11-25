@@ -64,7 +64,7 @@ input[type="submit"] {
 
 
 /* ------------------------- images---------------------- */
-#peeking-corner-monster{
+#monster-logo{
     width: 35vw;
     padding-left: 50px;
 }
@@ -76,13 +76,6 @@ input[type="submit"] {
     top: 3vw;
 }
 
-/*#happy-monster{
-    position: relative;
-    width: 500px;
-    z-index: -1;
-    left: 47%;
-    transform: translateX(-50%);
-}*/
 #happy-monster{
     position: absolute;
     width: 500px;
@@ -90,7 +83,19 @@ input[type="submit"] {
     margin: 2vh auto 0 auto;
 }
 
+#questionPagePeekingMonster {
+    width: 400px;
+    position: absolute;
+    bottom: 0;
+    left: 80px;
+}
 
+#waitingPagePeekingCornerMonster {
+    height: 500px;
+    position: absolute;
+    bottom: 38px;
+    left: 0;
+}
 
 /* --------------- Welcome page (front page) -----------------*/
 
@@ -318,18 +323,54 @@ input[type="submit"] {
 }
 
 .answers input[type="submit"] {
-/*    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;*/
     background-color: #a94752;
     color: white;
     font-size: 22px;
     border-radius: 20px;
     min-width: 80%;
-    /*height: fit-content;*/
     padding: 10px;
     text-align: center;
     margin: 8px auto;
+}
+
+.peekingMonsterWhiteSidebarBottom {
+    background-color: #FFFFFF;
+    width: 100vw;
+    height: 38px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.peekingMonsterWhiteSidebarTop {
+    background-color: #FFFFFF;
+    width: 100vw;
+    height: 38px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.peekingMonsterWhiteSidebarLeft {
+    background-color: #FFFFFF;
+    width: 70px;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.peekingMonsterWhiteSidebarRight {
+    background-color: #FFFFFF;
+    width: 70px;
+    height: 100vh;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
 }
 
 
@@ -387,6 +428,7 @@ input[type="submit"] {
     width: 50vw;
     display: block;
     text-align: center;
+    margin-top: 100px;
 }
 
 .lastCorrectAnswer {
@@ -457,6 +499,7 @@ input[type="submit"] {
     padding: 12px;
     border-radius: 30px;
 }
+
 
 
 
@@ -574,7 +617,7 @@ input[type="submit"] {
 
     /* front page */
 
-    #peeking-corner-monster{
+    #monster-logo{
         width: 70vw;
         padding-left: 15px;
     }
@@ -723,14 +766,30 @@ input[type="submit"] {
     }
 
     .answers input[name="answer"] {
-/*        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;*/
         font-size: 3vh;
         min-width: 90%;
-        /*height: fit-content;*/
         margin: 2vh auto;
     }
+
+    #questionPagePeekingMonster {
+        display: none;
+    }
+
+    .peekingMonsterWhiteSidebarRight {
+        display: none;
+    }
+
+    .peekingMonsterWhiteSidebarLeft {
+            display: none;
+        }
+
+    .peekingMonsterWhiteSidebarTop {
+            display: none;
+        }
+
+    .peekingMonsterWhiteSidebarBottom {
+            display: none;
+        }
 
 
     /* waiting page */
@@ -755,6 +814,11 @@ input[type="submit"] {
     .currentScores form {
         width: 80vw;
     }
+
+    #waitingPagePeekingCornerMonster {
+        display: none;
+    }
+
 
     /* calculating result */
     .calculatingDiv {
