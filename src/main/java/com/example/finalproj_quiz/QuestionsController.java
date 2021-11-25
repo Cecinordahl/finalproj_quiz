@@ -289,7 +289,7 @@ public class QuestionsController {
         }
 
         game.lastScoresMap.clear();
-        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
+        game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
 
     }
