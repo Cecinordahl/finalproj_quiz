@@ -125,6 +125,7 @@ public class QuestionsController {
         model.addAttribute("quizCode", quizCode);
         model.addAttribute("player", currentPlayer);
         model.addAttribute("quizCode", quizCode);
+        model.addAttribute("isRemote", game.isRemote);
 
 
         if (!game.forwardPlayers) {

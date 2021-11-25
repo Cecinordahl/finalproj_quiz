@@ -41,6 +41,12 @@
 </div>
 
 
+
+<div th:if="${player.getRole() == 'admin'} and not ${isRemote}">
+    <audio src="/suspense.mp3" autoplay></audio>
+</div>
+
+
 <script>
 
 

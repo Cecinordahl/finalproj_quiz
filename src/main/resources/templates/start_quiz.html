@@ -31,13 +31,17 @@
     </div>
 </div>
 
+<div th:if="${player.getRole() == 'admin'} and not ${isRemote}">
+    <audio src="/suspense.mp3" autoplay></audio>
+</div>
+
 
 <script>
     var listOfPlayers = document.getElementById("listOfPlayers");
     var quizCode = [[${quizCode}]];
 
 
-    function reloadWindow(){
+    function reloadListOfPlayers(){
         setInterval(function (){
             //location.reload()
             fetch("/api/play/" + quizCode)
@@ -53,7 +57,22 @@
         }, 1000)
     }
 
+    function reloadWindow(){
+        setInterval(function (){
+            //location.reload()
+            fetch("/api/play/" + quizCode + "/wait")
+                .then(r=> r.json())
+                .then(questionNumber => {
+                    if (questionNumber !== -1) {
+                        window.location.href = "/play/" + quizCode + "/" + questionNumber;
+                        //go to /play/" + quizCode + '/' + questionNumber
+                    }
+                });
+        }, 1000)
+    }
+
     reloadWindow();
+    reloadListOfPlayers();
 
 
 </script>
