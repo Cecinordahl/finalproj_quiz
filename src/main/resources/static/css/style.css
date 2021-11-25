@@ -84,7 +84,7 @@ input[type="submit"] {
 }
 
 #questionPagePeekingMonster {
-    width: 400px;
+    max-width: 400px;
     position: absolute;
     bottom: 0;
     left: 80px;
@@ -143,11 +143,18 @@ input[type="submit"] {
 
 /* ------------------------------- Admin first page --------------------------------- */
 
+.createQuizContainer {
+    display: block;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .headerAndPageTitle {
     text-align: center;
     justify-content: center;
     width: 70vw;
-    margin: 0;
+    margin: 0 auto 0 auto;
     padding: 0;
     height: 45vh;
 }
@@ -186,6 +193,8 @@ input[type="submit"] {
     width: 35vw;
     text-align: center;
     padding-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #submitButton{
@@ -414,7 +423,7 @@ input[type="submit"] {
     background-color: #a94752;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 50px;
     text-align: center;
     margin: 50px auto;
     padding: 10px 30px;
@@ -472,6 +481,11 @@ input[type="submit"] {
 
 .scoresTable {
     width: 80%;
+}
+
+.scoresTableHeaders {
+    text-align: left;
+    font-weight: bold;
 }
 
 .scoresTableName {
@@ -592,7 +606,7 @@ input[type="submit"] {
 
 /* ----------------------------------------- phone/player display -------------------------------------------- */
 
-@media only screen and (max-width: 600px) { /* set to 450 when ready */
+@media only screen and (max-width: 768px) {
 
     *{
         font-size: 5vw;
@@ -612,6 +626,15 @@ input[type="submit"] {
 
     h3{
         font-size: 4vw;
+    }
+
+    input[type="submit"] {
+        width: fit-content;
+        text-align: center;
+        text-justify: auto;
+        margin: auto;
+        padding: 15px 25px;
+        border-radius: 50px;
     }
 
 
@@ -710,7 +733,7 @@ input[type="submit"] {
 
     /* start quiz */
     #happy-monster{
-        position: relative;
+        position: absolute;
         width: 280px;
         z-index: -1;
         margin: 2vh auto 0 auto;
@@ -718,19 +741,13 @@ input[type="submit"] {
 
 
     .container-start{
-        background-color: white;
-        opacity: 0.8;
-        width: 200px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
+        width: 280px;
         padding: 15px;
         border-radius: 5px;
         position: relative;
-        top: -13vh;
+        top: 250px;
         height: fit-content;
     }
-
 
 
 
