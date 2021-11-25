@@ -132,7 +132,7 @@ public class QuestionsController {
             return "start_quiz";
         }
 
-        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
+        game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
     }
 
@@ -277,9 +277,8 @@ public class QuestionsController {
         }
 
         game.lastScoresMap.clear();
-        addPlayerForwardAndCheckPlayerCounter(currentPlayer, game);
+        game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
-
     }
 
 
@@ -476,20 +475,6 @@ public class QuestionsController {
     }
 
 
-    // function to check if all players have been forwarded to the next question
-    private void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer, Game game) {
-
-        game.playerForwarded.add(currentPlayer.getName());
-        int playerCounter = game.playerForwarded.size();
-
-        if (game.isRemote && playerCounter == game.listOfPlayers.size() - 1) {
-            game.forwardPlayers = false;
-            game.playerForwarded.clear();
-        } else if (!game.isRemote && playerCounter == game.listOfPlayers.size()) {
-            game.forwardPlayers = false;
-            game.playerForwarded.clear();
-        }
-    }
 
 }
 

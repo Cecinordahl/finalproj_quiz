@@ -38,4 +38,19 @@ public class Game {
     public int generateRandomQuizCode(){
         return ThreadLocalRandom.current().nextInt(1, 1000);
     }
+
+    // function to check if all players have been forwarded to the next question
+    public synchronized void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer) {
+        this.playerForwarded.add(currentPlayer.getName());
+        int playerCounter = this.playerForwarded.size();
+
+        if (this.isRemote && playerCounter == this.listOfPlayers.size() - 1) {
+            this.forwardPlayers = false;
+            this.playerForwarded.clear();
+        } else if (!this.isRemote && playerCounter == this.listOfPlayers.size()) {
+            this.forwardPlayers = false;
+            this.playerForwarded.clear();
+        }
+    }
+
 }
