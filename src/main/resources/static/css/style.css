@@ -64,7 +64,7 @@ input[type="submit"] {
 
 
 /* ------------------------- images---------------------- */
-#peeking-corner-monster{
+#monster-logo{
     width: 35vw;
     padding-left: 50px;
 }
@@ -76,13 +76,6 @@ input[type="submit"] {
     top: 3vw;
 }
 
-/*#happy-monster{
-    position: relative;
-    width: 500px;
-    z-index: -1;
-    left: 47%;
-    transform: translateX(-50%);
-}*/
 #happy-monster{
     position: absolute;
     width: 500px;
@@ -90,7 +83,19 @@ input[type="submit"] {
     margin: 2vh auto 0 auto;
 }
 
+#questionPagePeekingMonster {
+    max-width: 400px;
+    position: absolute;
+    bottom: 0;
+    left: 80px;
+}
 
+#waitingPagePeekingCornerMonster {
+    height: 500px;
+    position: absolute;
+    bottom: 38px;
+    left: 0;
+}
 
 /* --------------- Welcome page (front page) -----------------*/
 
@@ -138,11 +143,18 @@ input[type="submit"] {
 
 /* ------------------------------- Admin first page --------------------------------- */
 
+.createQuizContainer {
+    display: block;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .headerAndPageTitle {
     text-align: center;
     justify-content: center;
     width: 70vw;
-    margin: 0;
+    margin: 0 auto 0 auto;
     padding: 0;
     height: 45vh;
 }
@@ -181,6 +193,8 @@ input[type="submit"] {
     width: 35vw;
     text-align: center;
     padding-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #submitButton{
@@ -318,18 +332,54 @@ input[type="submit"] {
 }
 
 .answers input[type="submit"] {
-/*    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;*/
     background-color: #a94752;
     color: white;
     font-size: 22px;
     border-radius: 20px;
     min-width: 80%;
-    /*height: fit-content;*/
     padding: 10px;
     text-align: center;
     margin: 8px auto;
+}
+
+.peekingMonsterWhiteSidebarBottom {
+    background-color: #FFFFFF;
+    width: 100vw;
+    height: 38px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.peekingMonsterWhiteSidebarTop {
+    background-color: #FFFFFF;
+    width: 100vw;
+    height: 38px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.peekingMonsterWhiteSidebarLeft {
+    background-color: #FFFFFF;
+    width: 70px;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.peekingMonsterWhiteSidebarRight {
+    background-color: #FFFFFF;
+    width: 70px;
+    height: 100vh;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
 }
 
 
@@ -373,7 +423,7 @@ input[type="submit"] {
     background-color: #a94752;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 50px;
     text-align: center;
     margin: 50px auto;
     padding: 10px 30px;
@@ -387,6 +437,7 @@ input[type="submit"] {
     width: 50vw;
     display: block;
     text-align: center;
+    margin-top: 100px;
 }
 
 .lastCorrectAnswer {
@@ -432,6 +483,11 @@ input[type="submit"] {
     width: 80%;
 }
 
+.scoresTableHeaders {
+    text-align: left;
+    font-weight: bold;
+}
+
 .scoresTableName {
     width: 70%;
     text-align: left;
@@ -457,6 +513,7 @@ input[type="submit"] {
     padding: 12px;
     border-radius: 30px;
 }
+
 
 
 
@@ -549,7 +606,7 @@ input[type="submit"] {
 
 /* ----------------------------------------- phone/player display -------------------------------------------- */
 
-@media only screen and (max-width: 600px) { /* set to 450 when ready */
+@media only screen and (max-width: 768px) {
 
     *{
         font-size: 5vw;
@@ -571,10 +628,19 @@ input[type="submit"] {
         font-size: 4vw;
     }
 
+    input[type="submit"] {
+        width: fit-content;
+        text-align: center;
+        text-justify: auto;
+        margin: auto;
+        padding: 15px 25px;
+        border-radius: 50px;
+    }
+
 
     /* front page */
 
-    #peeking-corner-monster{
+    #monster-logo{
         width: 70vw;
         padding-left: 15px;
     }
@@ -667,7 +733,7 @@ input[type="submit"] {
 
     /* start quiz */
     #happy-monster{
-        position: relative;
+        position: absolute;
         width: 280px;
         z-index: -1;
         margin: 2vh auto 0 auto;
@@ -675,19 +741,13 @@ input[type="submit"] {
 
 
     .container-start{
-        background-color: white;
-        opacity: 0.8;
-        width: 200px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
+        width: 280px;
         padding: 15px;
         border-radius: 5px;
         position: relative;
-        top: -13vh;
+        top: 250px;
         height: fit-content;
     }
-
 
 
 
@@ -723,14 +783,30 @@ input[type="submit"] {
     }
 
     .answers input[name="answer"] {
-/*        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;*/
         font-size: 3vh;
         min-width: 90%;
-        /*height: fit-content;*/
         margin: 2vh auto;
     }
+
+    #questionPagePeekingMonster {
+        display: none;
+    }
+
+    .peekingMonsterWhiteSidebarRight {
+        display: none;
+    }
+
+    .peekingMonsterWhiteSidebarLeft {
+            display: none;
+        }
+
+    .peekingMonsterWhiteSidebarTop {
+            display: none;
+        }
+
+    .peekingMonsterWhiteSidebarBottom {
+            display: none;
+        }
 
 
     /* waiting page */
@@ -755,6 +831,11 @@ input[type="submit"] {
     .currentScores form {
         width: 80vw;
     }
+
+    #waitingPagePeekingCornerMonster {
+        display: none;
+    }
+
 
     /* calculating result */
     .calculatingDiv {
