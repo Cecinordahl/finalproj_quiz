@@ -39,14 +39,12 @@ public class Game {
         return ThreadLocalRandom.current().nextInt(1, 1000);
     }
 
-    public void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer) {
-
+    // function to check if all players have been forwarded to the next question
+    public synchronized void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer) {
         this.playerForwarded.add(currentPlayer.getName());
         int playerCounter = this.playerForwarded.size();
 
-
-        // .size() -1
-        if (this.isRemote && playerCounter == this.listOfPlayers.size() -1 ) {
+        if (this.isRemote && playerCounter == this.listOfPlayers.size() - 1) {
             this.forwardPlayers = false;
             this.playerForwarded.clear();
         } else if (!this.isRemote && playerCounter == this.listOfPlayers.size()) {
@@ -54,4 +52,5 @@ public class Game {
             this.playerForwarded.clear();
         }
     }
+
 }
