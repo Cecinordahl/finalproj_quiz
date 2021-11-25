@@ -30,12 +30,10 @@ public class AddPlayerForwardTest {
         Game game = setupGame();
 
         // Act
-        game.addPlayerForwardAndCheckPlayerCounter(game.listOfPlayers.get(0));
-        printGameState(game);
-        game.addPlayerForwardAndCheckPlayerCounter(game.listOfPlayers.get(1));
-        printGameState(game);
-        game.addPlayerForwardAndCheckPlayerCounter(game.listOfPlayers.get(2));
-        printGameState(game);
+        for (Player player : game.listOfPlayers) {
+            game.addPlayerForwardAndCheckPlayerCounter(player);
+            printGameState(game);
+        }
 
         // Assert
         Assertions.assertThat(game.forwardPlayers).isFalse();
