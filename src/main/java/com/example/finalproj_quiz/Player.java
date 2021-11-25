@@ -27,8 +27,6 @@ public class Player {
         this.name = name;
     }
 
-
-
     public String getRole() {
         return role;
     }

@@ -62,9 +62,9 @@
             //location.reload()
             fetch("/api/play/" + quizCode + "/wait")
                 .then(r=> r.json())
-                .then(questionNumber => {
-                    if (questionNumber !== -1) {
-                        window.location.href = "/play/" + quizCode + "/" + questionNumber;
+                .then(waitResponse => {
+                    if (waitResponse[0] !== -1) {
+                        window.location.href = "/play/" + quizCode + "/" + waitResponse[0];
                         //go to /play/" + quizCode + '/' + questionNumber
                     }
                 });

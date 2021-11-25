@@ -28,22 +28,20 @@
                 <td>Last round </td>
                 <td>Total </td>
             </tr>
-            <tr class="scoresTableRow" th:each="item : ${scoreboard}">
-                <td class="scoresTableName" th:text="${item.getKey()}"></td>
-                <td class="scoresTableScore" th:text="${lastScores.get(item.getKey())}"></td>
-                <td class="scoresTableScore" th:text="${item.getValue()}"></td>
-            </tr>
+            <tbody id="scoreboard">
+                <tr class="scoresTableRow" th:each="item : ${scoreboard}">
+                    <td class="scoresTableName" th:text="${item.getKey()}"></td>
+                    <td class="scoresTableScore" th:text="${lastScores.get(item.getKey())}"></td>
+                    <td class="scoresTableScore" th:text="${item.getValue()}"></td>
+                </tr>
+            </tbody>
         </table>
 
-        <form th:if="${player.getRole() == 'admin'} and not ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
-            <input id="nextQuestionButton" type="submit" value="Next question">
-        </form>
-
-
-
-        <form th:if="${player.getRole() == 'admin'} and ${showNextQuestion} and ${isRemote}" method="post" th:action="'/play/' + ${quizCode}">
-            <input id="nextQuestionButton" type="submit" value="Next question">
-        </form>
+        <div id="next-button" style="display: none;">
+            <form method="post" th:action="'/play/' + ${quizCode}">
+                <input id="nextQuestionButton" type="submit" value="Next question">
+            </form>
+        </div>
 
 
     </div>
@@ -51,6 +49,44 @@
 
 <script>
     var quizCode = [[${quizCode}]];
+    var scoreboard = document.getElementById("scoreboard");
+
+    function reloadListOfPlayers(){
+        setInterval(function (){
+            //location.reload()
+            fetch("/api/play/wait/" + quizCode)
+                .then(r=> r.json())
+                .then(scores => {
+                        scoreboard.innerHTML = "";
+                        for (const [key, value] of Object.entries(scores[0])) {
+
+                            var tdElement1 = document.createElement('td');
+                            var tdElement2 = document.createElement('td');
+                            var tdElement3 = document.createElement('td');
+                            var trElement =  document.createElement('tr');
+
+                            tdElement1.innerText = key;
+                            if (scores[1][key] == undefined){
+                                tdElement2.innerText = "waiting ...";
+                            }
+                            else{
+                                tdElement2.innerText = scores[1][key];
+                            }
+                            tdElement3.innerText = value;
+
+                            trElement.appendChild(tdElement1);
+                            trElement.appendChild(tdElement2);
+                            trElement.appendChild(tdElement3);
+
+                            scoreboard.appendChild(trElement);
+
+                        }
+                }
+                )
+            }
+            , 1000 )
+        }
+
 
     //Prevent user from clicking the backbutton
     function preventBack() {
@@ -67,16 +103,24 @@
             //location.reload()
             fetch("/api/play/" + quizCode + "/wait")
                 .then(r=> r.json())
-                .then(questionNumber => {
-                    if (questionNumber !== -1) {
-                        window.location.href = "/play/" + quizCode + "/" + questionNumber;
+                .then(waitResponse => {
+                    if (waitResponse[1]){
+                        document.getElementById("next-button").style.display="block";
+                    }
+                    if (waitResponse[0] !== -1) {
+                        window.location.href = "/play/" + quizCode + "/" + waitResponse[0];
                         //go to /play/" + quizCode + '/' + questionNumber
                     }
                 });
-        }, 1000)
+        } , 1000)
     }
 
 
+
+
+
+
+    reloadListOfPlayers();
     reloadWindow();
 
 </script>

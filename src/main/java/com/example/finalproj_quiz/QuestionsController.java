@@ -62,7 +62,7 @@ public class QuestionsController {
         Player player;
 
         if (isRemote == true){
-            game.isRemote = isRemote;
+            game.isRemote = true;
             player = createNewAdmin(name);
             game.listOfPlayers.add(player);
             game.scoreboard.put(player.getName(), 0);
@@ -155,6 +155,7 @@ public class QuestionsController {
         game.forwardPlayers = true;
 
         if(game.isRemote && game.listOfPlayers.size() == 1){
+            System.out.println("setter forwardPlayers til false");
             game.forwardPlayers = false;
         }
 
@@ -271,10 +272,7 @@ public class QuestionsController {
     public String waitingPage(@PathVariable Integer quizCode, Model model, HttpSession session){
         Game game = gameRepository.findByQuizCode(quizCode);
 
-        if (game.answerCounter >= game.listOfPlayers.size()){
-            game.answerCounter = 0;
-            game.showNextQuestion = true;
-        }
+
 
         Player currentPlayer = (Player) session.getAttribute("player");
         model.addAttribute("showNextQuestion", game.showNextQuestion);
@@ -294,6 +292,13 @@ public class QuestionsController {
         return "redirect:/play/" + quizCode + '/' + game.questionNumber;
     }
 
+/*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    @ResponseBody
+    @GetMapping("/api/play/wait/{quizCode}")
+    public Object[] scorebooard(@PathVariable Integer quizCode) {
+        Game game = gameRepository.findByQuizCode(quizCode);
+        return new Object []{game.scoreboard, game.lastScoresMap};
+    }
 
 
 
@@ -337,22 +342,31 @@ public class QuestionsController {
 
 
 
-
-
     // ------------------------------------------ TEST RESPONSE BODY ---------------------------------------------
     @ResponseBody
     @GetMapping("/api/play/{quizCode}/wait")
-    public int wait(@PathVariable Integer quizCode, HttpSession session) {
+    public Object[] wait(@PathVariable Integer quizCode, HttpSession session) {
         Game game = gameRepository.findByQuizCode(quizCode);
+        Player player = (Player) session.getAttribute("player");
+
+        if (game.answerCounter >= game.listOfPlayers.size()){
+            game.answerCounter = 0;
+            game.showNextQuestion = true;
+        }
+        boolean isAdmin = player.getRole().equals("admin");
+        boolean adminAndNotRemote = isAdmin && !game.isRemote;
+        boolean adminAndRemoteAndShowNextQuestion = isAdmin && game.isRemote && game.showNextQuestion;
+
+        boolean showNextButton = adminAndNotRemote || adminAndRemoteAndShowNextQuestion;
 
         if (!game.forwardPlayers) {
-            return -1;
+            return new Object[]{-1, showNextButton};
         }
         else {
             game.lastScoresMap.clear();
             Player currentPlayer = (Player) session.getAttribute("player");
             game.addPlayerForwardAndCheckPlayerCounter(currentPlayer);
-            return game.questionNumber;
+            return new Object[]{game.questionNumber, showNextButton};
         }
     }
 
