@@ -14,6 +14,10 @@
 
 <div class="container-question">
 
+    <button style="position: relative; top: 50px" th:if="${player.getRole() == 'admin'} and not ${isRemote}" onclick="mute()" type="button">
+        &#128263
+    </button>
+
     <div>
         <h2 id="questionX" th:text="'Question ' + ${questionNumber+1}"></h2>
     </div>
@@ -45,11 +49,18 @@
 
 
 <div th:if="${player.getRole() == 'admin'} and not ${isRemote}">
-    <audio src="/suspense.mp3" autoplay></audio>
+    <audio id="backgroundMusic" src="/happymusic.mp3" autoplay></audio>
 </div>
 
 
 <script>
+
+    var audio = document.getElementById("backgroundMusic");
+
+    function mute() {
+        audio.pause();
+        audio.remove();
+    }
 
 
 
