@@ -218,7 +218,7 @@ public class QuestionsController {
 
     // retrieves answers from players
     @PostMapping("/play/{quizCode}/{questionNumber}")
-    public String postScore(@PathVariable Integer quizCode,
+    public synchronized String postScore(@PathVariable Integer quizCode,
                             @PathVariable int questionNumber,
                             HttpSession session, Model model,
                             @RequestParam(required = false) String answer) throws JsonProcessingException {

@@ -13,6 +13,10 @@
 
 <img id="happy-monster" src="/images/happy-monster.png" alt=" ">
 
+<button style="position: relative; top: 50px; left: 50px" th:if="${player.getRole() == 'admin'} and not ${isRemote}" onclick="mute()" type="button">
+    &#128263
+</button>
+
 <div class="container-start">
 
     <h3 th:text="'Quiz code: ' + ${quizCode}"></h3>
@@ -32,14 +36,20 @@
 </div>
 
 <div th:if="${player.getRole() == 'admin'} and not ${isRemote}">
-    <audio src="/elevator.mp3" autoplay></audio>
+    <audio id="backgroundMusic" src="/elevator.mp3" autoplay></audio>
 </div>
+
 
 
 <script>
     var listOfPlayers = document.getElementById("listOfPlayers");
     var quizCode = [[${quizCode}]];
+    var audio = document.getElementById("backgroundMusic");
 
+    function mute() {
+        audio.pause();
+        audio.remove();
+    }
 
     function reloadListOfPlayers(){
         setInterval(function (){

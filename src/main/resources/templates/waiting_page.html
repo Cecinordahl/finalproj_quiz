@@ -106,7 +106,6 @@
 
     function reloadWindow(){
         setInterval(function (){
-            //location.reload()
             fetch("/api/play/" + quizCode + "/wait")
                 .then(r=> r.json())
                 .then(waitResponse => {
@@ -115,7 +114,6 @@
                     }
                     if (waitResponse[0] !== -1) {
                         window.location.href = "/play/" + quizCode + "/" + waitResponse[0];
-                        //go to /play/" + quizCode + '/' + questionNumber
                     }
                 });
         } , 1000)
