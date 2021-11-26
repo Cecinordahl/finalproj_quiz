@@ -604,6 +604,14 @@ input[type="submit"] {
 }
 
 
+/* --------------------- Mute buttons --------------------- */
+button{
+    background-color: white;
+    border: dimgrey 1px solid;
+    border-radius: 50%;
+    padding: 5px;
+}
+
 
 
 /* ----------------------------------------- phone/player display -------------------------------------------- */
