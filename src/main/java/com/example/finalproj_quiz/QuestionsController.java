@@ -156,7 +156,6 @@ public class QuestionsController {
         game.forwardPlayers = true;
 
         if(game.isRemote && game.listOfPlayers.size() == 1){
-            System.out.println("setter forwardPlayers til false");
             game.forwardPlayers = false;
         }
 
@@ -433,7 +432,6 @@ public class QuestionsController {
                 index++;
             }
         }
-        System.out.println(Arrays.deepToString(returnQuiz));
 
         return returnQuiz;
     }
