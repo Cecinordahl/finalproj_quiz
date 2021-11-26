@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 
@@ -193,11 +194,13 @@ public class QuestionsController {
         model.addAttribute("question", mapper.writeValueAsString(game.questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
 
+        int[] nums = ThreadLocalRandom.current().ints(0, game.questions[questionNumber].getIncorrectAnswers().length - 1).distinct().limit(3).toArray();
+
         //To account for a discovered mistake in the API:
         String[] answerTextArray = {mapper.writeValueAsString(game.questions[questionNumber].getCorrectAnswer()).replaceAll("^\"|\"$", ""),
-                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[0]).replaceAll("^\"|\"$", ""),
-                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[1]).replaceAll("^\"|\"$", ""),
-                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[2]).replaceAll("^\"|\"$", "")
+                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[nums[0]]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[nums[1]]).replaceAll("^\"|\"$", ""),
+                                    mapper.writeValueAsString(game.questions[questionNumber].getIncorrectAnswers()[nums[2]]).replaceAll("^\"|\"$", "")
                                     };
 
         for (int i = 0; i < answerTextArray.length; i++) {
