@@ -480,17 +480,19 @@ input[type="submit"] {
 }
 
 .scoresTable {
+    margin-left: auto;
+    margin-right: auto;
     width: 80%;
 }
 
 .scoresTableHeaders {
-    text-align: left;
+    text-align: center;
     font-weight: bold;
 }
 
 .scoresTableName {
     width: 70%;
-    text-align: left;
+    text-align: center;
 }
 
 .scoresTableScore {
@@ -747,6 +749,10 @@ input[type="submit"] {
         position: relative;
         top: 250px;
         height: fit-content;
+    }
+
+    .container-start input[type="submit"] {
+        width: fit-content;
     }
 
 
