@@ -45,7 +45,7 @@ public class AddPlayerForwardTest {
         game.isRemote = false;
         game.isFuzz = false;
         game.forwardPlayers = true; // Admin has set forward to true
-        game.listOfPlayers = generatePlayers(5000);
+        game.listOfPlayers = generatePlayers(1000);
         return game;
     }
 
