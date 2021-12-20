@@ -37,7 +37,7 @@ public class Game {
 
 
     // function to check if all players have been forwarded to the next question
-    public synchronized void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer) {
+    public void addPlayerForwardAndCheckPlayerCounter(Player currentPlayer) {
         this.playerForwarded.add(currentPlayer.getName());
         int playerCounter = this.playerForwarded.size();
 
