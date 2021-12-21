@@ -176,6 +176,7 @@ public class QuestionsController {
     // display page for each quiz question
     @GetMapping("/play/{quizCode}/{questionNumber}")
     public String questionPage(@PathVariable Integer quizCode, @PathVariable int questionNumber, Model model, HttpSession session) throws JsonProcessingException {
+        System.out.println("play quizcode questionnumber, q#: " + questionNumber);
         Game game = gameRepository.findByQuizCode(quizCode);
 
         game.showNextQuestion = false;
@@ -193,6 +194,8 @@ public class QuestionsController {
         model.addAttribute("question", mapper.writeValueAsString(game.questions[questionNumber].getQuestion()).replaceAll("^\"|\"$", "").replaceAll("\\\\", ""));
         model.addAttribute("correctAnswer", alternatives.get(0));
 
+        /* Kommer alltid hit, men resten av metoden kjøres ikke alltid. Memory problem. */
+        System.out.println("-----------------------");
         int[] nums = ThreadLocalRandom.current().ints(0, game.questions[questionNumber].getIncorrectAnswers().length - 1).distinct().limit(3).toArray();
 
         //To account for a discovered mistake in the API:
